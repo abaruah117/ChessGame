@@ -1,66 +1,75 @@
 
 public class Pawn extends Piece {
 	private boolean promote = false;
-	public Pawn(boolean color,Coord pos){
-		super("pawn", color,pos);
-		if(color&&pos.getY()==7){
+
+	public Pawn(boolean color, Coord pos) {
+		super("pawn", color, pos);
+		if (color && pos.getY() == 7) {
 			promote = true;
 		}
-		if(!color && pos.getY()==0){
+		if (!color && pos.getY() == 0) {
 			promote = true;
 		}
 	}
 
 	@Override
 	public boolean legalMove(Coord c) {
-		if(this.getCoord().getY()==6||this.getCoord().getY()==1){
-			boolean legal = ((c.getY()-this.getCoord().getY())==1||(c.getY()-this.getCoord().getY())==2)&&c.getX()==this.getCoord().getX();
-			if(legal){
-				if(this.getBooleanColor()&&c.getY()==7){
+		int x1 = this.getCoord().getX();
+		int x2 = c.getX();
+		int y1 = this.getCoord().getY();
+		int y2 = c.getY();
+		int diffX = x2 - x1;
+		int diffY = y2 - y1;
+		if (!this.getBooleanColor()) {
+			diffY *= -1;// bc black moves down (negative change)
+		}
+		if (y1 == 6 || y1 == 1) {
+			boolean legal = (diffY == 1 || (diffY == 2) && diffX == 0);
+			if (legal) {
+				if (this.getBooleanColor() && c.getY() == 7) {
 					promote = true;
 				}
-				if(!this.getBooleanColor()&&c.getY()==0){
+				if (!this.getBooleanColor() && c.getY() == 0) {
+					promote = true;
+				}
+			}
+			return legal;
+		} else {
+			boolean legal = (diffY == 1) && diffX==0;
+			if (legal) {
+				if (this.getBooleanColor() && c.getY() == 7) {
+					promote = true;
+				}
+				if (!this.getBooleanColor() && c.getY() == 0) {
 					promote = true;
 				}
 			}
 			return legal;
 		}
-		else{
-			boolean legal =  ((c.getY()-this.getCoord().getY())==1)&&c.getX()==this.getCoord().getX();
-			if(legal){
-				if(this.getBooleanColor()&&c.getY()==7){
-					promote = true;
-				}
-				if(!this.getBooleanColor()&&c.getY()==0){
-					promote = true;
-				}
-			}
-			return legal;
-		}
-		
-		
+
 	}
-	public boolean pawnAttack(Piece p2){
+
+	public boolean pawnAttack(Piece p2) {
 		Coord pos = this.getCoord();
-		if(pos.getY()>=p2.getCoord().getY()){
+		if (pos.getY() >= p2.getCoord().getY()) {
 			return false;
+		} else {
+			return (Math.abs(pos.getY() - p2.getCoord().getY()) == 1)
+					&& (Math.abs(pos.getX() - p2.getCoord().getX()) == 1);
 		}
-		else{
-			return (Math.abs(pos.getY()-p2.getCoord().getY())==1)&&(Math.abs(pos.getX()-p2.getCoord().getX())==1);
-		}
-		
+
 	}
-	public boolean promote(){
+
+	public boolean promote() {
 		return promote;
 	}
+
 	public static void main(String[] args) {
-		Pawn b = new Pawn(true, new Coord(2,6));
-		System.out.println(b.legalMove(new Coord(2,7)));
-		System.out.println(b.promote());
-		System.out.println(b.pawnAttack(new Pawn(false, new Coord(3,7))));
-		
+		Pawn b = new Pawn(false, new Coord(2, 6));
+		System.out.println(b.legalMove(new Coord(2, 4)));
+		System.out.println(b.legalMove(new Coord(2, 8)));
+		System.out.println(b.legalMove(new Coord(2, 8)));
+
 	}
-
-
 
 }

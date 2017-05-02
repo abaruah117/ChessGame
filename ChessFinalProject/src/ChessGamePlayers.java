@@ -12,17 +12,17 @@ public class ChessGamePlayers {
 		playerNames.add(p1);
 		playerNames.add(p2);
 	}
-	public String getWhitePlayerName(){
-		return playerNames.get(0);
-	}
-	public String getBlackPlayerName(){
-		return playerNames.get(1);
+	public void changeBlackPlayerName(String p){
+		playerNames.set(0, p);
 	}
 	public void changeWhitePlayerName(String p){
 		playerNames.set(0, p);
 	}
-	public void changeBlackPlayerName(String p){
-		playerNames.set(0, p);
+	public String getBlackPlayerName(){
+		return playerNames.get(1);
+	}
+	public String getWhitePlayerName(){
+		return playerNames.get(0);
 	}
 	public String toString(){
 		String out = "White player: " + it.next() + "\nBlack player: "+it.next();

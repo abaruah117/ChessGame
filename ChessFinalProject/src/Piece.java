@@ -14,11 +14,10 @@ public abstract class Piece {
 	}
 
 	public Piece(String name, boolean color, Coord c) {
-		this.name = name;
+		this.name = name.toUpperCase();
 		this.color = color;
 		pos = c;
-		String n = name.toUpperCase();
-		switch (n) {
+		switch (this.name) {
 		case "KING":
 			pointVal = Integer.MAX_VALUE;
 			break;
@@ -68,9 +67,9 @@ public abstract class Piece {
 	}
 	public String getColor() {
 		if (color) {
-			return "white";
+			return "WHITE";
 		} else {
-			return "black";
+			return "BLACK";
 		}
 	}
 
@@ -91,8 +90,15 @@ public abstract class Piece {
 		} else if (c.equals("black")) {
 			setColor(false);
 		} else {
-			System.out.println("INVALID COLOR INPUT");
+			System.out.println("INVALID COLOR INPUT: " + s);
 		}
+	}
+	public int compareTo(Piece other){
+		return this.getPointVal() - other.getPointVal();
+	}
+	public boolean equals(Piece other){
+		return this.getName()==other.getName() && this.getBooleanColor() == other.getBooleanColor()
+				&& this.getCoord() == other.getCoord();
 	}
 
 	public String toString() {
