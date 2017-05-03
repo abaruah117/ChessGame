@@ -113,7 +113,22 @@ public class Board {
 		initPieceArrayLists();
 
 	}
+	/**
+	* @precondition Piece[][] p is same size as 8*8
+	*/
 	public Board(Piece[][] p, ArrayList<Piece> whitePieces, ArrayList<Piece> blackPieces){
+		for(int i = 0 ; i < p.length; i++){
+			for(int j = 0; j < p[0].length ; j++){
+				board[i][j]= p[i][j];
+			}
+		}
+		for (int i = 0; i < board.length; i++) {
+			for (int j = 0; j < board[0].length; j++) {
+				if ((i + j) % 2 == 0) {
+					boardColor[i][j] = true;
+				}
+			}
+		}
 		this.whitePieces = whitePieces;
 		this.blackPieces = blackPieces;
 	}
