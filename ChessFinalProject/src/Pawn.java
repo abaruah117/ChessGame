@@ -49,14 +49,14 @@ public class Pawn extends Piece {
 
 	}
 
-	public boolean pawnAttack(Piece p2) {
+	public boolean pawnAttack(Coord c2) {
 		Coord pos = this.getCoord();
-		if (pos.getY() >= p2.getCoord().getY()) {
-			return false;
-		} else {
-			return (Math.abs(pos.getY() - p2.getCoord().getY()) == 1)
-					&& (Math.abs(pos.getX() - p2.getCoord().getX()) == 1);
+		int diffX = Math.abs(c2.getX() - pos.getX());
+		int diffY = c2.getY() - pos.getY();
+		if(!getBooleanColor()){
+			diffY*=-1;
 		}
+		return (diffX==1) && diffY == 1;
 
 	}
 
@@ -66,6 +66,7 @@ public class Pawn extends Piece {
 
 	public static void main(String[] args) {
 		Pawn b = new Pawn(false, new Coord(2, 6));
+		System.out.println(b.pawnAttack(new Coord(3,7)));
 		System.out.println(b.legalMove(new Coord(2, 4)));
 		System.out.println(b.legalMove(new Coord(2, 8)));
 		System.out.println(b.legalMove(new Coord(2, 8)));

@@ -16,6 +16,7 @@ public class King extends Piece {
 	public static void main(String[] args) {
 		King b = new King(true, new Coord(0, 0));
 		System.out.println(b.legalMove(new Coord(0, 2)));
+		System.out.println(b.getClass().getName().equals("King"));
 	}
 
 }

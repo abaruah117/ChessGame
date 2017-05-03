@@ -100,7 +100,7 @@ public class Board {
 	private void illegalMove(Piece p, Coord c) {
 		System.out.println("The " + p.getName() + " at " + p.getCoord().toString() + " cannot move to " + c.toString());
 	}
-
+	
 	public Board() {
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
@@ -113,7 +113,11 @@ public class Board {
 		initPieceArrayLists();
 
 	}
-
+	public Board(Piece[][] p, ArrayList<Piece> whitePieces, ArrayList<Piece> blackPieces){
+		this.whitePieces = whitePieces;
+		this.blackPieces = blackPieces;
+	}
+	
 	public ArrayList<Piece> getWhitePieces() {
 		return whitePieces;
 	}
@@ -121,7 +125,9 @@ public class Board {
 	public ArrayList<Piece> getBlackPieces() {
 		return blackPieces;
 	}
-
+	public Piece[][] getBoard(){
+		return board;
+	}
 	/**
 	 * displays boardColor if null & Piece info in the format pieceColor
 	 * pieceName
@@ -163,30 +169,31 @@ public class Board {
 		p.setCoord(c);
 	}
 
-	public void movePiece(Coord cStart, Coord cFinal) {
+	public boolean movePiece(Coord cStart, Coord cFinal) {
 		if (!checkValid(cStart)) {
 			errorInvalidCoord(cStart);
-			return;
+			return false;
 		} else if (!checkValid(cFinal)) {
 			errorInvalidCoord(cFinal);
-			return;
+			return false;
 		}
 		if (pieceAt(cStart) == null) {
 			errorNoPiece(cStart);
-			return;
+			return false;
 		}
 		Piece p = pieceAt(cStart);
 		if (p.getName().equalsIgnoreCase("pawn")) {
 			Piece p2 = pieceAt(cFinal);
-			if (p2 != null && ((Pawn) p).pawnAttack(p2)) {
+			if (p2 != null && ((Pawn) p).pawnAttack(cFinal)) {
 
 			}
 		} else if (!p.legalMove(cFinal)) {
 			illegalMove(p, cFinal);
-			return;
+			return false ;
 		}
 		setPiece(cFinal, p);
 		board[SIZE - 1 - cStart.getY()][cStart.getX()] = null;
+		return true;
 	}
 
 	public boolean getSquareBooleanColor(Coord c) {

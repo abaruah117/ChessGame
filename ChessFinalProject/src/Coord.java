@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 public class Coord {
 	private int x;
@@ -37,12 +38,48 @@ public class Coord {
 		return other.getX() - this.getX();
 	}
 
+	public static ArrayList<Coord> surrounding(Coord c) {
+		ArrayList<Coord> out = new ArrayList<Coord>();
+		int x = c.getX();
+		int y = c.getY();
+		if (x > 0) {
+			out.add(new Coord(x - 1, y));
+			if (y > 0) {
+				out.add(new Coord(x - 1, y - 1));
+			}
+			if (y < 7) {
+				out.add(new Coord(x - 1, y + 1));
+
+			}
+		}
+		if( x < 7){
+			out.add(new Coord(x+1,y));
+			if(y<7){
+				out.add(new Coord(x+1,y+1));
+			}
+			if(y > 0){
+				out.add(new Coord(x+1,y-1));
+			}
+		}
+		if (y > 0) {
+			out.add(new Coord(x,y-1));
+		}
+		if(y<7){
+			out.add(new Coord(x,y+1));
+		}
+		return out;
+
+	}
+
 	public boolean isDiagonalAdjacent(Coord other) {
 		return (Math.abs(this.getY() - other.getY()) == 1) && (Math.abs(this.getX() - other.getX()) == 1);
 	}
 
 	public String toString() {
 		return getX() + "," + getY();
+	}
+	public static void main(String[] args) {
+		System.out.println(surrounding(new Coord(1,1)).toString());
 	}
 
 }

@@ -6,8 +6,9 @@ public class Bishop extends Piece {
 
 	@Override
 	public boolean legalMove(Coord c) {
-		// TODO Auto-generated method stub
-		return false;
+		int diffX = Math.abs(this.getCoord().getX()-c.getX());
+		int diffY = Math.abs(this.getCoord().getY()-c.getY());
+		return diffX==diffY;
 	}
 
 

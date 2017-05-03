@@ -15,7 +15,10 @@ public class ChessGameDriver {
 		System.out.println("Enter a command, ie c4,e6");
 		String d = in.nextLine();
 		boolean color = true; // white
-		while (!d.equals("q")) {
+		while (!d.equals("q")&&!c.checkMate(color)) {
+			//while(check(color)){
+				
+			//}
 			if (d.length() != 5) {
 				System.out.println("please format it in the following format: c6,e4");
 			} else {
@@ -101,13 +104,17 @@ public class ChessGameDriver {
 													// invalid move
 								}
 							} else {
-								c.movePiece(c1, c2);
+								if(!c.movePiece(c1, c2)){
+									color = !color;
+								}
 							}
 							c.displayGame();
 							color = !color;
 						}
 					}
 				}
+				System.out.println("BLACK: "+c.getBlackPieces().toString());
+				System.out.println("BLACK REMOVED: "+c.getBlackRemoved().toString());
 			}
 			System.out.println((color) ? "white" : "black" + " player,Enter a command, ie c4,e6");
 			d = in.nextLine();
