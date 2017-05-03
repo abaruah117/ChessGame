@@ -11,9 +11,14 @@ public class OBJModel {
 	private ArrayList<Vector> textureCords;
 	private ArrayList<Vector> normals;
 	private ArrayList<Vertex> verticies;
+	private boolean smoothNormals;
 
 	public OBJModel(String path) {
-
+		this(path, true);
+	}
+	
+	public OBJModel(String path, boolean smoothNormals) {
+		this.smoothNormals = smoothNormals;
 		positions = new ArrayList<Vector>();
 		textureCords = new ArrayList<Vector>();
 		normals = new ArrayList<Vector>();
@@ -44,11 +49,11 @@ public class OBJModel {
 						.valueOf(split[2]), Float.valueOf(split[3])));
 			} else if (line.indexOf("v ") > -1) {
 				String[] split = line.split(" ");
-				System.out.println(line);
+				// System.out.println(line);
 				positions.add(new Vector(Float.valueOf(split[1]), Float
 						.valueOf(split[2]), Float.valueOf(split[3])));
-				System.out.println("Found position vector at "
-						+ positions.get(positions.size() - 1));
+				// System.out.println("Found position vector at "
+				// + positions.get(positions.size() - 1));
 			} else if (line.indexOf("f ") > -1) {
 				String[] split = line.split(" ");
 				// Vertex v1 = new
@@ -108,24 +113,25 @@ public class OBJModel {
 
 			}
 		}
-
-		for (int i = 0; i < verticies.size(); i++) {
-			if (i % 100 == 0) {
-				System.out.println("Calculating normals: " + i + "/"
-						+ verticies.size());
-			}
-			for (int j = 0; j < verticies.size(); j++) {
-				if (i == j) {
-					continue;
-				} else {
-					if (verticies.get(i).getPos()
-							.equals(verticies.get(j).getPos())) {
-						verticies.get(i).addToNormal(
-								verticies.get(j).getNormal());
+		if (smoothNormals) {
+			for (int i = 0; i < verticies.size(); i++) {
+				if (i % 100 == 0) {
+					System.out.println("Calculating normals: " + i + "/"
+							+ verticies.size());
+				}
+				for (int j = 0; j < verticies.size(); j++) {
+					if (i == j) {
+						continue;
+					} else {
+						if (verticies.get(i).getPos()
+								.equals(verticies.get(j).getPos())) {
+							verticies.get(i).addToNormal(
+									verticies.get(j).getNormal());
+						}
 					}
 				}
+				verticies.get(i).normalizeNormal();
 			}
-			verticies.get(i).normalizeNormal();
 		}
 
 		scanner.close();
@@ -143,5 +149,11 @@ public class OBJModel {
 	public Vertex getVertex(int index) {
 		return verticies.get(index);
 	}
+
+	public boolean isSmoothNormals() {
+		return smoothNormals;
+	}
+
+
 
 }

@@ -19,6 +19,27 @@ public class Renderer extends Canvas {
 		clearDepthBuffer();
 	}
 
+	public void drawBoard(Board b, Camera c, Matrix transform) {
+		Tile[][] tiles = b.getBoardColor();
+		for (int y = 0; y < tiles.length; y++) {
+			for (int x = 0; x < tiles[y].length; x++) {
+				Mesh m = tiles[y][x].getMesh(
+						c,
+						Matrix.multiply(
+								transform,
+								new Matrix().translationMatrix(
+										x * Board.getTileSize()
+												- Board.getTileSize()
+												* Board.getSize() / 2 + Board.getTileSize()/2,
+										0,
+										y * Board.getTileSize()
+												- Board.getTileSize()
+												* Board.getSize() / 2 + Board.getTileSize()/2)));
+				drawMesh(m, c);
+			}
+		}
+	}
+
 	public void drawMesh(Mesh m, Camera camera) {
 		setTexture(m.getTexture());
 		OBJModel model = m.getModel();
@@ -146,7 +167,9 @@ public class Renderer extends Canvas {
 
 			float distance = camera.getPos().subtract(position).length();
 
-			if (distance < depthBuffer[y][x] || distance < camera.getNearCliping()) {
+			if (distance < depthBuffer[y][x]
+					|| distance < camera.getNearCliping()
+					|| z < camera.getPos().getZ()) {
 				continue;
 			}
 

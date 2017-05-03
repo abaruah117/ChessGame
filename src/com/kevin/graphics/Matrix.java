@@ -164,5 +164,16 @@ public class Matrix {
 		return mat;
 	}
 	
+	public String toString() {
+		String s = "";
+		for(int y = 0; y < mat.length; y++) {
+			for(int x =0; x < mat[y].length;x++) {
+				s += mat[y][x] + " ";
+			}
+			s += "\n";
+		}
+		return s;
+	}
+	
 }
 
