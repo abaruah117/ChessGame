@@ -11,7 +11,7 @@ public class Vertex {
 		this.pos = pos;
 		this.textureCord = textureCord;
 		this.originalNormal = normal;
-		tempNormal = originalNormal.copyOf();
+		tempNormal = originalNormal == null ? null : originalNormal.copyOf();
 	}
 
 	public Vertex(Vector pos) {

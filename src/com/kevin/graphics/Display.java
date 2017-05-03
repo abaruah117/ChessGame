@@ -46,6 +46,10 @@ public class Display {
 			 ((Renderer)(buffer)).clearDepthBuffer();
 		 }
 	}
+
+	public JFrame getDisplay() {
+		return display;
+	}
 	
 	
 }

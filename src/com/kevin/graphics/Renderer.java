@@ -34,7 +34,7 @@ public class Renderer extends Canvas {
 										0,
 										y * Board.getTileSize()
 												- Board.getTileSize()
-												* Board.getSize() / 2 + Board.getTileSize()/2)));
+												* Board.getSize() / 2 + Board.getTileSize()/2), c.getInvTransform()));
 				drawMesh(m, c);
 			}
 		}
@@ -145,6 +145,22 @@ public class Renderer extends Canvas {
 		}
 		// System.out.println("Finished triangle p2");
 
+	}
+	
+	public void drawLine(Vertex v1, Vertex v2) {
+		Vertex bot = v1;
+		Vertex top = v2;
+		if(bot.getPos().getY() > top.getPos().getY()) {
+			bot = v2;
+			top = v1;
+		}
+		Edge e = new Edge(bot, top);
+		
+		//System.out.println(e.getMinY() + " " + e.getMaxX());
+		for(int y = (int) Math.ceil(e.getMinY()); y < 9999; y++) {
+			drawPixel((int) Math.ceil(e.getCurrentX()), y, Color.RED);
+			e.step();
+		}
 	}
 
 	public void drawLine(Vertex bot, Vertex mid, Vertex top, Edge left,

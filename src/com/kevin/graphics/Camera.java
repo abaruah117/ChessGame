@@ -7,15 +7,17 @@ public class Camera {
 	private Vector pos;
 	private float nearCliping;
 	private Matrix projectionTransform;
+	private int screenWidth, screenHeight;
 	
 	public Camera(int screenWidth, int screenHeight, float right, float top, float nearClipping, float farClipping, Matrix transform) {
 		this.transform = transform;
 		pos = new Vector(0, 0, 0);
-		pos = pos.muliply(transform);
+		//pos = pos.muliply(transform);
 		invTransform = transform.inverse();
 		this.nearCliping = nearClipping;
 		Matrix screen = new Matrix().screenMatrix(screenWidth, screenHeight);
-
+		this.screenHeight = screenHeight;
+		this.screenWidth = screenWidth;
 		Matrix normalizedProjection = new Matrix().projectionMatrix(right, top, nearClipping, farClipping);
 
 		this.projectionTransform = Matrix.multiply(invTransform, screen, normalizedProjection);
@@ -59,6 +61,22 @@ public class Camera {
 
 	public Matrix getProjectionTransform() {
 		return projectionTransform;
+	}
+
+	public int getScreenWidth() {
+		return screenWidth;
+	}
+
+	public void setScreenWidth(int screenWidth) {
+		this.screenWidth = screenWidth;
+	}
+
+	public int getScreenHeight() {
+		return screenHeight;
+	}
+
+	public void setScreenHeight(int screenHeight) {
+		this.screenHeight = screenHeight;
 	}
 	
 	
