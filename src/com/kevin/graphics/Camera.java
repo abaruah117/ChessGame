@@ -5,6 +5,9 @@ public class Camera {
 	private Matrix transform;
 	private Matrix invTransform;
 	private Vector pos;
+	private Matrix viewMatrix;
+	private Matrix projectionMatrix;
+	private Matrix 
 	private float nearCliping;
 	private Matrix projectionTransform;
 	private int screenWidth, screenHeight;
@@ -12,15 +15,24 @@ public class Camera {
 	public Camera(int screenWidth, int screenHeight, float right, float top, float nearClipping, float farClipping, Matrix transform) {
 		this.transform = transform;
 		pos = new Vector(0, 0, 0);
-		//pos = pos.muliply(transform);
 		invTransform = transform.inverse();
 		this.nearCliping = nearClipping;
-		Matrix screen = new Matrix().screenMatrix(screenWidth, screenHeight);
 		this.screenHeight = screenHeight;
 		this.screenWidth = screenWidth;
+		screenMatrix = new Matrix().screenMatrix(screenWidth, screenHeight);
+
 		Matrix normalizedProjection = new Matrix().projectionMatrix(right, top, nearClipping, farClipping);
 
-		this.projectionTransform = Matrix.multiply(invTransform, screen, normalizedProjection);
+		this.projectionTransform = Matrix.multiply(invTransform, screenMatrix, normalizedProjection);
+	}
+	
+	public Vector screenToWorldPos(Vector screenCord) {
+		float x = (2*screenCord.getX())/screenWidth - 1;
+		float y = 1 - (2*screenCord.getY())/screenHeight;
+		Vector cameraCords = new Vector(x, y, -1f, 1f).muliply(projectionTransform.inverse());
+		cameraCords.setZ(-1f);
+		cameraCord.setW(1f);
+		
 	}
 	
 	public Vector getPos() {
