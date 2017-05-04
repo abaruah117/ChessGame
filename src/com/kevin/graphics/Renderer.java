@@ -34,7 +34,7 @@ public class Renderer extends Canvas {
 										0,
 										y * Board.getTileSize()
 												- Board.getTileSize()
-												* Board.getSize() / 2 + Board.getTileSize()/2), c.getInvTransform()));
+												* Board.getSize() / 2 + Board.getTileSize()/2)));
 				drawMesh(m, c);
 			}
 		}
@@ -43,7 +43,6 @@ public class Renderer extends Canvas {
 	public void drawMesh(Mesh m, Camera camera) {
 		setTexture(m.getTexture());
 		OBJModel model = m.getModel();
-
 		for (int i = 0; i < model.VertexCount(); i += 3) {
 
 			Vertex v1 = model.getVertex(i + 0).multiply(m.getTransform())

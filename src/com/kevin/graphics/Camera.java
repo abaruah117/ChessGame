@@ -2,28 +2,30 @@ package com.kevin.graphics;
 
 public class Camera {
 	
-	private Matrix transform;
-	private Matrix invTransform;
+	private Matrix cameraMatrix, invCameraMatrix;
 	private Vector pos;
-	private Matrix viewMatrix;
-	private Matrix projectionMatrix;
-	private Matrix 
+	private Matrix perspectiveMatrix, invPerspectiveMatrix;
+	private Matrix screenMatrix, invScreenMatrix;
 	private float nearCliping;
 	private Matrix projectionTransform;
 	private int screenWidth, screenHeight;
 	
 	public Camera(int screenWidth, int screenHeight, float right, float top, float nearClipping, float farClipping, Matrix transform) {
-		this.transform = transform;
-		pos = new Vector(0, 0, 0);
-		invTransform = transform.inverse();
 		this.nearCliping = nearClipping;
 		this.screenHeight = screenHeight;
 		this.screenWidth = screenWidth;
+		
+		pos = new Vector(0, 0, 0);
+		cameraMatrix = transform.inverse();
+		invCameraMatrix = transform;
+		
 		screenMatrix = new Matrix().screenMatrix(screenWidth, screenHeight);
-
-		Matrix normalizedProjection = new Matrix().projectionMatrix(right, top, nearClipping, farClipping);
-
-		this.projectionTransform = Matrix.multiply(invTransform, screenMatrix, normalizedProjection);
+		invScreenMatrix = screenMatrix.inverse();
+		
+		perspectiveMatrix = new Matrix().projectionMatrix(right, top, nearClipping, farClipping);
+		invPerspectiveMatrix = perspectiveMatrix.inverse();
+		
+		this.projectionTransform = Matrix.multiply(screenMatrix, perspectiveMatrix, cameraMatrix);
 	}
 	
 	public Vector screenToWorldPos(Vector screenCord) {
@@ -31,8 +33,8 @@ public class Camera {
 		float y = 1 - (2*screenCord.getY())/screenHeight;
 		Vector cameraCords = new Vector(x, y, -1f, 1f).muliply(projectionTransform.inverse());
 		cameraCords.setZ(-1f);
-		cameraCord.setW(1f);
-		
+		cameraCords.setW(1f);
+		return null;
 	}
 	
 	public Vector getPos() {
@@ -40,56 +42,52 @@ public class Camera {
 	}
 
 	public void Transform(Matrix t) {
-		transform = transform.mul(t);
-		invTransform = transform.inverse();
-	}
-	
-	public Matrix getTransform() {
-		return transform;
-	}
-	public void setTransform(Matrix transform) {
-		this.transform = transform;
-	}
-	public Matrix getInvTransform() {
-		return invTransform;
-	}
-	public void setInvTransform(Matrix invTransform) {
-		this.invTransform = invTransform;
+		invCameraMatrix = invCameraMatrix.mul(t);
+		cameraMatrix = invCameraMatrix.inverse();
 	}
 
-	/**
-	 * @return the nearCliping
-	 */
+
+	public Matrix getCameraMatrix() {
+		return cameraMatrix;
+	}
+
+	public Matrix getInvCameraMatrix() {
+		return invCameraMatrix;
+	}
+
+	public Matrix getPerspectiveMatrix() {
+		return perspectiveMatrix;
+	}
+
+	public Matrix getInvPerspectiveMatrix() {
+		return invPerspectiveMatrix;
+	}
+
+	public Matrix getScreenMatrix() {
+		return screenMatrix;
+	}
+
 	public float getNearCliping() {
 		return nearCliping;
-	}
-
-	/**
-	 * @param nearCliping the nearCliping to set
-	 */
-	public void setNearCliping(float nearCliping) {
-		this.nearCliping = nearCliping;
-	}
-
-	public Matrix getProjectionTransform() {
-		return projectionTransform;
 	}
 
 	public int getScreenWidth() {
 		return screenWidth;
 	}
 
-	public void setScreenWidth(int screenWidth) {
-		this.screenWidth = screenWidth;
-	}
-
 	public int getScreenHeight() {
 		return screenHeight;
 	}
 
-	public void setScreenHeight(int screenHeight) {
-		this.screenHeight = screenHeight;
+	public Matrix getProjectionTransform() {
+		return projectionTransform;
 	}
+
+	public Matrix getInvScreenMatrix() {
+		return invScreenMatrix;
+	}
+	
+	
 	
 	
 	
