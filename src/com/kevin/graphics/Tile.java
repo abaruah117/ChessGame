@@ -1,6 +1,6 @@
 package com.kevin.graphics;
 
-public class Tile extends Model{
+public class Tile extends Model implements Clickable{
 	
 	private Vector pos;
 	private boolean isWhite;
@@ -16,7 +16,10 @@ public class Tile extends Model{
 		return false;
 	}
 
-	
+	@Override
+	public boolean isClicked(Vector point) {
+		return false;
+	}
 	
 	
 }
