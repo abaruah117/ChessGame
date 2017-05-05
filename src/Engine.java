@@ -83,8 +83,8 @@ public class Engine {
 
 		Matrix trans = new Matrix().translationMatrix(0, 100, -200);
 		Matrix rotX = new Matrix().rotationXMatrix(-45);
-
-		Matrix totalTransformation = Matrix.multiply(trans, rotX);
+		Matrix rotY = new Matrix().rotationYMatrix(90);
+		Matrix totalTransformation = Matrix.multiply(trans, rotX, rotY);
 		//Vertex v1 = new Vertex(0, 0, -200).multiply(Matrix.multiply(camera.getProjectionTransform()));
 		//Vertex v2 = new Vertex(40, 40, 5).multiply(Matrix.multiply(camera.getProjectionTransform(), totalTransformation));
 		//System.out.println(v1.persectiveDevide());

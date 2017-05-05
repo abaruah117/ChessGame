@@ -2,7 +2,7 @@
 
 public class Board {
 	
-	private static final int SIZE = 8;
+	private static final int SIZE =8;
 	private static final int TILE_SIZE = 20;
 	private Tile[][] boardColor = new Tile[SIZE][SIZE];
 
@@ -10,9 +10,9 @@ public class Board {
 		for (int i = 0; i < SIZE; i++) {
 			for (int j = 0; j < SIZE; j++) {
 				if ((i + j) % 2 == 0) {
-					boardColor[i][j] = new Tile(ModelLoader.getModel("whiteSquare"), new Vector(i, j), true);
+					boardColor[i][j] = new Tile(ModelLoader.getModel("whiteSquare"), new Vector(SIZE - i-1,j), true);
 				} else {
-					boardColor[i][j] = new Tile(ModelLoader.getModel("blackSquare"), new Vector(i, j), false);
+					boardColor[i][j] = new Tile(ModelLoader.getModel("blackSquare"), new Vector(SIZE -i-1,j), false);
 				}
 			}
 		}

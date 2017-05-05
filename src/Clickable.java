@@ -12,6 +12,11 @@ public class Clickable {
 		this.botLeft = botLeft;
 		this.botRight = botRight;
 		
+//		System.out.println("topleft " + topLeft );
+//		System.out.println("topRight " + topRight );
+//		System.out.println("botLeft " + botLeft );
+//		System.out.println("botRight " + botRight );
+//		System.exit(0);
 		slopeTop = (topLeft.getY() - topRight.getY())/(topLeft.getX() - topRight.getX());
 		slopeBot = (botLeft.getY() - botRight.getY())/(botLeft.getX() - botRight.getX());
 		slopeLeft = (botLeft.getX() - topLeft.getX())/(botLeft.getY() - topLeft.getY());

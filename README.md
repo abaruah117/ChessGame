@@ -1,2 +1,0 @@
-# ChessGame
-APCS final project :(

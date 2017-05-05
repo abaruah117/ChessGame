@@ -54,9 +54,13 @@ public class Renderer extends Canvas {
 			Vertex v4 = model.getVertex(3).multiply(m.getTransform())
 					.persectiveDevide();	
 
-			Clickable clickable = new Clickable(v1.getPos(), v3.getPos(), v2.getPos(), v4.getPos());
+			Clickable clickable = new Clickable(v3.getPos(), v4.getPos(), v1.getPos(), v2.getPos());
 			tiles[y][x].setCollider(clickable);
-			
+			//v1
+			//v2
+			//v3
+			//v4
+		
 //			System.out.println(v1); left top
 //			System.out.println(v2); left bot
 //			System.out.println(v3); right top
