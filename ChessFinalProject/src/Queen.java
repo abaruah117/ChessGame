@@ -11,7 +11,7 @@ public class Queen extends Piece {
 		boolean diag = (diffX == diffY);
 		boolean horizontal = (diffY==0)&&(diffX>0);
 		boolean vertical = (diffX==0)&&(diffY>0);
-		return false;
+		return diag||horizontal||vertical;
 	}
 
 

@@ -1,5 +1,14 @@
 
 public class Pawn extends Piece {
+	public static void main(String[] args) {
+		Pawn b = new Pawn(false, new Coord(2, 6));
+		System.out.println(b.pawnAttack(new Coord(3,5)));
+		System.out.println(b.legalMove(new Coord(2, 4)));
+		System.out.println(b.legalMove(new Coord(2, 1)));
+		System.out.println(b.legalMove(new Coord(2, 0)));
+
+	}
+
 	private boolean promote = false;
 
 	public Pawn(boolean color, Coord pos) {
@@ -62,15 +71,6 @@ public class Pawn extends Piece {
 
 	public boolean promote() {
 		return promote;
-	}
-
-	public static void main(String[] args) {
-		Pawn b = new Pawn(false, new Coord(2, 6));
-		System.out.println(b.pawnAttack(new Coord(3,7)));
-		System.out.println(b.legalMove(new Coord(2, 4)));
-		System.out.println(b.legalMove(new Coord(2, 8)));
-		System.out.println(b.legalMove(new Coord(2, 8)));
-
 	}
 
 }

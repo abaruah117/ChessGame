@@ -43,21 +43,15 @@ public abstract class Piece {
 
 	}
 
-	public String getName() {
-		return name;
+	public int compareTo(Piece other){
+		return this.getPointVal() - other.getPointVal();
 	}
 
-	public void setName(String s) {
-		name = s;
+	public boolean equals(Piece other){
+		return this.getName()==other.getName() && this.getBooleanColor() == other.getBooleanColor()
+				&& this.getCoord() == other.getCoord();
 	}
 
-	public int getPointVal() {
-		return pointVal;
-	}
-
-	public void setPointVal(int i) {
-		pointVal = i;
-	}
 	/**
 	 * 
 	 * @return false if black, true if white
@@ -65,6 +59,7 @@ public abstract class Piece {
 	public boolean getBooleanColor(){
 		return color;
 	}
+
 	public String getColor() {
 		if (color) {
 			return "WHITE";
@@ -72,15 +67,19 @@ public abstract class Piece {
 			return "BLACK";
 		}
 	}
-
-	public void setColor(boolean b) {
-		this.color = b;
-	}
 	public Coord getCoord(){
 		return pos;
 	}
-	public void setCoord(Coord c){
-		pos = c;
+	public String getName() {
+		return name;
+	}
+
+	public int getPointVal() {
+		return pointVal;
+	}
+	public abstract boolean legalMove(Coord c);
+	public void setColor(boolean b) {
+		this.color = b;
 	}
 
 	public void setColor(String s) {
@@ -93,12 +92,15 @@ public abstract class Piece {
 			System.out.println("INVALID COLOR INPUT: " + s);
 		}
 	}
-	public int compareTo(Piece other){
-		return this.getPointVal() - other.getPointVal();
+	public void setCoord(Coord c){
+		pos = c;
 	}
-	public boolean equals(Piece other){
-		return this.getName()==other.getName() && this.getBooleanColor() == other.getBooleanColor()
-				&& this.getCoord() == other.getCoord();
+	public void setName(String s) {
+		name = s;
+	}
+
+	public void setPointVal(int i) {
+		pointVal = i;
 	}
 
 	public String toString() {
@@ -110,8 +112,6 @@ public abstract class Piece {
 		}
 		return "piece: " + getName() + " value: " + getPointVal() + " " + color+" "+pos.toString()+" ";
 	}
-
-	public abstract boolean legalMove(Coord c);
 
 
 }
