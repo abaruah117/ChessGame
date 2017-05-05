@@ -1,12 +1,11 @@
-package com.kevin.graphics;
+
 
 public class Light {
 
 	private Vector position;
 	private Vector diffuseColor;
 	private Vector ambientColor;
-	private Vector specularColor;
-	private float ambientBrightness, diffuseBrightness, specularBrightness;
+	private float ambientBrightness, diffuseBrightness;
 	private Renderer depthMaper;
 	private boolean doShadows = false;
 
@@ -17,8 +16,6 @@ public class Light {
 		this.ambientBrightness = lightColor.getAmbientBrightness();
 		this.diffuseBrightness = lightColor.getDiffuseBrightness();
 //		this.doShadows = doShadows;
-		this.specularColor = lightColor.getSpecularColor();
-		this.specularBrightness = lightColor.getSpecularBrightness();
 
 	}
 
@@ -26,21 +23,8 @@ public class Light {
 	// depthMaper.drawMesh(m, new Camera(position ));
 	// }
 
-	public Vector getSpecularColor() {
-		return specularColor;
-	}
 
-	public void setSpecularColor(Vector specularColor) {
-		this.specularColor = specularColor;
-	}
 
-	public float getSpecularBrightness() {
-		return specularBrightness;
-	}
-
-	public void setSpecularBrightness(float specularBrightness) {
-		this.specularBrightness = specularBrightness;
-	}
 
 	public Vector getPosition() {
 		return position;

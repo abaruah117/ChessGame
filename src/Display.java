@@ -1,4 +1,4 @@
-package com.kevin.graphics;
+
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -14,21 +14,24 @@ public class Display {
 	private BufferedImage screen;
 	private Graphics2D screenG;
 	private Graphics2D bufferG;
-	private JFrame display;
+	private JFrame window;
+	private JLabel display;
 	
 	public Display(Canvas target, String title) {
 		buffer = target;
 		screen = new BufferedImage(buffer.getWidth(), buffer.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
 		screenG = screen.createGraphics();
 		bufferG = buffer.getImage().createGraphics();
-		display = new JFrame(title);
-		display.setLocationRelativeTo(null);
-		display.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		display.setSize(buffer.getWidth(), buffer.getHeight());
+		window = new JFrame(title);
+		window.setLocationRelativeTo(null);
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.setSize(buffer.getWidth(), buffer.getHeight());
 		//frame.setResizable(false);
-		display.add(new JLabel(new ImageIcon(screen)));
-		display.pack();
-		display.setVisible(true);
+		display = new JLabel(new ImageIcon(screen));
+		window.add(display);
+		window.pack();
+		//window.setResizable(false);
+		window.setVisible(true);
 	}
 	
 	public void swapBuffers() {
@@ -47,7 +50,11 @@ public class Display {
 		 }
 	}
 
-	public JFrame getDisplay() {
+	public JFrame getWindow() {
+		return window;
+	}
+
+	public JLabel getDisplay() {
 		return display;
 	}
 	

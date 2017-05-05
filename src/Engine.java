@@ -1,4 +1,4 @@
-package com.kevin.graphics;
+
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
@@ -20,8 +20,7 @@ public class Engine {
 	Vector diffuseColor = new Vector(1, 1, 1);
 	Vector specularColor = new Vector(1, 2, 1);
 	Vector lightPosition = new Vector(0, 400, 0f);
-	LightColor lightColor1 = new LightColor(ambientColor, diffuseColor,
-			specularColor, .04f, 2f, 1f);
+	LightColor lightColor1 = new LightColor(ambientColor, diffuseColor, .04f, 2f);
 	Light light1 = new Light(lightPosition, lightColor1);
 
 	public static void main(String[] args) {
@@ -60,7 +59,7 @@ public class Engine {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Physics.rayCast(camera, new Vector(e.getX(), e.getY()), board);
+				board.onClick(new Vector(e.getX(), e.getY()));
 			}
 		});
 		ModelLoader.init(resPath);

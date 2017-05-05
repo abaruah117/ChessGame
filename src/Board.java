@@ -1,4 +1,4 @@
-package com.kevin.graphics;
+
 
 public class Board {
 	
@@ -20,6 +20,18 @@ public class Board {
 //		initPieceArrayLists();
 
 	}
+	
+	public void onClick(Vector point) {
+		
+		for(int y = 0; y < boardColor.length; y++) {
+			for(int x = 0; x < boardColor[y].length; x++) {
+				if(boardColor[y][x].getCollider().testClick(point)) {
+					boardColor[y][x].onClick();
+				}
+			}
+		}
+		
+	}
 
 	public Tile[][] getBoardColor() {
 		return boardColor;
@@ -32,5 +44,6 @@ public class Board {
 	public static int getSize() {
 		return SIZE;
 	}
+
 	
 }

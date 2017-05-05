@@ -1,4 +1,4 @@
-package com.kevin.graphics;
+
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -21,14 +21,14 @@ public class Renderer extends Canvas {
 
 	public void drawBoard(Board b, Camera c, Matrix transform) {
 		Tile[][] tiles = b.getBoardColor();
-		
+		drawClickableTiles(tiles, transform, c);
 	}
 	
-	public void drawClickableTiles(Tile[][] tiles, Map<Clickable, Tile> clickMap) {
+	public void drawClickableTiles(Tile[][] tiles, Matrix transform, Camera camera) {
 		for (int y = 0; y < tiles.length; y++) {
 			for (int x = 0; x < tiles[y].length; x++) {
 				Mesh m = tiles[y][x].getMesh(
-						c,
+						camera,
 						Matrix.multiply(
 								transform,
 								new Matrix().translationMatrix(
@@ -43,18 +43,28 @@ public class Renderer extends Canvas {
 					setTexture(m.getTexture());
 			OBJModel model = m.getModel();
 			
+			
 
-			Vertex v1 = model.getVertex(i + 0).multiply(m.getTransform())
+			Vertex v1 = model.getVertex(0).multiply(m.getTransform())
 					.persectiveDevide();
-			Vertex v2 = model.getVertex(i + 1).multiply(m.getTransform())
+			Vertex v2 = model.getVertex(1).multiply(m.getTransform())
 					.persectiveDevide();
-			Vertex v3 = model.getVertex(i + 2).multiply(m.getTransform())
+			Vertex v3 = model.getVertex(2).multiply(m.getTransform())
 					.persectiveDevide();
-			Vertex v4 = model.getVertex(i + 4).multiply(m.getTransform())
-					.persectiveDevide();					
+			Vertex v4 = model.getVertex(3).multiply(m.getTransform())
+					.persectiveDevide();	
+
+			Clickable clickable = new Clickable(v1.getPos(), v3.getPos(), v2.getPos(), v4.getPos());
+			tiles[y][x].setCollider(clickable);
+			
+//			System.out.println(v1); left top
+//			System.out.println(v2); left bot
+//			System.out.println(v3); right top
+//			System.out.println(v4); right bot
+//			System.exit(0);
 
 			drawTriangle(v1, v2, v3, camera);
-			drawTriangle(v2, v3, v4, camera); //Vertexes may be in wrong order
+			drawTriangle(v2, v3, v4, camera);
 			
 			}
 		}
@@ -244,7 +254,6 @@ public class Renderer extends Canvas {
 						.normalize();
 
 				Vector diffuse = new Vector(0, 0, 0);
-				Vector specular = new Vector(0, 0, 0);
 
 				float diffuseStrength = Math.max(interpolatedNormal.normalize()
 						.dot(lightDir), 0);
@@ -253,15 +262,7 @@ public class Renderer extends Canvas {
 						.multiply(light.getDiffuseBrightness())
 						.devide(lightDir.length() * lightDir.length())
 						.multiply(diffuseStrength);
-
-				float specularStrength = (float) Math.pow(
-						diffuse.devide(diffuseStrength).dot(
-								camera.getPos().subtract(position)),
-						light.getSpecularBrightness());
-				// System.out.println(specularStrength);
-				specular = light.getSpecularColor().multiply(
-						Math.max(specularStrength, 0));
-				objectColor = (ambient.add(diffuse.add(specular)))
+				objectColor = (ambient.add(diffuse))
 						.multiply(objectColor);
 
 			}

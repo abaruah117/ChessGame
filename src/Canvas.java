@@ -1,4 +1,4 @@
-package com.kevin.graphics;
+
 
 import java.awt.Color;
 import java.awt.Graphics;
