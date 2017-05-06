@@ -33,7 +33,7 @@ public class Pawn extends Piece {
 			diffY *= -1;// bc black moves down (negative change)
 		}
 		if (y1 == 6 || y1 == 1) {
-			boolean legal = (diffY == 1 || (diffY == 2) && diffX == 0);
+			boolean legal = (diffY == 1 || (diffY == 2))&& diffX == 0;
 			if (legal) {
 				if (this.getBooleanColor() && c.getY() == 7) {
 					promote = true;
