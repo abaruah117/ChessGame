@@ -27,7 +27,7 @@ public class Pawn extends Piece {
 		int x2 = c.getX();
 		int y1 = this.getCoord().getY();
 		int y2 = c.getY();
-		int diffX = x2 - x1;
+		int diffX = Math.abs(x2 - x1);
 		int diffY = y2 - y1;
 		if (!this.getBooleanColor()) {
 			diffY *= -1;// bc black moves down (negative change)

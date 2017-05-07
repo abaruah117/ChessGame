@@ -269,12 +269,14 @@ public class ChessGame {
 		} else if (y2 - y1 < 0) {
 			incY = -1;
 		}
-
 		for (int x = x1 + incX, y = y1 + incY; x < x2 || y < y2; x += incX, y += incY) {
+
+			System.out.println("inc y: " +incY + " inc x "+incX);
 			if (y < 0) {
 				System.out.println(y1 + " " + incY);
 				break;
 			}
+			System.out.println("check pieces at ");
 			if (gameboard.pieceAt(new Coord(x, y)) != null) {
 				return true;
 			}
@@ -365,7 +367,6 @@ public class ChessGame {
 		}
 		boolean legal = p1.legalMove(c2);
 		boolean obstruction = obstruct(c1, c2);
-		System.out.println(obstruction);
 		boolean pawnAttack = false;
 		if (p1.getClass().getName().equalsIgnoreCase("Pawn")) {
 			pawnAttack = ((Pawn) p1).pawnAttack(c2);

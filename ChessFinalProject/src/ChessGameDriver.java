@@ -15,7 +15,7 @@ public class ChessGameDriver {
 		String d = "";
 		boolean color = true; // white
 		while (!d.equals("q")) {
-			// while(check(color)){
+	
 			if (c.check(color)) {
 				if (c.checkMate(color)) {
 					System.out.println("Checkmate: " + ((!color) ? "white" : "black") + " wins");
@@ -24,8 +24,10 @@ public class ChessGameDriver {
 				System.out.println(((color) ? "white" : "black") + " king is in check");
 				System.out.println(((color) ? "white" : "black") + " player,Enter a command, ie c4,e6: ");
 				d = in.nextLine();
-				// }
-				if (d.length() != 5) {
+				if(d.equals("q")){
+					break;
+				}
+				else if (d.length() != 5) {
 					System.out.println("please format it in the following format: c6,e4");
 				} else {
 					char g = d.charAt(0);
@@ -134,9 +136,17 @@ public class ChessGameDriver {
 			System.out.println(((color) ? "white" : "black") + " player,Enter a command, ie c4,e6: ");
 			d = in.nextLine();
 			// }
-			if (d.equals("skip")) {
+			if(d.equals("q")){
+				break;
+			}
+			else if (d.equals("skip")) {
 				color = !color;
-			} else if (d.length() != 5) {
+			} 
+			else if(d.equals("reset")){
+				c = new ChessGame(player1, player2);
+				c.displayGame();
+				continue;
+			}else if (d.length() != 5) {
 				System.out.println("please format it in the following format: c6,e4");
 			} else {
 				char g = d.charAt(0);
