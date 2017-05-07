@@ -25,7 +25,7 @@ public class Board {
 		
 		for(int y = 0; y < boardColor.length; y++) {
 			for(int x = 0; x < boardColor[y].length; x++) {
-				if(boardColor[y][x].getCollider().testClick(point)) {
+				if(boardColor[y][x].getCollider() != null && boardColor[y][x].getCollider().testClick(point)) {
 					boardColor[y][x].onClick();
 				}
 			}

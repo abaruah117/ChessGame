@@ -8,8 +8,10 @@ public class Light {
 	private float ambientBrightness, diffuseBrightness;
 	private Renderer depthMaper;
 	private boolean doShadows = false;
+	private LightColor lightColor;
 
 	public Light(Vector position, LightColor lightColor) {
+		this.lightColor = lightColor;
 		this.position = position;
 		this.diffuseColor = lightColor.getDiffuseColor();
 		this.ambientColor = lightColor.getAmbientColor();
@@ -23,6 +25,11 @@ public class Light {
 	// depthMaper.drawMesh(m, new Camera(position ));
 	// }
 
+	public Light project(Matrix transform, Camera c) {
+		Vector pos = position.muliply(Matrix.multiply(c.getProjectionTransform(), transform));
+		System.out.println(pos.devide(pos.getW()));
+		return new Light(pos.devide(pos.getW()), lightColor);
+	}
 
 
 

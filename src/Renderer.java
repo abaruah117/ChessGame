@@ -11,6 +11,8 @@ public class Renderer extends Canvas {
 	float[][] depthBuffer;
 
 	private boolean isMain = true;
+	
+	private static boolean DO_WIRE_MESH = true;
 
 	public Renderer(int width, int height) {
 		super(width, height);
@@ -236,7 +238,7 @@ public class Renderer extends Canvas {
 			if (bot.getTextureCord() == null || mid.getTextureCord() == null
 					|| top.getTextureCord() == null || texture == null) {
 				// this.drawPixel(x, y, Color.WHITE);
-				objectColor = new Vector(210, 105, 30);
+				objectColor = new Vector(100, 100, 100);
 			} else {
 				Vector textureCord = bot
 						.getTextureCord()
@@ -246,23 +248,28 @@ public class Renderer extends Canvas {
 				Color c = texture.getPixelAt(textureCord);
 				objectColor = new Vector(c.getRed(), c.getGreen(), c.getBlue());
 			}
+
+			if((x == (int)(Math.ceil(minX)) || y == left.getMinY())  && DO_WIRE_MESH) {
+				objectColor = new Vector(0,0,0);
+			}
+			
 			Vector interpolatedNormal = bot
 					.getNormal()
 					.multiply(area1)
 					.add(mid.getNormal().multiply(area2)
 							.add(top.getNormal().multiply(area3)));
 			for (Light light : lights) {
+				
 				Vector ambient = light.getAmbientColor().multiply(
 						light.getAmbientBrightness());
-				Vector lightDir = light.getPosition().subtract(position)
-						.normalize();
-
-				Vector diffuse = new Vector(0, 0, 0);
+//				Vector lightDir = light.getPosition().subtract(position)
+//						.normalize();
+				Vector lightDir = position.subtract(light.getPosition()).normalize();
 
 				float diffuseStrength = Math.max(interpolatedNormal.normalize()
 						.dot(lightDir), 0);
 				// System.out.println(normal.dot(lightDir));
-				diffuse = light.getDiffuseColor().normalize()
+				Vector diffuse = light.getDiffuseColor().normalize()
 						.multiply(light.getDiffuseBrightness())
 						.devide(lightDir.length() * lightDir.length())
 						.multiply(diffuseStrength);

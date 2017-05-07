@@ -30,6 +30,10 @@ public class ModelLoader {
 			texture = new Canvas(textureFile.getAbsolutePath());
 		}
 		Model m = new Model(new OBJModel(modelFile.getAbsolutePath(), smoothNormals), modelMatrix, texture, name);
+//		System.out.println("After model has been created: \n");
+//		for(Vertex v:m.getObjModel().getVerticies()) {
+//			System.out.println(v.getOriginalNormal());
+//		}
 		models.put(name, m);
 		
 	}

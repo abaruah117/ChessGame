@@ -1,5 +1,4 @@
 
-
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -18,9 +17,9 @@ public class Engine {
 
 	Vector ambientColor = new Vector(1, 1, 1);
 	Vector diffuseColor = new Vector(1, 1, 1);
-	Vector specularColor = new Vector(1, 2, 1);
-	Vector lightPosition = new Vector(0, 400, 0f);
-	LightColor lightColor1 = new LightColor(ambientColor, diffuseColor, .04f, 2f);
+	Vector lightPosition = new Vector(0, 0, 0f);
+	LightColor lightColor1 = new LightColor(ambientColor, diffuseColor, 1f,
+			.5f);
 	Light light1 = new Light(lightPosition, lightColor1);
 
 	public static void main(String[] args) {
@@ -31,7 +30,12 @@ public class Engine {
 	public Engine(int width, int height, String title) {
 		renderer = new Renderer(width, height);
 		display = new Display(renderer, title);
+		
+		
+
+		
 		display.getDisplay().addMouseListener(new MouseListener() {
+
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -62,58 +66,61 @@ public class Engine {
 				board.onClick(new Vector(e.getX(), e.getY()));
 			}
 		});
+		
 		ModelLoader.init(resPath);
-		Matrix pawnMatrix = Matrix.multiply(new Matrix().scalingMatrix(.5f, 1.7f, .5f), new Matrix().translationMatrix(-30, 0, -25), new Matrix().rotationXMatrix(90));
-		ModelLoader.loadModel("pawn", pawnMatrix);
+		
+		Matrix pawnMatrix = Matrix.multiply(
+
+				new Matrix().translationMatrix(-13.5f, 100, -106),
+				new Matrix().rotationXMatrix(90+44), new Matrix().scalingMatrix(3f, 3f, 3f));
+		ModelLoader.loadModel("pawn", pawnMatrix, false);
 		Matrix squareMatrix = new Matrix().scalingMatrix(
 				Board.getTileSize() / 2, 1, Board.getTileSize());
 		ModelLoader.loadModel("blackSquare", squareMatrix, false);
 		ModelLoader.loadModel("whiteSquare", squareMatrix, false);
+		//ModelLoader.loadModel("testSquare", new Matrix().identityMatrix(), false);
 		board = new Board();
 	}
 
 	public void run() {
 
-		// OBJModel model = new OBJModel("res/vayne");
+//		OBJModel model = new OBJModel("oldRes/crate");
 
-		 renderer.addLight(light1);
 		renderer.getGraphics().setColor(Color.BLACK);
 
 		Time.init();
 
-		Matrix trans = new Matrix().translationMatrix(0, 100, -200);
-		Matrix rotX = new Matrix().rotationXMatrix(-45);
+		Matrix trans = new Matrix().translationMatrix(10, 100, -200);
+		Matrix rotX = new Matrix().rotationXMatrix(-44);
 		Matrix rotY = new Matrix().rotationYMatrix(90);
 		Matrix totalTransformation = Matrix.multiply(trans, rotX, rotY);
-		//Vertex v1 = new Vertex(0, 0, -200).multiply(Matrix.multiply(camera.getProjectionTransform()));
-		//Vertex v2 = new Vertex(40, 40, 5).multiply(Matrix.multiply(camera.getProjectionTransform(), totalTransformation));
-		//System.out.println(v1.persectiveDevide());
-		//System.out.println(Physics.testVector.persectiveDevide());
+		
+//		Matrix rotX2 = new Matrix().rotationXMatrix(90);
+//		Matrix trans2 = new Matrix().translationMatrix(0, 100, -100);
+//		Matrix scale = new Matrix().scalingMatrix(20, 10,20);
+//		Matrix testTranformation = Matrix.multiply(trans, rotX2, scale);
+		
+		//renderer.addLight(light1);
+		//Canvas text = new Canvas("oldRes/crate_1.jpg");
+		Canvas text = null;
+//		for(Vertex v:ModelLoader.getModel("testSquare").getMesh(camera, testTranformation).getModel().getVerticies()) {
+//			System.out.println(v.getNormal());
+//		}
 		while (true) {
-
 			Time.update();
 
 			renderer.getGraphics().drawString("FPS: " + Time.getLastFrames(),
 					10, 15);
 
+			//Mesh m = new Model(model, testTranformation, text, null).getMesh(
+			//		camera, new Matrix().identityMatrix());
+			Mesh m1 = ModelLoader.getModel("pawn").getMesh(camera, new Matrix().identityMatrix());
 
+			 renderer.drawBoard(board, camera, totalTransformation);
+			renderer.drawMesh(m1, camera);
 
-			 Mesh m = ModelLoader.getModel("pawn").getMesh(camera, totalTransformation);
-			// totalTransformation);
+			// Edge e = new Edge(v2.persectiveDevide(), v1.persectiveDevide());
 
-			// renderer.drawMesh(m, camera);
-			
-			
-			renderer.drawBoard(board, camera, totalTransformation);
-			renderer.drawMesh(m, camera);
-			//System.out.println(v1.persectiveDevide());
-			//System.out.println(v2.persectiveDevide());
-			//System.exit(0);
-			//Edge e = new Edge(v2.persectiveDevide(), v1.persectiveDevide());
-			//System.out.println("asd" + v2);
-			//System.exit(0);
-			//renderer.drawLine(v1.multiply(Matrix.multiply(camera.getCameraMatrix(), camera.getPerspectiveMatrix()))persectiveDevide(), Physics.testVector.persectiveDevide());
-			
 			display.swapBuffers();
 			display.clear(Color.GRAY);
 

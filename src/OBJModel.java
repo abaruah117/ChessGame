@@ -104,9 +104,13 @@ public class OBJModel {
 
 				Vector normal = v1.getPos().subtract(v2.getPos())
 						.cross(v1.getPos().subtract(v3.getPos()));
-				v1.setNormal(normal);
-				v2.setNormal(normal);
-				v3.setNormal(normal);
+				v1.setOriginalNormal(normal);
+				v2.setOriginalNormal(normal);
+				v3.setOriginalNormal(normal);
+				System.out.println(v1.getOriginalNormal());
+				System.out.println(v2.getOriginalNormal());
+				System.out.println(v3.getOriginalNormal());
+				System.out.println();
 				verticies.add(v1);
 				verticies.add(v2);
 				verticies.add(v3);
@@ -126,16 +130,22 @@ public class OBJModel {
 						if (verticies.get(i).getPos()
 								.equals(verticies.get(j).getPos())) {
 							verticies.get(i).addToNormal(
-									verticies.get(j).getNormal());
+									verticies.get(j).getOriginalNormal());
 						}
 					}
 				}
-				verticies.get(i).normalizeNormal();
+				//verticies.get(i).normalizeNormal();
 			}
 		}
+		for(Vertex v:verticies) {
+			v.normalizeNormal();
+		}
+		
 
 		scanner.close();
 
+
+		
 	}
 
 	public ArrayList<Vertex> getVerticies() {

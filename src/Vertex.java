@@ -11,7 +11,7 @@ public class Vertex {
 		this.pos = pos;
 		this.textureCord = textureCord;
 		this.originalNormal = normal;
-		tempNormal = originalNormal == null ? null : originalNormal.copyOf();
+		tempNormal = (originalNormal == null) ? null : originalNormal.copyOf();
 	}
 
 	public Vertex(Vector pos) {
@@ -67,12 +67,19 @@ public class Vertex {
 		this.tempNormal = normal;
 	}
 
+	public Vector getOriginalNormal() {
+		return this.originalNormal;
+	}
+	
+	public void setOriginalNormal(Vector normal) {
+		this.originalNormal = normal;
+	}
 	public void addToNormal(Vector normal) {
-		tempNormal = tempNormal.add(normal);
+		originalNormal = originalNormal.add(normal);
 	}
 
 	public void normalizeNormal() {
-		tempNormal = tempNormal.normalize();
+		originalNormal = originalNormal.normalize();
 	}
 
 	public Vertex transformNormal(Matrix m) {

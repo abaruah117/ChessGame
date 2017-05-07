@@ -14,12 +14,22 @@ public class Mesh {
 		}
 		this.transform = Matrix.multiply(projectionTransform, transform);
 		this.texture = texture;
-		// Matrix normalMatrix = transform.inverse().transpose();
+		
+		Matrix normalMatrix = transform.inverse().transpose();
+		//System.out.println(transform + "\n");
+		//System.out.println(normalMatrix + "\n");
 		for (int i = 0; i < model.getVerticies().size(); i++) {
+			//System.out.println("Vertex pre reset: " + model.getVertex(i).getNormal());
 			model.getVertex(i).resetNormal();
-			;
-			model.getVertex(i).transformNormal(transform);
+			//System.out.println("Vertex after reset " + model.getVertex(i).getNormal());
+			//System.out.println(model.getVertex(i).getNormal());
+			
+			model.getVertex(i).transformNormal(normalMatrix);
+			model.getVertex(i).normalizeNormal();
+			//System.out.println("Vertex after transform " + model.getVertex(i).getNormal().normalize());
+			//System.out.println();
 		}
+		//System.exit(0);
 	}
 
 	public OBJModel getModel() {

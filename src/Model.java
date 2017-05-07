@@ -19,6 +19,7 @@ public class Model {
 	}
 
 	public Mesh getMesh(Camera camera, Matrix otherTransforms) {
+		
 		return new Mesh(objModel, camera.getProjectionTransform(), Matrix.multiply(otherTransforms, modelMatrix), texture);
 	}
 
