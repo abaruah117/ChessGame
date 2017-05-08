@@ -15,8 +15,10 @@ public class ChessGameDriver {
 		String d = "";
 		boolean color = true; // white
 		while (!d.equals("q")) {
-	
-			if (c.check(color)) {
+			if (c.staleMate(color)) {
+				System.out.println("BAD\nBAD\nBAD");
+				break;
+			} else if (c.check(color)) {
 				if (c.checkMate(color)) {
 					System.out.println("Checkmate: " + ((!color) ? "white" : "black") + " wins");
 					break;
@@ -24,10 +26,9 @@ public class ChessGameDriver {
 				System.out.println(((color) ? "white" : "black") + " king is in check");
 				System.out.println(((color) ? "white" : "black") + " player,Enter a command, ie c4,e6: ");
 				d = in.nextLine();
-				if(d.equals("q")){
+				if (d.equals("q")) {
 					break;
-				}
-				else if (d.length() != 5) {
+				} else if (d.length() != 5) {
 					System.out.println("please format it in the following format: c6,e4");
 				} else {
 					char g = d.charAt(0);
@@ -117,6 +118,7 @@ public class ChessGameDriver {
 									}
 								} else {
 									if (!c.movePiece(c1, c2)) {
+										System.out.println("invalid move");
 										color = !color;
 									} else {
 										if (c.check(color)) {
@@ -132,117 +134,126 @@ public class ChessGameDriver {
 						}
 					}
 				}
-			}
-			System.out.println(((color) ? "white" : "black") + " player,Enter a command, ie c4,e6: ");
-			d = in.nextLine();
-			// }
-			if(d.equals("q")){
-				break;
-			}
-			else if (d.equals("skip")) {
-				color = !color;
-			} 
-			else if(d.equals("reset")){
-				c = new ChessGame(player1, player2);
-				c.displayGame();
-				continue;
-			}else if (d.length() != 5) {
-				System.out.println("please format it in the following format: c6,e4");
 			} else {
-				char g = d.charAt(0);
-				int h = (int) d.charAt(1) - (int) '0';
-				char i = d.charAt(3);
-				int j = (int) d.charAt(4) - (int) '0';
-				int converted1 = 0;
-				int converted2 = 0;
-				switch (g) {
-				case 'a':
-					converted1 = 0;
+				System.out.println(((color) ? "white" : "black") + " player,Enter a command, ie c4,e6: ");
+				d = in.nextLine();
+				// }
+				if (d.equals("q")) {
 					break;
-				case 'b':
-					converted1 = 1;
-					break;
-				case 'c':
-					converted1 = 2;
-					break;
-				case 'd':
-					converted1 = 3;
-					break;
-				case 'e':
-					converted1 = 4;
-					break;
-				case 'f':
-					converted1 = 5;
-					break;
-				case 'g':
-					converted1 = 6;
-					break;
-				case 'h':
-					converted1 = 7;
-					break;
-				default:
-					converted1 = -1;
-					System.out.println("ERROR, INVALID INPUT FOR LETTER ON X-AXIS");
-				}
-				switch (i) {
-				case 'a':
-					converted2 = 0;
-					break;
-				case 'b':
-					converted2 = 1;
-					break;
-				case 'c':
-					converted2 = 2;
-					break;
-				case 'd':
-					converted2 = 3;
-					break;
-				case 'e':
-					converted2 = 4;
-					break;
-				case 'f':
-					converted2 = 5;
-					break;
-				case 'g':
-					converted2 = 6;
-					break;
-				case 'h':
-					converted2 = 7;
-					break;
-				default:
-					converted2 = -1;
-					System.out.println("ERROR, INVALID INPUT FOR LETTER ON Y-AXIS");
-				}
-				if (converted1 >= 0 && converted2 >= 0) {
-					Coord c1 = new Coord(converted1, h);
-					Coord c2 = new Coord(converted2, j);
-					if (c.getPiece(c1) == null) {
-						System.out.println("no piece to move");
-					} else {
-						if (c.getPiece(c1).getBooleanColor() != color) {
-							System.out.println("Move a piece of your color, please");
+				} else if (d.equals("skip")) {
+					color = !color;
+				} else if (d.equals("reset")) {
+					c = new ChessGame(player1, player2);
+					c.displayGame();
+					continue;
+				} else if (d.length() != 5) {
+					System.out.println("please format it in the following format: c6,e4");
+				} else {
+					char g = d.charAt(0);
+					int h = (int) d.charAt(1) - (int) '0';
+					char i = d.charAt(3);
+					int j = (int) d.charAt(4) - (int) '0';
+					int converted1 = 0;
+					int converted2 = 0;
+					switch (g) {
+					case 'a':
+						converted1 = 0;
+						break;
+					case 'b':
+						converted1 = 1;
+						break;
+					case 'c':
+						converted1 = 2;
+						break;
+					case 'd':
+						converted1 = 3;
+						break;
+					case 'e':
+						converted1 = 4;
+						break;
+					case 'f':
+						converted1 = 5;
+						break;
+					case 'g':
+						converted1 = 6;
+						break;
+					case 'h':
+						converted1 = 7;
+						break;
+					default:
+						converted1 = -1;
+						System.out.println("ERROR, INVALID INPUT FOR LETTER ON X-AXIS");
+					}
+					switch (i) {
+					case 'a':
+						converted2 = 0;
+						break;
+					case 'b':
+						converted2 = 1;
+						break;
+					case 'c':
+						converted2 = 2;
+						break;
+					case 'd':
+						converted2 = 3;
+						break;
+					case 'e':
+						converted2 = 4;
+						break;
+					case 'f':
+						converted2 = 5;
+						break;
+					case 'g':
+						converted2 = 6;
+						break;
+					case 'h':
+						converted2 = 7;
+						break;
+					default:
+						converted2 = -1;
+						System.out.println("ERROR, INVALID INPUT FOR LETTER ON Y-AXIS");
+					}
+					if (converted1 >= 0 && converted2 >= 0) {
+						Coord c1 = new Coord(converted1, h);
+						Coord c2 = new Coord(converted2, j);
+						if (c.getPiece(c1) == null) {
+							System.out.println("no piece to move");
 						} else {
-							if (c.getPiece(c2) != null) {
-								if (c.attack(c1, c2) == null) {
-									color = !color;
-									
-								} else {
-									c.displayGame();
-									color = !color;
-								}
+							if (c.getPiece(c1).getBooleanColor() != color) {
+								System.out.println("Move a piece of your color, please");
 							} else {
-								if (!c.movePiece(c1, c2)) {
+								if (c.getPiece(c2) != null) {
+									Piece rek = c.attack(c1, c2);
+									if (rek == null) {
+									} else {
+										if (c.check(color)) {
+											c.revertMove(c1, c2, rek);
+											System.out.println("invalid, king would be in check");
+										} else {
+											color = !color;
+										}
+										c.displayGame();
+									}
 								} else {
-									c.displayGame();
-									color = !color;
-								}
-							}
+									if (!c.movePiece(c1, c2)) {
+										System.out.println("invalid move");
+									} else {
+										if (c.check(color)) {
+											c.movePiece(c2, c1);
+										} else {
+											color = !color;
+										}
+										c.displayGame();
 
+									}
+								}
+
+							}
 						}
 					}
 				}
-			}
 
+			}
 		}
 	}
 }

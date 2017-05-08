@@ -55,21 +55,6 @@ public class Board {
 		this.blackPieces = blackPieces;
 	}
 
-	public Board(Piece[][] p) {
-		for (int i = 0; i < p.length; i++) {
-			for (int j = 0; j < p[0].length; j++) {
-				board[i][j] = p[i][j];
-			}
-		}
-		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board[0].length; j++) {
-				if ((i + j) % 2 == 0) {
-					boardColor[i][j] = true;
-				}
-			}
-		}
-	}
-
 	private String center(String s, int size) {
 		String out = String.format("%" + size + "s%s%" + size + "s", "", s, "");
 		float mid = (out.length() / 2);
@@ -93,17 +78,6 @@ public class Board {
 		}
 	}
 
-	private void errorInvalidCoord(Coord c) {
-		System.out.println("Your coordinate " + c.toString() + " is invalid");
-	}
-
-	private void errorNoPiece(Coord c) {
-		System.out.println("There is no piece at " + c.toString());
-	}
-
-	private void illegalMove(Piece p, Coord c) {
-		System.out.println("The " + p.getName() + " at " + p.getCoord().toString() + " cannot move to " + c.toString());
-	}
 
 	private void initBoard() {
 		boolean color = false;
@@ -208,14 +182,11 @@ public class Board {
 
 	public boolean movePiece(Coord cStart, Coord cFinal) {
 		if (!checkValid(cStart)) {
-			errorInvalidCoord(cStart);
 			return false;
 		} else if (!checkValid(cFinal)) {
-			errorInvalidCoord(cFinal);
 			return false;
 		}
 		if (pieceAt(cStart) == null) {
-			errorNoPiece(cStart);
 			return false;
 		}
 		Piece p = pieceAt(cStart);
@@ -229,12 +200,10 @@ public class Board {
 					
 				}
 				else{
-					illegalMove(p, cFinal);
 					return false;
 				}
 			}
 		} else if (!p.legalMove(cFinal)) {
-			illegalMove(p, cFinal);
 			return false;
 		}
 		setPiece(cFinal, p);
@@ -244,7 +213,6 @@ public class Board {
 
 	public Piece pieceAt(Coord c) {
 		if (!checkValid(c)) {
-			errorInvalidCoord(c);
 			return null;
 		} else {
 			return board[SIZE - 1 - c.getY()][c.getX()];
@@ -253,7 +221,6 @@ public class Board {
 
 	public void setPiece(Coord c, Piece p) {
 		if (!checkValid(c)) {
-			errorInvalidCoord(c);
 			return;
 		}
 		board[SIZE - 1 - c.getY()][c.getX()] = p;

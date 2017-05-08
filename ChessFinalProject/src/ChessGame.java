@@ -31,13 +31,11 @@ public class ChessGame {
 			ArrayList<Piece> f) {
 		players = a;
 		gameboard = new Board(b.getBoard(), c, d);
+		this.whitePieces = gameboard.getWhitePieces();
+		this.blackPieces = gameboard.getBlackPieces();
 		whiteRemoved = e;
 		blackRemoved = f;
 
-	}
-
-	public ChessGame(Board b) {
-		gameboard = b;
 	}
 
 	public ChessGame(String p1, String p2) {
@@ -144,11 +142,16 @@ public class ChessGame {
 				}
 			}
 		}
-		if (squareIsTargeted(!color, c)) {
+		if (check(color)) {
 			lose = true;
+			System.out.println("KING: " + c.toString());
 			ArrayList<Coord> surr = Coord.surrounding(c);
 			for (Coord d : surr) {
-				System.out.println("surrounding coordinate: " + d.toString());
+//				System.out.println("surrounding coordinate: " + d.toString());
+//				System.out.println("free square: " + d.toString() + " " + !squareIsTargeted(!color, d));
+//				System.out.println("occupied square: " + d.toString() + " " + gameboard.pieceAt(d));
+//				System.out.println("Attacking square " + d.toString() + " "
+//						+ (gameboard.pieceAt(d).getBooleanColor() != king.getBooleanColor()));
 				if (!squareIsTargeted(!color, d) && gameboard.pieceAt(d) == null) {
 					System.out.println("king can move");
 					lose = false;
@@ -167,27 +170,26 @@ public class ChessGame {
 			} else {
 				pieces = blackPieces;
 			}
-			System.out.println("Gonna check possible moves");
 			for (Piece p : pieces) {
-				Piece[][] a = gameboard.getBoard();
-				Board b = new Board(a);
-				ChessGame cg = new ChessGame(b);
+				ChessGame cg = new ChessGame(this.getChessPlayers(), this.getBoard(), this.getWhitePieces(),
+						this.getBlackPieces(), this.getWhiteRemoved(), this.getBlackRemoved());
 				Coord pos = p.getCoord();
-				ArrayList <Coord> possible = new ArrayList<Coord>();
+				ArrayList<Coord> possible = new ArrayList<Coord>();
 				for (int i = 0; i < Board.getSize(); i++) {
 					for (int j = 0; j < Board.getSize(); j++) {
 						Coord newPos = new Coord(i, j);
 						possible.add(newPos);
 					}
 				}
-				for(Coord d: possible){
+				for (Coord d : possible) {
 					cg.movePiece(pos, d);
-					if(!cg.check(color)){
+					if (!cg.check(color)) {
 						return false;
 					}
 				}
 			}
-		} 
+		}
+
 		return lose;
 	}
 
@@ -203,6 +205,10 @@ public class ChessGame {
 
 	public ArrayList<Piece> getBlackRemoved() {
 		return this.blackRemoved;
+	}
+
+	public Board getBoard() {
+		return gameboard;
 	}
 
 	/**
@@ -269,14 +275,10 @@ public class ChessGame {
 		} else if (y2 - y1 < 0) {
 			incY = -1;
 		}
-		for (int x = x1 + incX, y = y1 + incY; x < x2 || y < y2; x += incX, y += incY) {
-
-			System.out.println("inc y: " +incY + " inc x "+incX);
+		for (int x = x1 + incX, y = y1 + incY; x != x2 || y != y2; x += incX, y += incY) {
 			if (y < 0) {
-				System.out.println(y1 + " " + incY);
 				break;
 			}
-			System.out.println("check pieces at ");
 			if (gameboard.pieceAt(new Coord(x, y)) != null) {
 				return true;
 			}
@@ -285,7 +287,7 @@ public class ChessGame {
 	}
 
 	public void revertMove(Coord cStart, Coord cFinal, Piece p) {
-		movePiece(cFinal, cStart);
+		gameboard.setPiece(cStart, gameboard.pieceAt(cFinal));
 		gameboard.setPiece(cFinal, p);
 	}
 
@@ -309,13 +311,17 @@ public class ChessGame {
 			System.out.println("Error, null coord");
 			return false;
 		}
+		Piece p2 = null;
+		if(gameboard.pieceAt(c2)!=null){
+			p2 = gameboard.pieceAt(c2);
+		}
 		if (color) {
 			for (Piece p : whitePieces) {
 				if ((p.getClass().getName().equalsIgnoreCase("Pawn") && ((Pawn) p).pawnAttack(c2))) {
 					targeted = true;
 					break;
 				}
-				if (p.legalMove(c2)) {
+				if (p.legalMove(c2)&&!p.equals(p2)) {
 					boolean obstruction = obstruct(p.getCoord(), c2);
 					if (obstruction) {
 						targeted = false;
@@ -331,7 +337,7 @@ public class ChessGame {
 					targeted = true;
 					break;
 				}
-				if (p.legalMove(c2)) {
+				if (p.legalMove(c2)&&!p.equals(p2)) {
 					boolean obstruction = obstruct(p.getCoord(), c2);
 					if (obstruction) {
 						targeted = false;
@@ -343,6 +349,42 @@ public class ChessGame {
 			}
 		}
 		return targeted;
+	}
+
+	/**
+	 * 
+	 * @param color
+	 *            the color to check if in stalemate
+	 * @return true if it is a stalemate
+	 */
+	public boolean staleMate(boolean color) {
+		boolean noMoves = true;
+		ArrayList<Piece> pieces;
+		if (color) {
+			pieces = whitePieces;
+		} else {
+			pieces = blackPieces;
+		}
+		for (Piece p : pieces) {
+			ChessGame cg = new ChessGame(this.getChessPlayers(), this.getBoard(), this.getWhitePieces(),
+					this.getBlackPieces(), this.getWhiteRemoved(), this.getBlackRemoved());
+			Coord pos = p.getCoord();
+			ArrayList<Coord> possible = new ArrayList<Coord>();
+			for (int i = 0; i < Board.getSize(); i++) {
+				for (int j = 0; j < Board.getSize(); j++) {
+					Coord newPos = new Coord(i, j);
+					possible.add(newPos);
+				}
+			}
+			for (Coord d : possible) {
+				if (cg.movePiece(pos, d)) {
+					if (!cg.check(color)) {
+						return false;
+					}
+				}
+			}
+		}
+		return !check(color) && noMoves;
 	}
 
 	public boolean targets(Coord c1, Coord c2) {
@@ -378,18 +420,10 @@ public class ChessGame {
 	public static void main(String[] args) {
 		ChessGame a = new ChessGame("rip", "rip");
 		a.movePiece(new Coord(4, 1), new Coord(4, 2));
-		a.movePiece(new Coord(4, 6), new Coord(4, 5));
-		a.movePiece(new Coord(3, 0), new Coord(4, 1));
-		a.movePiece(new Coord(3, 7), new Coord(4, 6));
+		a.movePiece(new Coord(3, 0), new Coord(6, 3));
+		a.movePiece(new Coord(6, 3), new Coord(3, 6));
 		a.displayGame();
-		ArrayList <Coord> possible = new ArrayList<Coord>();
-		for (int i = 0; i < Board.getSize(); i++) {
-			for (int j = 0; j < Board.getSize(); j++) {
-				Coord newPos = new Coord(i, j);
-				possible.add(newPos);
-			}
-		}
-		System.out.println(possible.size());
-		System.out.println(possible.toString());
+		System.out.println(a.check(false));
+		System.out.println(a.checkMate(false));
 	}
 }
