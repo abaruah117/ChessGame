@@ -3,30 +3,48 @@ import java.util.StringJoiner;
 
 public class Board {
 	private static int SIZE = 8;
-	private static boolean[][] boardColor = new boolean[SIZE][SIZE];// black =
-
-	public static boolean[][] getBoardColor() {
-		return boardColor;
-	}
+	private static final int TILE_SIZE = 20;
 
 	public static int getSize() {
 		return SIZE;
+	}
+
+	public static int getTileSize() {
+		return TILE_SIZE;
 	}
 
 	public static void setSize(int size) {
 		SIZE = size;
 	}
 
-	private Piece[][] board = new Piece[SIZE][SIZE];
+	private Tile[][] boardColor = new Tile[SIZE][SIZE];
+	// private static boolean[][] boardColor = new boolean[SIZE][SIZE];// black
+	// =
+	//
+	// public static boolean[][] getBoardColor() {
+	// return boardColor;
+	// }
 
+	private Piece[][] board = new Piece[SIZE][SIZE];
 	private ArrayList<Piece> whitePieces = new ArrayList<Piece>();
+
 	private ArrayList<Piece> blackPieces = new ArrayList<Piece>();
 
 	public Board() {
-		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board[0].length; j++) {
+		// for (int i = 0; i < board.length; i++) {
+		// for (int j = 0; j < board[0].length; j++) {
+		// if ((i + j) % 2 == 0) {
+		// boardColor[i][j] = true;
+		// }
+		// }
+		// }
+		for (int i = 0; i < SIZE; i++) {
+			for (int j = 0; j < SIZE; j++) {
 				if ((i + j) % 2 == 0) {
-					boardColor[i][j] = true;
+					boardColor[i][j] = new Tile(ModelLoader.getModel("whiteSquare"), new Vector(SIZE - i - 1, j), true);
+				} else {
+					boardColor[i][j] = new Tile(ModelLoader.getModel("blackSquare"), new Vector(SIZE - i - 1, j),
+							false);
 				}
 			}
 		}
@@ -44,13 +62,13 @@ public class Board {
 				board[i][j] = p[i][j];
 			}
 		}
-		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board[0].length; j++) {
-				if ((i + j) % 2 == 0) {
-					boardColor[i][j] = true;
-				}
-			}
-		}
+		// for (int i = 0; i < board.length; i++) {
+		// for (int j = 0; j < board[0].length; j++) {
+		// if ((i + j) % 2 == 0) {
+		// boardColor[i][j] = true;
+		// }
+		// }
+		// }
 		this.whitePieces = whitePieces;
 		this.blackPieces = blackPieces;
 	}
@@ -77,7 +95,6 @@ public class Board {
 			return "BLACK";
 		}
 	}
-
 
 	private void initBoard() {
 		boolean color = false;
@@ -146,7 +163,8 @@ public class Board {
 					// sj.add(String.format("%-15s",
 					// displayColor(boardColor[i][j]).toLowerCase() + "
 					// empty,"));
-					sj.add(center(displayColor(boardColor[i][j]).toLowerCase() + " empty", 15));
+					// sj.add(center(displayColor(boardColor[i][j]).toLowerCase()
+					// + " empty", 15));
 				} else {
 					// sj.add(String.format("%-15s", board[i][j].getColor() + "
 					// " + board[i][j].getName()));
@@ -172,13 +190,17 @@ public class Board {
 		return board;
 	}
 
-	public boolean getSquareBooleanColor(Coord c) {
-		return boardColor[SIZE - 1 - c.getY()][c.getX()];
+	public Tile[][] getBoardColor() {
+		return boardColor;
 	}
 
 	public ArrayList<Piece> getWhitePieces() {
 		return whitePieces;
 	}
+
+	// public boolean getSquareBooleanColor(Coord c) {
+	// return boardColor[SIZE - 1 - c.getY()][c.getX()];
+	// }
 
 	public boolean movePiece(Coord cStart, Coord cFinal) {
 		if (!checkValid(cStart)) {
@@ -193,13 +215,11 @@ public class Board {
 		if (p.getName().equalsIgnoreCase("pawn")) {
 			Piece p2 = pieceAt(cFinal);
 			if (p2 != null && ((Pawn) p).pawnAttack(cFinal)) {
-				
-			}
-			else{
-				if(p.legalMove(cFinal)){
-					
-				}
-				else{
+
+			} else {
+				if (p.legalMove(cFinal)) {
+
+				} else {
 					return false;
 				}
 			}
@@ -209,6 +229,18 @@ public class Board {
 		setPiece(cFinal, p);
 		board[SIZE - 1 - cStart.getY()][cStart.getX()] = null;
 		return true;
+	}
+
+	public Coord onClick(Vector point) {
+		for (int y = 0; y < boardColor.length; y++) {
+			for (int x = 0; x < boardColor[y].length; x++) {
+				if (boardColor[y][x].getCollider() != null && boardColor[y][x].getCollider().testClick(point)) {
+					return boardColor[y][x].onClick();
+				}
+			}
+		}
+		return null;
+
 	}
 
 	public Piece pieceAt(Coord c) {

@@ -5,9 +5,10 @@ import java.io.*;
 public class ChessGame {
 
 	private ChessGamePlayers players;
-	private Board gameboard = new Board();
+	private Board gameboard;
 	private ArrayList<Piece> blackRemoved = new ArrayList<Piece>();
 	private ArrayList<Piece> whiteRemoved = new ArrayList<Piece>();
+
 	private ArrayList<Piece> whitePieces = new ArrayList<Piece>();
 
 	private ArrayList<Piece> blackPieces = new ArrayList<Piece>();
@@ -38,8 +39,9 @@ public class ChessGame {
 
 	}
 
-	public ChessGame(String p1, String p2) {
+	public ChessGame(String p1, String p2, Board b) {
 		players = new ChessGamePlayers(p1, p2);
+		gameboard = b;
 		whitePieces = gameboard.getWhitePieces();
 		blackPieces = gameboard.getBlackPieces();
 	}
@@ -147,11 +149,15 @@ public class ChessGame {
 			System.out.println("KING: " + c.toString());
 			ArrayList<Coord> surr = Coord.surrounding(c);
 			for (Coord d : surr) {
-//				System.out.println("surrounding coordinate: " + d.toString());
-//				System.out.println("free square: " + d.toString() + " " + !squareIsTargeted(!color, d));
-//				System.out.println("occupied square: " + d.toString() + " " + gameboard.pieceAt(d));
-//				System.out.println("Attacking square " + d.toString() + " "
-//						+ (gameboard.pieceAt(d).getBooleanColor() != king.getBooleanColor()));
+				// System.out.println("surrounding coordinate: " +
+				// d.toString());
+				// System.out.println("free square: " + d.toString() + " " +
+				// !squareIsTargeted(!color, d));
+				// System.out.println("occupied square: " + d.toString() + " " +
+				// gameboard.pieceAt(d));
+				// System.out.println("Attacking square " + d.toString() + " "
+				// + (gameboard.pieceAt(d).getBooleanColor() !=
+				// king.getBooleanColor()));
 				if (!squareIsTargeted(!color, d) && gameboard.pieceAt(d) == null) {
 					System.out.println("king can move");
 					lose = false;
@@ -291,6 +297,96 @@ public class ChessGame {
 		gameboard.setPiece(cFinal, p);
 	}
 
+	/**
+	 * 
+	 * @param c1
+	 * @param c2
+	 * @param color
+	 *            piece whose turn it is
+	 */
+	public void run(Coord c1, Coord c2, SwapBool color) {
+		color.swap();
+		if (staleMate(color.getBool())) {
+			System.out.println("stalemate, game is over");
+			System.exit(0);
+		} else if (check(color.getBool())) {
+			if (checkMate(color.getBool())) {
+				System.out.println("Checkmate: " + ((!color.getBool()) ? "white" : "black") + " wins");
+				System.exit(0);
+			}
+			System.out.println(((color.getBool()) ? "white" : "black") + " king is in check");
+			if (getPiece(c1) == null) {
+				System.out.println("no piece to move");
+			} else {
+				Piece p1 = getPiece(c1);
+				if (p1.getBooleanColor() != color.getBool()) {
+					System.out.println("Move a piece of your color, please");
+				} else {
+					if (getPiece(c2) != null) {
+						Piece p2 = getPiece(c2);
+						if (attack(c1, c2) != null) {
+							if (check(color.getBool())) {
+								System.out.println("STILL IN CHECK, INVALID");
+								color.swap();
+								revertMove(c1, c2, p2);
+							}
+						} else {
+							color.swap();
+						}
+					} else {
+						if (!movePiece(c1, c2)) {
+							System.out.println("invalid move");
+							color.swap();
+						} else {
+							if (check(color.getBool())) {
+								System.out.println("STILL IN CHECK, INVALID");
+								color.swap();
+								movePiece(c2, c1);
+							}
+						}
+					}
+					color.swap();
+				}
+			}
+
+		}else {
+			if (getPiece(c1) == null) {
+				System.out.println("no piece to move");
+			} else {
+				if (getPiece(c1).getBooleanColor() != color.getBool()) {
+					System.out.println("Move a piece of your color, please");
+				} else {
+					if (getPiece(c2) != null) {
+						Piece rek = attack(c1, c2);
+						if (rek == null) {
+						} else {
+							if (check(color.getBool())) {
+								revertMove(c1, c2, rek);
+								System.out.println("invalid, king would be in check");
+							} else {
+								color.swap();
+							}
+						}
+					} else {
+						if (!movePiece(c1, c2)) {
+							System.out.println("invalid move");
+						} else {
+							if (check(color.getBool())) {
+								movePiece(c2, c1);
+							} else {
+								color.swap();
+							}
+
+						}
+					}
+
+				}
+			}
+		}
+			
+
+	}
+
 	public void setPlayers(String p1, String p2) {
 		players.changeWhitePlayerName(p1);
 		players.changeBlackPlayerName(p2);
@@ -312,7 +408,7 @@ public class ChessGame {
 			return false;
 		}
 		Piece p2 = null;
-		if(gameboard.pieceAt(c2)!=null){
+		if (gameboard.pieceAt(c2) != null) {
 			p2 = gameboard.pieceAt(c2);
 		}
 		if (color) {
@@ -321,7 +417,7 @@ public class ChessGame {
 					targeted = true;
 					break;
 				}
-				if (p.legalMove(c2)&&!p.equals(p2)) {
+				if (p.legalMove(c2) && !p.equals(p2)) {
 					boolean obstruction = obstruct(p.getCoord(), c2);
 					if (obstruction) {
 						targeted = false;
@@ -337,7 +433,7 @@ public class ChessGame {
 					targeted = true;
 					break;
 				}
-				if (p.legalMove(c2)&&!p.equals(p2)) {
+				if (p.legalMove(c2) && !p.equals(p2)) {
 					boolean obstruction = obstruct(p.getCoord(), c2);
 					if (obstruction) {
 						targeted = false;
@@ -415,15 +511,5 @@ public class ChessGame {
 		}
 		boolean targets = pawnAttack || ((!obstruction) && legal);
 		return targets;
-	}
-
-	public static void main(String[] args) {
-		ChessGame a = new ChessGame("rip", "rip");
-		a.movePiece(new Coord(4, 1), new Coord(4, 2));
-		a.movePiece(new Coord(3, 0), new Coord(6, 3));
-		a.movePiece(new Coord(6, 3), new Coord(3, 6));
-		a.displayGame();
-		System.out.println(a.check(false));
-		System.out.println(a.checkMate(false));
 	}
 }
