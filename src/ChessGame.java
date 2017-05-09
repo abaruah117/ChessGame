@@ -110,6 +110,7 @@ public class ChessGame {
 				}
 			}
 		}
+		System.out.println("GONNA CHECK IF "+!color + " targets the square " +c.toString());
 		if (squareIsTargeted(!color, c)) {
 			return true;
 		} else {
@@ -306,11 +307,12 @@ public class ChessGame {
 	 */
 	public void run(Coord c1, Coord c2, SwapBool color) {
 		System.out.println("Running the run method with " + c1 + " and " + c2 + " with color " + color.getBool());
-		color.swap();
-		if (staleMate(color.getBool())) {
-			System.out.println("stalemate, game is over");
-			System.exit(0);
-		} else if (check(color.getBool())) {
+		// if (staleMate(color.getBool())) {
+		// System.out.println("stalemate, game is over");
+		// System.exit(0);
+		// } else
+		if (check(color.getBool())) {
+			System.out.println("piece in check tho at start of turn");
 			if (checkMate(color.getBool())) {
 				System.out.println("Checkmate: " + ((!color.getBool()) ? "white" : "black") + " wins");
 				System.exit(0);
@@ -358,20 +360,27 @@ public class ChessGame {
 					System.out.println("Move a piece of your color, please");
 				} else {
 					if (getPiece(c2) != null) {
+						System.out.println("GONNA ATTACK");
 						Piece rek = attack(c1, c2);
 						if (rek == null) {
 						} else {
+							System.out.println("CHECKING CHECK: ATTACK");
 							if (check(color.getBool())) {
+								System.out.println("REVERTING THO");
 								revertMove(c1, c2, rek);
+								displayGame();
 								System.out.println("invalid, king would be in check");
 							} else {
+								System.out.println("WE GOOD THO");
 								color.swap();
 							}
 						}
 					} else {
+						System.out.println("GONNA MOVE!!!");
 						if (!movePiece(c1, c2)) {
 							System.out.println("invalid move");
 						} else {
+							System.out.println("CHECKING CHECK: NO ATTACK");
 							if (check(color.getBool())) {
 								movePiece(c2, c1);
 							} else {
@@ -413,12 +422,15 @@ public class ChessGame {
 		}
 		if (color) {
 			for (Piece p : whitePieces) {
+				System.out.print(p.toString()+" "+p.legalMove(c2));
 				if ((p.getClass().getName().equalsIgnoreCase("Pawn") && ((Pawn) p).pawnAttack(c2))) {
 					targeted = true;
 					break;
 				}
-				if (p.legalMove(c2) && !p.equals(p2)) {
+				if (p.legalMove(c2) && (p2 == null || (p2 != null && !p.equals(p2)))) {
 					boolean obstruction = obstruct(p.getCoord(), c2);
+
+					System.out.println(obstruction + " obstructed");
 					if (obstruction) {
 						targeted = false;
 					} else {
@@ -429,12 +441,14 @@ public class ChessGame {
 			}
 		} else {
 			for (Piece p : blackPieces) {
+				System.out.print(p.toString()+" "+p.legalMove(c2));
 				if ((p.getClass().getName().equalsIgnoreCase("Pawn") && ((Pawn) p).pawnAttack(c2))) {
 					targeted = true;
 					break;
 				}
-				if (p.legalMove(c2) && !p.equals(p2)) {
+				if (p.legalMove(c2) && (p2 == null || (p2 != null && !p.equals(p2)))) {
 					boolean obstruction = obstruct(p.getCoord(), c2);
+					System.out.println(obstruction + " obstructed");
 					if (obstruction) {
 						targeted = false;
 					} else {
@@ -511,5 +525,16 @@ public class ChessGame {
 		}
 		boolean targets = pawnAttack || ((!obstruction) && legal);
 		return targets;
+	}
+
+	public static void main(String[] args) {
+		ModelLoader.init("res");
+		ModelLoader.loadModel("blackSquare", new Matrix().identityMatrix(), false);
+		ModelLoader.loadModel("whiteSquare", new Matrix().identityMatrix(), false);
+		Board b = new Board();
+		ChessGame a = new ChessGame("xd", "xd", b);
+		a.displayGame();
+		a.movePiece(new Coord(0, 6), new Coord(0, 5));
+		a.displayGame();
 	}
 }

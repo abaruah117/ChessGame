@@ -165,6 +165,7 @@ public class Board {
 					// empty,"));
 					// sj.add(center(displayColor(boardColor[i][j]).toLowerCase()
 					// + " empty", 15));
+					sj.add("               ");
 				} else {
 					// sj.add(String.format("%-15s", board[i][j].getColor() + "
 					// " + board[i][j].getName()));
@@ -227,7 +228,7 @@ public class Board {
 			return false;
 		}
 		setPiece(cFinal, p);
-		board[SIZE - 1 - cStart.getY()][cStart.getX()] = null;
+		board[SIZE-1-cStart.getY()][cStart.getX()] = null;
 		return true;
 	}
 

@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 
 public class Engine {
 
-	private static final int WIDTH = 512 * 2, HEIGHT = 512 * 2;
+	private static final int WIDTH = 512 , HEIGHT = 512 ;
 	private static final String TITLE = "Cs Thingy yay";
 	private static final String resPath = "res";
 	// private int gameState = 0; /** 0 = no select, 1 = 1 square, 2 = 2
@@ -122,7 +122,7 @@ public class Engine {
 		Time.init();
 
 		Matrix trans = new Matrix().translationMatrix(10, 100, -200);
-		Matrix rotX = new Matrix().rotationXMatrix(-10);
+		Matrix rotX = new Matrix().rotationXMatrix(-40);
 		Matrix totalTransformation = Matrix.multiply(trans, rotX);
 
 		renderer.addLight(light1);
