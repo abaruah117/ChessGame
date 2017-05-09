@@ -349,7 +349,7 @@ public class ChessGame {
 				}
 			}
 
-		}else {
+		} else {
 			if (getPiece(c1) == null) {
 				System.out.println("no piece to move");
 			} else {
@@ -383,7 +383,6 @@ public class ChessGame {
 				}
 			}
 		}
-			
 
 	}
 
