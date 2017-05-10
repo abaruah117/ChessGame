@@ -1,13 +1,21 @@
 
 
 public class Rook extends Piece {
+	private boolean hasMoved;
 	public static void main(String[] args) {
 		Rook b = new Rook(true, new Coord(4,0));
 		System.out.println(b.legalMove(new Coord(4,7)));
 	}
-
+	
 	public Rook(boolean color, Coord pos){
 		super("rook",color, pos);
+		hasMoved = false;
+	}
+	/**
+	 * changes hasMoved to true
+	 */
+	public void updateMove(){
+		hasMoved = true;
 	}
 	@Override
 	public boolean legalMove(Coord c) {

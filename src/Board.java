@@ -41,10 +41,11 @@ public class Board {
 		for (int i = 0; i < SIZE; i++) {
 			for (int j = 0; j < SIZE; j++) {
 				if ((i + j) % 2 == 0) {
-					boardColor[i][j] = new Tile(ModelLoader.getModel("whiteSquare"), new Vector(SIZE - j - 1, SIZE - i - 1), true);
+					boardColor[i][j] = new Tile(ModelLoader.getModel("whiteSquare"),
+							new Vector(SIZE - j - 1, SIZE - i - 1), true);
 				} else {
-					boardColor[i][j] = new Tile(ModelLoader.getModel("blackSquare"), new Vector(SIZE - j - 1, SIZE - i - 1),
-							false);
+					boardColor[i][j] = new Tile(ModelLoader.getModel("blackSquare"),
+							new Vector(SIZE - j - 1, SIZE - i - 1), false);
 				}
 			}
 		}
@@ -218,8 +219,7 @@ public class Board {
 			if (p2 != null && ((Pawn) p).pawnAttack(cFinal)) {
 
 			} else {
-				if (p.legalMove(cFinal)) {
-
+				if (p.legalMove(cFinal) && p2 == null) {
 				} else {
 					return false;
 				}
@@ -228,11 +228,11 @@ public class Board {
 			return false;
 		}
 		Piece p2 = pieceAt(cFinal);
-		if(p2!=null&&p2.getBooleanColor()==p.getBooleanColor()){
+		if (p2 != null && p2.getBooleanColor() == p.getBooleanColor()) {
 			return false;
 		}
 		setPiece(cFinal, p);
-		board[SIZE-1-cStart.getY()][cStart.getX()] = null;
+		board[SIZE - 1 - cStart.getY()][cStart.getX()] = null;
 		return true;
 	}
 
