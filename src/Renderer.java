@@ -38,10 +38,10 @@ public class Renderer extends Canvas {
 	}
 
 	public void drawBoard(Board b, Camera c, Matrix boardMatrix,
-			Matrix peiceMatrix) {
+			Matrix peiceMatrix, ArrayList<Coord> selected) {
 
 		Tile[][] tiles = b.getBoardColor();
-		drawClickableTiles(tiles, boardMatrix, c);
+		drawClickableTiles(tiles, boardMatrix, c, selected);
 		for (Piece p : b.getWhitePieces()) {
 			// System.out.println(p.getClass().getName());
 
@@ -52,6 +52,7 @@ public class Renderer extends Canvas {
 			Mesh m = ModelLoader.getModel(p.getClass().getName()).getMesh(c,
 					Matrix.multiply(position, peiceMatrix));
 			color = new Vector(255, 223, 173);
+			
 			drawMesh(m, c);
 
 		}
@@ -73,7 +74,8 @@ public class Renderer extends Canvas {
 	}
 
 	public void drawClickableTiles(Tile[][] tiles, Matrix transform,
-			Camera camera) {
+			Camera camera, ArrayList<Coord> selected) {
+		System.out.println();
 		for (int y = 0; y < tiles.length; y++) {
 			for (int x = 0; x < tiles[y].length; x++) {
 				Mesh m = tiles[y][x]
@@ -83,8 +85,34 @@ public class Renderer extends Canvas {
 												* Board.getTileSize(),
 										0,
 										(y - tiles.length / 2f)
-												* Board.getTileSize())));
-				setTexture(m.getTexture());
+											* Board.getTileSize())));
+				boolean usedNewTexture = false;
+				if(tiles[y][x].isWhite()) {
+					for(Coord c:selected){
+						if(c.toVector().equals(tiles[y][x].getPos())) {
+							setTexture(ModelLoader.getTexture("whiteSquareSelected"));
+							System.out.println("found a white square that has been selected");
+							usedNewTexture = true;
+						}
+					}
+				}
+				if(!tiles[y][x].isWhite()) {
+					for(Coord c:selected){
+						//System.out.println("Vector we want " + c.toVector());
+						//System.out.println("Vector we checkeing " + tiles[y][x].getPos());
+						if(c.toVector().equals(tiles[y][x].getPos())) {
+							System.out.println("found a black square that has been selected");
+							setTexture(ModelLoader.getTexture("blackSquareSelected"));
+							usedNewTexture = true;
+						}
+					}
+				} 
+			
+				if(!usedNewTexture) {
+					//System.out.println("Using norm tile");
+					setTexture(m.getTexture());
+				}
+				
 				OBJModel model = m.getModel();
 
 				Vertex v1 = model.getVertex(0).multiply(m.getTransform())
