@@ -110,7 +110,6 @@ public class ChessGame {
 				}
 			}
 		}
-		System.out.println("GONNA CHECK IF "+!color + " targets the square " +c.toString());
 		if (squareIsTargeted(!color, c)) {
 			return true;
 		} else {
@@ -147,7 +146,7 @@ public class ChessGame {
 		}
 		if (check(color)) {
 			lose = true;
-			System.out.println("KING: " + c.toString());
+			System.out.println("KING: " + c.toString()+" is in check");
 			ArrayList<Coord> surr = Coord.surrounding(c);
 			for (Coord d : surr) {
 				// System.out.println("surrounding coordinate: " +
@@ -196,7 +195,6 @@ public class ChessGame {
 				}
 			}
 		}
-
 		return lose;
 	}
 
@@ -344,11 +342,11 @@ public class ChessGame {
 							if (check(color.getBool())) {
 								System.out.println("STILL IN CHECK, INVALID");
 								color.swap();
-								movePiece(c2, c1);
+								revertMove(c1,c2,null);
 							}
 						}
 					}
-					color.swap();
+					
 				}
 			}
 
@@ -380,9 +378,10 @@ public class ChessGame {
 						if (!movePiece(c1, c2)) {
 							System.out.println("invalid move");
 						} else {
-							System.out.println("CHECKING CHECK: NO ATTACK");
+							System.out.println("CHECKING CHECK: NO ATTACK: "+color.getBool()+" "+check(color.getBool()));
 							if (check(color.getBool())) {
-								movePiece(c2, c1);
+								System.out.println("GONNA MOVE PIECE BACK");
+								revertMove(c1,c2,null);
 							} else {
 								color.swap();
 							}
@@ -422,15 +421,12 @@ public class ChessGame {
 		}
 		if (color) {
 			for (Piece p : whitePieces) {
-				System.out.print(p.toString()+" "+p.legalMove(c2));
 				if ((p.getClass().getName().equalsIgnoreCase("Pawn") && ((Pawn) p).pawnAttack(c2))) {
 					targeted = true;
 					break;
 				}
 				if (p.legalMove(c2) && (p2 == null || (p2 != null && !p.equals(p2)))) {
 					boolean obstruction = obstruct(p.getCoord(), c2);
-
-					System.out.println(obstruction + " obstructed");
 					if (obstruction) {
 						targeted = false;
 					} else {
@@ -441,14 +437,12 @@ public class ChessGame {
 			}
 		} else {
 			for (Piece p : blackPieces) {
-				System.out.print(p.toString()+" "+p.legalMove(c2));
 				if ((p.getClass().getName().equalsIgnoreCase("Pawn") && ((Pawn) p).pawnAttack(c2))) {
 					targeted = true;
 					break;
 				}
 				if (p.legalMove(c2) && (p2 == null || (p2 != null && !p.equals(p2)))) {
 					boolean obstruction = obstruct(p.getCoord(), c2);
-					System.out.println(obstruction + " obstructed");
 					if (obstruction) {
 						targeted = false;
 					} else {
@@ -519,6 +513,7 @@ public class ChessGame {
 		}
 		boolean legal = p1.legalMove(c2);
 		boolean obstruction = obstruct(c1, c2);
+		System.out.println("legal: "+legal+" obstructed: "+obstruction);
 		boolean pawnAttack = false;
 		if (p1.getClass().getName().equalsIgnoreCase("Pawn")) {
 			pawnAttack = ((Pawn) p1).pawnAttack(c2);
@@ -534,7 +529,14 @@ public class ChessGame {
 		Board b = new Board();
 		ChessGame a = new ChessGame("xd", "xd", b);
 		a.displayGame();
-		a.movePiece(new Coord(0, 6), new Coord(0, 5));
+		a.movePiece(new Coord(4,1), new Coord(4,2));
+		a.movePiece(new Coord(3,0), new Coord(7,4));
+		a.movePiece(new Coord(5,6), new Coord(5,5));
+		a.movePiece(new Coord(6,6), new Coord(6,5));
+		a.movePiece(new Coord(7,4), new Coord(6,5));
+		a.movePiece(new Coord(6,5), new Coord(7,4));
+		System.out.println(a.check(false));
+		System.out.println(a.checkMate(false));
 		a.displayGame();
 	}
 }

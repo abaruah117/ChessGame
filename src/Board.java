@@ -227,6 +227,10 @@ public class Board {
 		} else if (!p.legalMove(cFinal)) {
 			return false;
 		}
+		Piece p2 = pieceAt(cFinal);
+		if(p2!=null&&p2.getBooleanColor()==p.getBooleanColor()){
+			return false;
+		}
 		setPiece(cFinal, p);
 		board[SIZE-1-cStart.getY()][cStart.getX()] = null;
 		return true;

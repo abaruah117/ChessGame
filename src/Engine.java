@@ -48,6 +48,7 @@ public class Engine {
 				if (sel == null) {
 					return;
 				}
+				System.out.println(sel.toString());
 				if (selected.size() == 0) {
 					selected.add(sel);
 				} else if (selected.size() == 1) {
