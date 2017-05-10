@@ -17,6 +17,13 @@ public class Engine {
 	private ChessGame chessGame;
 
 	public static void main(String[] args) {
+		
+//		Matrix right = new Matrix().translationMatrix(100, 0, 0);
+//		Matrix up = new Matrix().translationMatrix(0, 20, 0);
+//		Matrix rotate = new Matrix().rotationZMatrix(90);
+//		System.out.println(Matrix.multiply(rotate, up, right));
+//		System.out.println(Matrix.multiply(up, rotate, right));
+//		System.exit(0);
 		Engine e = new Engine(WIDTH, HEIGHT, TITLE);
 		e.run();
 	}
@@ -88,18 +95,16 @@ public class Engine {
 
 		ModelLoader.init(resPath);
 
-		Matrix pawnMatrix = Matrix.multiply(
+		Matrix pawnMatrix = Matrix.multiply(new Matrix().rotationXMatrix(0),
 
-		new Matrix().scalingMatrix(.7f, .7f, .7f),
-				new Matrix().rotationXMatrix(90));
+		new Matrix().scalingMatrix(.7f, .7f, .7f));
 		ModelLoader.loadModel("Bishop", pawnMatrix, false);
 		ModelLoader.loadModel("King", pawnMatrix, false);
 		ModelLoader.loadModel("Knight", pawnMatrix, false);
 		ModelLoader.loadModel("Pawn", pawnMatrix, false);
 		ModelLoader.loadModel("Queen", pawnMatrix, false);
 		ModelLoader.loadModel("Rook", pawnMatrix, false);
-		ModelLoader.loadModel("pawn", pawnMatrix, false);
-
+		
 		Matrix squareMatrix = Matrix.multiply(
 				new Matrix().rotationYMatrix(90),
 				new Matrix().scalingMatrix(Board.getTileSize() / 2, 1,
@@ -121,15 +126,26 @@ public class Engine {
 		renderer.getGraphics().setColor(Color.BLACK);
 
 		Time.init();
-
-		Matrix trans = new Matrix().translationMatrix(10, 100, -200);
-		Matrix rotX = new Matrix().rotationXMatrix(-40);
-		Matrix totalTransformation = Matrix.multiply(trans, rotX);
-
+//		float boardTilt = 40 * Time.getTotalTime()/100000f;// Dont use 45
+//		Matrix trans = new Matrix().translationMatrix(10, 100, -200);
+//		Matrix rotX = new Matrix().rotationXMatrix(-boardTilt); 
+//		Matrix negRotX = new Matrix().rotationXMatrix(boardTilt);
+//		Matrix PeicecAlign = new Matrix().translationMatrix(60, 0, 70);
+//		Matrix boardAlign = new Matrix().translationMatrix(Board.getTileSize()/2, 0, Board.getTileSize()/2f);
+//		Matrix boardMatrix = Matrix.multiply(trans, boardAlign, rotX);
+//		Matrix peiceMatrix = Matrix.multiply( trans, negRotX, PeicecAlign);
 		renderer.addLight(light1);
 
 		SwapBool color = new SwapBool(true);
 		while (true) {
+			float boardTilt = 0 * Time.getTotalTime()/1000000000f;// Dont use 45
+			Matrix trans = new Matrix().translationMatrix(10, 100, -200);
+			Matrix rotX = new Matrix().rotationXMatrix(-boardTilt); 
+			Matrix negRotX = new Matrix().rotationXMatrix(boardTilt);
+			Matrix PeiceAlign = new Matrix().translationMatrix(60, 0, 70);
+			Matrix boardAlign = new Matrix().translationMatrix(Board.getTileSize()/2, 0, Board.getTileSize()/2f);
+			Matrix boardMatrix = Matrix.multiply(trans,   boardAlign, rotX);
+			Matrix peiceMatrix = Matrix.multiply(trans, PeiceAlign, negRotX);
 			Time.update();
 
 			renderer.getGraphics().drawString("FPS: " + Time.getLastFrames(),
@@ -140,7 +156,7 @@ public class Engine {
 				selected.clear();
 			}
 			
-			renderer.drawBoard(board, camera, totalTransformation);
+			renderer.drawBoard(board, camera, boardMatrix, peiceMatrix);
 
 			display.swapBuffers();
 			display.clear(Color.LIGHT_GRAY);

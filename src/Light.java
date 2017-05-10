@@ -55,10 +55,8 @@ public class Light {
 		return doShadows;
 	}
 
-	public Light project(Matrix transform, Camera c) {
-		Vector pos = position.muliply(Matrix.multiply(c.getProjectionTransform(), transform));
-		System.out.println(pos.devide(pos.getW()));
-		return new Light(pos.devide(pos.getW()), lightColor);
+	public Light project(Matrix transform) {
+		return new Light(position.muliply(transform), lightColor);
 	}
 
 	public void setAmbientBrightness(float ambientBrightness) {

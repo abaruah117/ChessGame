@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+
 
 /**
  * 
@@ -18,20 +22,46 @@ public class Clickable {
      */
 	public Clickable(Vector topLeft, Vector topRight, Vector botLeft,
 			Vector botRight) {
-		this.topLeft = topLeft;
-		this.topRight = topRight;
-		this.botLeft = botLeft;
-		this.botRight = botRight;
+		
+		Vector[] sortingY = new Vector[]{topLeft, topRight, botLeft, botRight};
+		Arrays.sort(sortingY, new Comparator<Vector>() {
+
+			@Override
+			public int compare(Vector o1, Vector o2) {
+				return (int) -(o1.getY() - o2.getY());
+			}
+			
+		});
+		
+		Comparator<Vector> xCompare = new Comparator<Vector>() {
+
+			@Override
+			public int compare(Vector o1, Vector o2) {
+				return (int) -(o1.getX() - o2.getX());
+			}
+		};
+		
+		Vector[] sortingXTop = new Vector[]{sortingY[0], sortingY[1]};
+		Vector[] sortingXBot = new Vector[]{sortingY[2], sortingY[3]};
+		Arrays.sort(sortingXTop, xCompare);
+		Arrays.sort(sortingXBot, xCompare);
+		
+//		System.out.println(topLeft + " " + botLeft);
+//		System.out.println(Arrays.toString(sortingY));
+		this.topLeft = sortingXTop[1];
+		this.topRight = sortingXTop[0];
+		this.botLeft = sortingXBot[1];
+		this.botRight = sortingXBot[0];
 		
 //		System.out.println("topleft " + topLeft );
 //		System.out.println("topRight " + topRight );
 //		System.out.println("botLeft " + botLeft );
 //		System.out.println("botRight " + botRight );
 //		System.exit(0);
-		slopeTop = (topLeft.getY() - topRight.getY())/(topLeft.getX() - topRight.getX());
-		slopeBot = (botLeft.getY() - botRight.getY())/(botLeft.getX() - botRight.getX());
-		slopeLeft = (botLeft.getX() - topLeft.getX())/(botLeft.getY() - topLeft.getY());
-		slopeRight = (botRight.getX() - topRight.getX())/(botRight.getY() - topRight.getY());
+		slopeTop = (this.topLeft.getY() - this.topRight.getY())/(this.topLeft.getX() - this.topRight.getX());
+		slopeBot = (this.botLeft.getY() - this.botRight.getY())/(this.botLeft.getX() - this.botRight.getX());
+		slopeLeft = (this.botLeft.getX() - this.topLeft.getX())/(this.botLeft.getY() - this.topLeft.getY());
+		slopeRight = (this.botRight.getX() - this.topRight.getX())/(this.botRight.getY() - this.topRight.getY());
 	}
     
 	/**
