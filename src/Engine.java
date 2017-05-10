@@ -138,7 +138,7 @@ public class Engine {
 
 		SwapBool color = new SwapBool(true);
 		while (true) {
-			float boardTilt = 0 * Time.getTotalTime()/1000000000f;// Dont use 45
+			float boardTilt = 2 * Time.getTotalTime()/1000000000f;// Dont use 45
 			Matrix trans = new Matrix().translationMatrix(10, 100, -200);
 			Matrix rotX = new Matrix().rotationXMatrix(-boardTilt); 
 			Matrix negRotX = new Matrix().rotationXMatrix(boardTilt);
