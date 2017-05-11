@@ -7,6 +7,7 @@ import java.util.Map;
 public class ModelLoader {
 
 	private static Map<String, Model> models;
+	private static Map<String, Canvas> textures;
 	private static String directoryPath;
 	
 	public static Model getModel(String name) {
@@ -20,7 +21,8 @@ public class ModelLoader {
 	
 	@SuppressWarnings("serial")
 	public static void init(String dirString) {
-		models = new HashMap<String, Model>(){};
+		models = new HashMap<String, Model>();
+		textures = new HashMap<String, Canvas>();
 		directoryPath = dirString;
 	}
 	
@@ -49,6 +51,20 @@ public class ModelLoader {
 //		}
 		models.put(name, m);
 		
+	}
+	
+	public static void loadTexture(String name) {
+		Canvas s = new Canvas(directoryPath + "/" + name + ".png");
+		textures.put(name, s);
+	}
+	
+	public static Canvas getTexture(String name) {
+		Canvas c =  textures.get(name);
+		if(c == null) {
+			System.err.println("The model for " + name + " does not exists");
+			System.exit(1);
+		}
+		return c;
 	}
 	
 }

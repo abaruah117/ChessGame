@@ -45,6 +45,10 @@ public class Coord {
 		x = 0;
 		y = 0;
 	}
+	
+	public Vector toVector() {
+		return new Vector(x, y);
+	}
 
 	public Coord(int x, int y) {
 		this.x = x;
