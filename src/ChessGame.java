@@ -96,10 +96,10 @@ public class ChessGame {
 	 * @return true if legal castle (and pieces moved)
 	 */
 	public boolean castle(boolean color, Coord c) {
-		if (c.getX() != 2 || c.getX() != 6) {
+		if (c.getX() != 2 && c.getX() != 6) {
 			return false;
 		}
-		int outerbound,y;
+		int outerbound, y;
 		if (c.getX() == 2) {
 			outerbound = 0;
 		} else {
@@ -110,17 +110,20 @@ public class ChessGame {
 		} else {
 			y = 7;
 		}
-		if(!(gameboard.pieceAt(new Coord(outerbound,y)) instanceof Rook)){
+		if (!(gameboard.pieceAt(new Coord(outerbound, y)) instanceof Rook)) {
+			System.out.println("NO ROOK THO");
+			return false;
+		} else if (((Rook) (gameboard.pieceAt(new Coord(outerbound, y)))).hasMoved()) {
+			System.out.println("ROOK HAS MOVED THO");
 			return false;
 		}
-		else if(((Rook)(gameboard.pieceAt(new Coord(outerbound,y)))).hasMoved()){
-			return false;
-		}
-		if(!(gameboard.pieceAt(new Coord(4,y)) instanceof King)||((King)gameboard.pieceAt(new Coord(4,y))).hasMoved()||((King)gameboard.pieceAt(new Coord(4,y))).check()){
+		if (!(gameboard.pieceAt(new Coord(4, y)) instanceof King)
+				|| ((King) gameboard.pieceAt(new Coord(4, y))).hasMoved()
+				|| ((King) gameboard.pieceAt(new Coord(4, y))).check()) {
 			return false;
 		}
 		// POSTCONDITION: ROOK AND KING HAVENT MOVED AND KING HASNT BEEN IN
-			// CHEK
+		// CHEK
 		ArrayList<Coord> onTheWay = new ArrayList<Coord>();
 		if (outerbound < 4) {
 			for (int i = outerbound + 1; i < 4; i++) {
@@ -141,8 +144,9 @@ public class ChessGame {
 		gameboard.setPiece(new Coord(4, y), null);
 		gameboard.setPiece(new Coord(outerbound, y), null);
 		gameboard.setPiece(c, king);
-		int newX = 4 - (c.getX()-outerbound)/2;
-		gameboard.setPiece(new Coord(newX, y),rook);
+		int newX = 4 - (c.getX() - outerbound-1) / 2;
+		System.out.println(newX+" x "+outerbound+" outer "+c.getX());
+		gameboard.setPiece(new Coord(newX, y), rook);
 		return true;
 	}
 
@@ -451,7 +455,13 @@ public class ChessGame {
 				if (p.getBooleanColor() != color.getBool()) {
 					System.out.println("Move a piece of your color, please");
 				} else {
-					if (getPiece(c2) != null) {
+					if (p instanceof King) {
+						if (!castle(color.getBool(), c2)) {
+							System.out.println("invalid castle");
+						} else {
+							color.swap();
+						}
+					} else if (getPiece(c2) != null) {
 						System.out.println("GONNA ATTACK");
 						Piece rek = attack(c1, c2);
 						if (rek == null) {
@@ -464,7 +474,6 @@ public class ChessGame {
 								System.out.println("invalid, king would be in check");
 							} else {
 								if (p.getClass().getName().equalsIgnoreCase("pawn") && ((Pawn) p).promote()) {
-
 									boolean valid = false;
 									while (!valid) {
 										System.out.println("Enter the piece you want to promote the pawn too");
@@ -498,9 +507,10 @@ public class ChessGame {
 											System.out.println("error, invalid piece name");
 										}
 									}
-									System.out.println("WE GOOD THO");
-									color.swap();
 								}
+								System.out.println("WE GOOD THO");
+								color.swap();
+
 							}
 						}
 					} else {

@@ -75,7 +75,7 @@ public class Renderer extends Canvas {
 
 	public void drawClickableTiles(Tile[][] tiles, Matrix transform,
 			Camera camera, ArrayList<Coord> selected) {
-		System.out.println();
+		//System.out.println();
 		for (int y = 0; y < tiles.length; y++) {
 			for (int x = 0; x < tiles[y].length; x++) {
 				Mesh m = tiles[y][x]
@@ -91,7 +91,7 @@ public class Renderer extends Canvas {
 					for(Coord c:selected){
 						if(c.toVector().equals(tiles[y][x].getPos())) {
 							setTexture(ModelLoader.getTexture("whiteSquareSelected"));
-							System.out.println("found a white square that has been selected");
+							//System.out.println("found a white square that has been selected");
 							usedNewTexture = true;
 						}
 					}
@@ -101,7 +101,7 @@ public class Renderer extends Canvas {
 						//System.out.println("Vector we want " + c.toVector());
 						//System.out.println("Vector we checkeing " + tiles[y][x].getPos());
 						if(c.toVector().equals(tiles[y][x].getPos())) {
-							System.out.println("found a black square that has been selected");
+							//System.out.println("found a black square that has been selected");
 							setTexture(ModelLoader.getTexture("blackSquareSelected"));
 							usedNewTexture = true;
 						}

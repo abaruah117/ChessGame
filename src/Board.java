@@ -202,6 +202,7 @@ public class Board {
 
 	/**
 	 * Will update hasMoved
+	 * 
 	 * @param cStart
 	 * @param cFinal
 	 * @return
@@ -235,11 +236,10 @@ public class Board {
 		}
 		setPiece(cFinal, p);
 		board[SIZE - 1 - cStart.getY()][cStart.getX()] = null;
-		if(p.getClass().getName().equalsIgnoreCase("King")){
-			((King)p).updateMove();
-		}
-		else if(p.getClass().getName().equalsIgnoreCase("Rook")){
-			((Rook)p).updateMove();
+		if (p.getClass().getName().equalsIgnoreCase("King")) {
+			((King) p).updateMove();
+		} else if (p.getClass().getName().equalsIgnoreCase("Rook")) {
+			((Rook) p).updateMove();
 		}
 		return true;
 	}
@@ -269,7 +269,9 @@ public class Board {
 			return;
 		}
 		board[SIZE - 1 - c.getY()][c.getX()] = p;
-		p.setCoord(c);
+		if (p != null) {
+			p.setCoord(c);
+		}
 	}
 
 }
