@@ -105,6 +105,9 @@ public class Engine {
 		ModelLoader.loadModel("Queen", pawnMatrix, false);
 		ModelLoader.loadModel("Rook", pawnMatrix, false);
 		
+		ModelLoader.loadTexture("blackSquareSelected");
+		ModelLoader.loadTexture("whiteSquareSelected");
+		
 		Matrix squareMatrix = Matrix.multiply(
 				new Matrix().rotationYMatrix(90),
 				new Matrix().scalingMatrix(Board.getTileSize() / 2, 1,
@@ -156,7 +159,7 @@ public class Engine {
 				selected.clear();
 			}
 			
-			renderer.drawBoard(board, camera, boardMatrix, peiceMatrix);
+			renderer.drawBoard(board, camera, boardMatrix, peiceMatrix, selected);
 
 			display.swapBuffers();
 			display.clear(Color.LIGHT_GRAY);

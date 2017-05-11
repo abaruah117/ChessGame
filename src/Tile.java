@@ -32,6 +32,13 @@ public class Tile extends Model{
 	public void setWhite(boolean isWhite) {
 		this.isWhite = isWhite;
 	}
+
+	/**
+	 * @return the pos
+	 */
+	public Vector getPos() {
+		return pos;
+	}
 	
 
 
