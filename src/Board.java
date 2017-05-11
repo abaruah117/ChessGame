@@ -200,10 +200,12 @@ public class Board {
 		return whitePieces;
 	}
 
-	// public boolean getSquareBooleanColor(Coord c) {
-	// return boardColor[SIZE - 1 - c.getY()][c.getX()];
-	// }
-
+	/**
+	 * Will update hasMoved
+	 * @param cStart
+	 * @param cFinal
+	 * @return
+	 */
 	public boolean movePiece(Coord cStart, Coord cFinal) {
 		if (!checkValid(cStart)) {
 			return false;
@@ -233,6 +235,12 @@ public class Board {
 		}
 		setPiece(cFinal, p);
 		board[SIZE - 1 - cStart.getY()][cStart.getX()] = null;
+		if(p.getClass().getName().equalsIgnoreCase("King")){
+			((King)p).updateMove();
+		}
+		else if(p.getClass().getName().equalsIgnoreCase("Rook")){
+			((Rook)p).updateMove();
+		}
 		return true;
 	}
 

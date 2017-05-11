@@ -88,6 +88,65 @@ public class ChessGame {
 	}
 
 	/**
+	 * 
+	 * @param color
+	 *            Player attempting to castle
+	 * @param c
+	 *            Coordinate of King's movement
+	 * @return true if legal castle (and pieces moved)
+	 */
+	public boolean castle(boolean color, Coord c) {
+		if (c.getX() != 2 || c.getX() != 6) {
+			return false;
+		}
+		int outerbound,y;
+		if (c.getX() == 2) {
+			outerbound = 0;
+		} else {
+			outerbound = 7;
+		}
+		if (color) {
+			y = 0;
+		} else {
+			y = 7;
+		}
+		if(!(gameboard.pieceAt(new Coord(outerbound,y)) instanceof Rook)){
+			return false;
+		}
+		else if(((Rook)(gameboard.pieceAt(new Coord(outerbound,y)))).hasMoved()){
+			return false;
+		}
+		if(!(gameboard.pieceAt(new Coord(4,y)) instanceof King)||((King)gameboard.pieceAt(new Coord(4,y))).hasMoved()||((King)gameboard.pieceAt(new Coord(4,y))).check()){
+			return false;
+		}
+		// POSTCONDITION: ROOK AND KING HAVENT MOVED AND KING HASNT BEEN IN
+			// CHEK
+		ArrayList<Coord> onTheWay = new ArrayList<Coord>();
+		if (outerbound < 4) {
+			for (int i = outerbound + 1; i < 4; i++) {
+				onTheWay.add(new Coord(i, y));
+			}
+		} else {
+			for (int i = 5; i < outerbound; i++) {
+				onTheWay.add(new Coord(i, y));
+			}
+		}
+		for (Coord c1 : onTheWay) {
+			if (squareIsTargeted(!color, c1)) { // TODO iffy
+				return false;
+			}
+		}
+		Piece rook = gameboard.pieceAt(new Coord(outerbound, y));
+		Piece king = gameboard.pieceAt(new Coord(4, y));
+		gameboard.setPiece(new Coord(4, y), null);
+		gameboard.setPiece(new Coord(outerbound, y), null);
+		gameboard.setPiece(c, king);
+		int newX = 4 - (c.getX()-outerbound)/2;
+		gameboard.setPiece(new Coord(newX, y),rook);
+		return true;
+	}
+
+	/**
 	 * Checks if the King of color (passed in as a parameter) is in check
 	 * 
 	 * @param color
@@ -111,6 +170,8 @@ public class ChessGame {
 			}
 		}
 		if (squareIsTargeted(!color, c)) {
+			Piece p = gameboard.pieceAt(c);
+			((King) p).checked();
 			return true;
 		} else {
 			return false;
@@ -328,13 +389,41 @@ public class ChessGame {
 						if (attack(c1, c2) != null) {
 							if (check(color.getBool())) {
 								System.out.println("STILL IN CHECK, INVALID");
-								// color.swap();
 								revertMove(c1, c2, p2);
 							} else {
 								color.swap();
-								if (p1.getClass().getName().equalsIgnoreCase("pawn") && ((Pawn) p1).promote()) {
+								boolean valid = false;
+								while (!valid) {
 									System.out.println("Enter the piece you want to promote the pawn too");
+									String b = (new Scanner(System.in)).next();
+									b = b.trim().toLowerCase();
+									switch (b) {
+									case "queen":
+										gameboard.setPiece(p1.getCoord(),
+												new Queen(p1.getBooleanColor(), p1.getCoord()));
+										valid = true;
+										break;
 
+									case "rook":
+										gameboard.setPiece(p1.getCoord(),
+												new Rook(p1.getBooleanColor(), p1.getCoord()));
+										valid = true;
+										break;
+
+									case "knight":
+										gameboard.setPiece(p1.getCoord(),
+												new Knight(p1.getBooleanColor(), p1.getCoord()));
+										valid = true;
+										break;
+
+									case "bishop":
+										gameboard.setPiece(p1.getCoord(),
+												new Bishop(p1.getBooleanColor(), p1.getCoord()));
+										valid = true;
+										break;
+									default:
+										System.out.println("error, invalid piece name");
+									}
 								}
 							}
 						}
@@ -375,17 +464,43 @@ public class ChessGame {
 								System.out.println("invalid, king would be in check");
 							} else {
 								if (p.getClass().getName().equalsIgnoreCase("pawn") && ((Pawn) p).promote()) {
-									System.out.println("Enter the piece you want to promote the pawn too");
-									String b = (new Scanner(System.in)).next();
-									b = b.trim().toLowerCase();
-									switch (b) {
-									case "queen":
-										gameboard.setPiece(p.getCoord(), new Queen(p.getBooleanColor(), p.getCoord()));
-										break;
+
+									boolean valid = false;
+									while (!valid) {
+										System.out.println("Enter the piece you want to promote the pawn too");
+										String b = (new Scanner(System.in)).next();
+										b = b.trim().toLowerCase();
+										switch (b) {
+										case "queen":
+											gameboard.setPiece(p.getCoord(),
+													new Queen(p.getBooleanColor(), p.getCoord()));
+											valid = true;
+											break;
+
+										case "rook":
+											gameboard.setPiece(p.getCoord(),
+													new Rook(p.getBooleanColor(), p.getCoord()));
+											valid = true;
+											break;
+
+										case "knight":
+											gameboard.setPiece(p.getCoord(),
+													new Knight(p.getBooleanColor(), p.getCoord()));
+											valid = true;
+											break;
+
+										case "bishop":
+											gameboard.setPiece(p.getCoord(),
+													new Bishop(p.getBooleanColor(), p.getCoord()));
+											valid = true;
+											break;
+										default:
+											System.out.println("error, invalid piece name");
+										}
 									}
+									System.out.println("WE GOOD THO");
+									color.swap();
 								}
-								System.out.println("WE GOOD THO");
-								color.swap();
 							}
 						}
 					} else {
@@ -406,6 +521,7 @@ public class ChessGame {
 					}
 
 				}
+
 			}
 		}
 
@@ -556,8 +672,8 @@ public class ChessGame {
 		a.displayGame();
 		a.movePiece(new Coord(4, 5), new Coord(4, 6));
 		a.run(new Coord(4, 6), new Coord(3, 7), new SwapBool(true));
-		System.out.println(a.getPiece(new Coord(3, 7)));	
-		a.movePiece(new Coord(3,7),new Coord(5,5));
+		System.out.println(a.getPiece(new Coord(3, 7)));
+		a.movePiece(new Coord(3, 7), new Coord(5, 5));
 		a.displayGame();
 	}
 }

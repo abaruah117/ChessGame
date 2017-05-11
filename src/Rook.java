@@ -17,6 +17,9 @@ public class Rook extends Piece {
 	public void updateMove(){
 		hasMoved = true;
 	}
+	public boolean hasMoved(){
+		return hasMoved;
+	}
 	@Override
 	public boolean legalMove(Coord c) {
 		return ((Math.abs(this.getCoord().getX()-c.getX())!=0)&&(Math.abs(this.getCoord().getY()-c.getY())==0))||
