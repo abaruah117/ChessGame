@@ -66,6 +66,7 @@ public class Renderer extends Canvas {
 							-pos.getY() * Board.getTileSize());
 			Mesh m = ModelLoader.getModel(p.getClass().getName()).getMesh(c,
 					Matrix.multiply(position, peiceMatrix));
+			System.out.println(p.getClass().getName()+" "+p.getCoord().toString());
 			color = new Vector(100, 100, 100);
 			drawMesh(m, c);
 
