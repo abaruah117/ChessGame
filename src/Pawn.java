@@ -65,12 +65,24 @@ public class Pawn extends Piece {
 		if(!getBooleanColor()){
 			diffY*=-1;
 		}
-		return (diffX==1) && diffY == 1;
+		boolean legal =  (diffX==1) && diffY == 1;
+		if (legal) {
+			if (this.getBooleanColor() && c2.getY() == 7) {
+				promote = true;
+			}
+			if (!this.getBooleanColor() && c2.getY() == 0) {
+				promote = true;
+			}
+		}
+		return legal;
 
 	}
 
 	public boolean promote() {
 		return promote;
+	}
+	public String toString(){
+		return super.toString()+" promotion-capable: "+promote();
 	}
 
 }

@@ -1,5 +1,6 @@
 
 public class King extends Piece {
+	private boolean hasMoved;
 	public static void main(String[] args) {
 		King b = new King(true, new Coord(0, 0));
 		System.out.println(b.legalMove(new Coord(0, 2)));
@@ -8,8 +9,14 @@ public class King extends Piece {
 
 	public King(boolean color, Coord pos) {
 		super("king", color, pos);
+		hasMoved = false;
 	}
-
+	/**
+	 * changes hasMoved to true
+	 */
+	public void updateMove(){
+		hasMoved = true;
+	}
 	@Override
 	public boolean legalMove(Coord c) {
 		Coord pos = this.getCoord();

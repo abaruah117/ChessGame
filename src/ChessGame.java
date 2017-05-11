@@ -146,7 +146,7 @@ public class ChessGame {
 		}
 		if (check(color)) {
 			lose = true;
-			System.out.println("KING: " + c.toString()+" is in check");
+			System.out.println("KING: " + c.toString() + " is in check");
 			ArrayList<Coord> surr = Coord.surrounding(c);
 			for (Coord d : surr) {
 				// System.out.println("surrounding coordinate: " +
@@ -328,11 +328,15 @@ public class ChessGame {
 						if (attack(c1, c2) != null) {
 							if (check(color.getBool())) {
 								System.out.println("STILL IN CHECK, INVALID");
-								color.swap();
+								// color.swap();
 								revertMove(c1, c2, p2);
+							} else {
+								color.swap();
+								if (p1.getClass().getName().equalsIgnoreCase("pawn") && ((Pawn) p1).promote()) {
+									System.out.println("Enter the piece you want to promote the pawn too");
+
+								}
 							}
-						} else {
-							color.swap();
 						}
 					} else {
 						if (!movePiece(c1, c2)) {
@@ -342,11 +346,11 @@ public class ChessGame {
 							if (check(color.getBool())) {
 								System.out.println("STILL IN CHECK, INVALID");
 								color.swap();
-								revertMove(c1,c2,null);
+								revertMove(c1, c2, null);
 							}
 						}
 					}
-					
+
 				}
 			}
 
@@ -354,7 +358,8 @@ public class ChessGame {
 			if (getPiece(c1) == null) {
 				System.out.println("no piece to move");
 			} else {
-				if (getPiece(c1).getBooleanColor() != color.getBool()) {
+				Piece p = getPiece(c1);
+				if (p.getBooleanColor() != color.getBool()) {
 					System.out.println("Move a piece of your color, please");
 				} else {
 					if (getPiece(c2) != null) {
@@ -369,6 +374,16 @@ public class ChessGame {
 								displayGame();
 								System.out.println("invalid, king would be in check");
 							} else {
+								if (p.getClass().getName().equalsIgnoreCase("pawn") && ((Pawn) p).promote()) {
+									System.out.println("Enter the piece you want to promote the pawn too");
+									String b = (new Scanner(System.in)).next();
+									b = b.trim().toLowerCase();
+									switch (b) {
+									case "queen":
+										gameboard.setPiece(p.getCoord(), new Queen(p.getBooleanColor(), p.getCoord()));
+										break;
+									}
+								}
 								System.out.println("WE GOOD THO");
 								color.swap();
 							}
@@ -378,10 +393,11 @@ public class ChessGame {
 						if (!movePiece(c1, c2)) {
 							System.out.println("invalid move");
 						} else {
-							System.out.println("CHECKING CHECK: NO ATTACK: "+color.getBool()+" "+check(color.getBool()));
+							System.out.println(
+									"CHECKING CHECK: NO ATTACK: " + color.getBool() + " " + check(color.getBool()));
 							if (check(color.getBool())) {
 								System.out.println("GONNA MOVE PIECE BACK");
-								revertMove(c1,c2,null);
+								revertMove(c1, c2, null);
 							} else {
 								color.swap();
 							}
@@ -513,7 +529,7 @@ public class ChessGame {
 		}
 		boolean legal = p1.legalMove(c2);
 		boolean obstruction = obstruct(c1, c2);
-		System.out.println("legal: "+legal+" obstructed: "+obstruction);
+		System.out.println("legal: " + legal + " obstructed: " + obstruction);
 		boolean pawnAttack = false;
 		if (p1.getClass().getName().equalsIgnoreCase("Pawn")) {
 			pawnAttack = ((Pawn) p1).pawnAttack(c2);
@@ -528,15 +544,20 @@ public class ChessGame {
 		ModelLoader.loadModel("whiteSquare", new Matrix().identityMatrix(), false);
 		Board b = new Board();
 		ChessGame a = new ChessGame("xd", "xd", b);
+		a.movePiece(new Coord(4, 1), new Coord(4, 3));
+		a.movePiece(new Coord(4, 3), new Coord(4, 4));
+		a.movePiece(new Coord(4, 4), new Coord(4, 5));
 		a.displayGame();
-		a.movePiece(new Coord(4,1), new Coord(4,2));
-		a.movePiece(new Coord(3,0), new Coord(7,4));
-		a.movePiece(new Coord(5,6), new Coord(5,5));
-		a.movePiece(new Coord(6,6), new Coord(6,5));
-		a.movePiece(new Coord(7,4), new Coord(6,5));
-		a.movePiece(new Coord(6,5), new Coord(7,4));
-		System.out.println(a.check(false));
-		System.out.println(a.checkMate(false));
+		System.out.println(a.movePiece(new Coord(4, 5), new Coord(4, 6)));
+		a.movePiece(new Coord(3, 0), new Coord(6, 3));
+		a.movePiece(new Coord(6, 3), new Coord(6, 4));
+		a.movePiece(new Coord(6, 4), new Coord(4, 6));
+		a.movePiece(new Coord(4, 6), new Coord(7, 3));
+		a.displayGame();
+		a.movePiece(new Coord(4, 5), new Coord(4, 6));
+		a.run(new Coord(4, 6), new Coord(3, 7), new SwapBool(true));
+		System.out.println(a.getPiece(new Coord(3, 7)));	
+		a.movePiece(new Coord(3,7),new Coord(5,5));
 		a.displayGame();
 	}
 }
