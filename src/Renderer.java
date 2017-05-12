@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Renderer extends Canvas {
 
@@ -60,7 +61,7 @@ public class Renderer extends Canvas {
 
 			Mesh m = ModelLoader.getModel(p.getClass().getName()).getMesh(c,
 					Matrix.multiply(positon, yRot, zRot, xRot));
-			color = new Vector(255, 223, 173);
+			color = new Vector(210,180,140);
 
 			drawMesh(m, c);
 
@@ -81,7 +82,7 @@ public class Renderer extends Canvas {
 
 			Mesh m = ModelLoader.getModel(p.getClass().getName()).getMesh(c,
 					Matrix.multiply(positon, yRot, zRot, xRot));
-			color = new Vector(150, 150, 150);
+			color = new Vector(51, 25, 0);
 
 			drawMesh(m, c);
 
@@ -122,9 +123,7 @@ public class Renderer extends Canvas {
 				}
 				if (!tiles[y][x].isWhite()) {
 					for (Coord c : selected) {
-						// System.out.println("Vector we want " + c.toVector());
-						// System.out.println("Vector we checkeing " +
-						// tiles[y][x].getPos());
+
 						if (c.toVector().equals(tiles[y][x].getPos())) {
 							// System.out.println("found a black square that has been selected");
 							setTexture(ModelLoader
@@ -158,11 +157,7 @@ public class Renderer extends Canvas {
 				// v3
 				// v4
 
-				// System.out.println(v1); left top
-				// System.out.println(v2); left bot
-				// System.out.println(v3); right top
-				// System.out.println(v4); right bot
-				// System.exit(0);
+
 
 				drawTriangle(v1, v2, v3, camera);
 				drawTriangle(v2, v3, v4, camera);
@@ -250,8 +245,10 @@ public class Renderer extends Canvas {
 					.multiply(area1)
 					.add(mid.getNormal().multiply(area2)
 							.add(top.getNormal().multiply(area3)));
-			for (Light light : lights) {
-
+			Iterator<Light> lightIter = lights.iterator();
+			
+			while(lightIter.hasNext()) {
+				Light light = lightIter.next();
 				Vector ambient = light.getAmbientColor().multiply(
 						light.getAmbientBrightness());
 				// Vector lightDir = light.getPosition().subtract(position)

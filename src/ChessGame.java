@@ -260,7 +260,6 @@ public class ChessGame {
 		}
 		return lose;
 	}
-
 	public ArrayList<Piece> getBlackPieces() {
 		return this.blackPieces;
 	}
@@ -461,8 +460,6 @@ public class ChessGame {
 						} else {
 							if (check(color.getBool())) {
 								revertMove(c1, c2, rek);
-								System.out.println(rek.toString());
-								System.out.println(whitePieces.contains(rek));
 								gameboard.getTextDisplay().add("Invalid, king would be in check");
 							} else {
 								promote(c2);

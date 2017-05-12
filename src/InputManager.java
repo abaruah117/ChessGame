@@ -3,7 +3,11 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
-
+/**
+ * 
+ * @author Kevin
+ *This class deals with getting input from the mouse and changing the game in response
+ */
 public class InputManager implements MouseListener, MouseMotionListener{
 
 	private ArrayList<Coord> selected;
@@ -12,11 +16,19 @@ public class InputManager implements MouseListener, MouseMotionListener{
 	private Vector rotations = new Vector(-65, 0, 0);
 	private final float rotXScale = .1f;
 	
+	/**
+	 * Creates a new inputManager
+	 * @param board The board to change
+	 * @param selected The array list to hold the selected positions
+	 */
 	public InputManager(Board board, ArrayList<Coord> selected) {
 		this.selected = selected;
 		this.board = board;
 	}
 	
+	/**
+	 * Selects the correct piece based on where the mouse was clicked, and resets board orientation
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		
@@ -58,15 +70,25 @@ public class InputManager implements MouseListener, MouseMotionListener{
 		
 	}
 
+	/**
+	 * Resets the deltas when the mouse is released
+	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		lastPos = new Vector(-1, -1, -1);
 	}
 
+	/**
+	 * 
+	 * @return The array list of selected cords
+	 */
 	public ArrayList<Coord> getSelected() {
 		return selected;
 	}
 
+	/**
+	 * Deals with dragging the mouse, updates deltas and rotates board
+	 */
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		if(lastPos.getX() == -1) {

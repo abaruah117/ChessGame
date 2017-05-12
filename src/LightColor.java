@@ -1,11 +1,22 @@
 
-
+/**
+ * 
+ * @author Kevin Palani
+ * This class holds information about the color and strength of a light
+ */
 public class LightColor {
 
 	private Vector diffuseColor;
 	private Vector ambientColor;
 	private float ambientBrightness, diffuseBrightness;
 
+	/**
+	 * Creates a new Light Color
+	 * @param ambientColor The color of the ambient light
+	 * @param diffuseColor The color of the diffuse light
+	 * @param ambientBrightness The strength of the ambient light
+	 * @param diffuseBrightness The strength of the diffuse light
+	 */
 	public LightColor(Vector ambientColor, Vector diffuseColor, float ambientBrightness,
 			float diffuseBrightness) {
 		this.diffuseColor = diffuseColor;
@@ -14,37 +25,35 @@ public class LightColor {
 		this.diffuseBrightness = diffuseBrightness;
 	}
 
-	public float getAmbientBrightness() {
-		return ambientBrightness;
-	}
-
-	public Vector getAmbientColor() {
-		return ambientColor;
-	}
-
-	public float getDiffuseBrightness() {
-		return diffuseBrightness;
-	}
-
+	/**
+	 * @return the diffuseColor
+	 */
 	public Vector getDiffuseColor() {
 		return diffuseColor;
 	}
 
-	public void setAmbientBrightness(float ambientBrightness) {
-		this.ambientBrightness = ambientBrightness;
+	/**
+	 * @return the ambientColor
+	 */
+	public Vector getAmbientColor() {
+		return ambientColor;
 	}
 
-	public void setAmbientColor(Vector ambientColor) {
-		this.ambientColor = ambientColor;
+	/**
+	 * @return the ambientBrightness
+	 */
+	public float getAmbientBrightness() {
+		return ambientBrightness;
 	}
 
-	public void setDiffuseBrightness(float diffuseBrightness) {
-		this.diffuseBrightness = diffuseBrightness;
+	/**
+	 * @return the diffuseBrightness
+	 */
+	public float getDiffuseBrightness() {
+		return diffuseBrightness;
 	}
 
-	public void setDiffuseColor(Vector diffuseColor) {
-		this.diffuseColor = diffuseColor;
-	}
+
 
 
 }

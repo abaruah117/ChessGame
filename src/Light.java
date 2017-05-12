@@ -1,15 +1,22 @@
 
-
+/**
+ * 
+ * @author Kevin
+ *	This class represents a light, which is used to calculate scene lighting
+ */
 public class Light {
 
 	private Vector position;
 	private Vector diffuseColor;
 	private Vector ambientColor;
 	private float ambientBrightness, diffuseBrightness;
-	private Renderer depthMaper;
-	private boolean doShadows = false;
 	private LightColor lightColor;
 
+	/**
+	 * Creates a new light object
+	 * @param position The position of the light
+	 * @param lightColor The Color of the light
+	 */
 	public Light(Vector position, LightColor lightColor) {
 		this.lightColor = lightColor;
 		this.position = position;
@@ -17,71 +24,61 @@ public class Light {
 		this.ambientColor = lightColor.getAmbientColor();
 		this.ambientBrightness = lightColor.getAmbientBrightness();
 		this.diffuseBrightness = lightColor.getDiffuseBrightness();
-//		this.doShadows = doShadows;
+
 
 	}
 
-	// public void depthMapMesh(Mesh m) {
-	// depthMaper.drawMesh(m, new Camera(position ));
-	// }
 
+	/**
+	 * The ambient brightness lights all pixels equally to represents light that hes been reflected many times
+	 * @return The strength of the ambient light
+	 */
 	public float getAmbientBrightness() {
 		return ambientBrightness;
 	}
 
 
-
+	/**
+	 *
+	 * @return A vector that represents the color of the ambient light
+	 */
 	public Vector getAmbientColor() {
 		return ambientColor;
 	}
-
-	public Renderer getDepthMaper() {
-		return depthMaper;
-	}
-
+	
+	/**
+	 * Diffuse light represents light that hits the object without being bounces off anything else
+	 * @return
+	 */
 	public float getDiffuseBrightness() {
 		return diffuseBrightness;
 	}
 
+	/**
+	 * 
+	 * @return A Vector that represents the color of the diffure light
+	 */
 	public Vector getDiffuseColor() {
 		return diffuseColor;
 	}
 
+	/**
+	 * 
+	 * @return The position of the light
+	 */
 	public Vector getPosition() {
 		return position;
 	}
 
-	public boolean isDoShadows() {
-		return doShadows;
-	}
-
+	/**
+	 * Returns a new light of the original light except moved
+	 * @param transform The matrix to transform the light by
+	 * @return A new light in the new position
+	 */
 	public Light project(Matrix transform) {
 		return new Light(position.muliply(transform), lightColor);
 	}
 
-	public void setAmbientBrightness(float ambientBrightness) {
-		this.ambientBrightness = ambientBrightness;
-	}
-
-	public void setAmbientColor(Vector ambientColor) {
-		this.ambientColor = ambientColor;
-	}
-
-	public void setDepthMaper(Renderer depthMaper) {
-		this.depthMaper = depthMaper;
-	}
-
-	public void setDiffuseBrightness(float diffuseBrightness) {
-		this.diffuseBrightness = diffuseBrightness;
-	}
-
-	public void setDiffuseColor(Vector diffuseColor) {
-		this.diffuseColor = diffuseColor;
-	}
-
-	public void setDoShadows(boolean doShadows) {
-		this.doShadows = doShadows;
-	}
 
 	public void setPosition(Vector position) {
 		this.position = position;

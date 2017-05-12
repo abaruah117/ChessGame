@@ -2,8 +2,21 @@
 
 import javax.management.RuntimeErrorException;
 
+/**
+ * 
+ * @author Kevin 
+ *The matrix class holds all the math required to move, rotate, scale, and project vectors. Uses row major order
+ */
 public class Matrix {
 
+
+	private float[][] mat;
+	
+	/**
+	 * Multiplies a bunch of matrices. The matricies are read right to left
+	 * @param mats The Matrices to multiply
+	 * @return A multiplied version of the given matrices
+	 */
 	public static Matrix multiply(Matrix... mats) {
 		Matrix ans = new Matrix();
 		ans.identityMatrix();
@@ -15,8 +28,9 @@ public class Matrix {
 
 
 
-	private float[][] mat;
-
+	/**
+	 * Creates a new matrix with every thing as 0
+	 */
 	public Matrix() {
 		mat = new float[4][4];
 	}
