@@ -72,12 +72,10 @@ public class Engine {
 		display.getDisplay().addMouseListener(inputManager);
 		display.getDisplay().addMouseMotionListener(inputManager);
 		
-		//TODO uncomment to get the players names
-		// String player1 =
-		// JOptionPane.showInputDialog("Enter the first player's name: ");
-		// String player2 =
-		// JOptionPane.showInputDialog("Enter the second player's name: ");
-		chessGame = new ChessGame("asd", "asd", board);
+		 String player1 =
+		 JOptionPane.showInputDialog("Enter the first player's name: ");
+
+		chessGame = new ChessGame(player1, "Computer", board);
 	}
 
 	public void run() {
@@ -118,7 +116,7 @@ public class Engine {
 			renderer.drawBoardTiles(board, boardMatrix, camera, selected);
 
 			display.swapBuffers();
-			display.clear(Color.LIGHT_GRAY);
+			display.clear(Color.lightGray);
 
 		}
 

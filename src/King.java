@@ -1,4 +1,9 @@
 
+/**
+ * 
+ * @author Amitav
+ * The King class represents a King chess piece 
+ */
 public class King extends Piece {
 	private boolean hasMoved;
 	private boolean beenInCheck;
@@ -8,6 +13,11 @@ public class King extends Piece {
 		System.out.println(b.getClass().getName().equals("King"));
 	}
 
+	/**
+	 * Creates a new King
+	 * @param color true -> white, false
+	 * @param pos The position 
+	 */
 	public King(boolean color, Coord pos) {
 		super("king", color, pos);
 		hasMoved = false;
@@ -19,15 +29,32 @@ public class King extends Piece {
 	public void updateMove(){
 		hasMoved = true;
 	}
+	/**
+	 * 
+	 * @return If the king has moevd
+	 */
 	public boolean hasMoved(){
 		return hasMoved;
 	}
+	
+	/**
+	 * Sets that the king has been in check
+	 */
 	public void checked(){
 		beenInCheck = true;
 	}
+	
+	/**
+	 * 
+	 * @return If the king has been in check
+	 */
 	public boolean check(){
 		return beenInCheck;
 	}
+	
+	/**
+	 * Checks if the king can move to a cord
+	 */
 	@Override
 	public boolean legalMove(Coord c) {
 		Coord pos = this.getCoord();

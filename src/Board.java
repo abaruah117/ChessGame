@@ -1,45 +1,49 @@
 import java.util.ArrayList;
 import java.util.StringJoiner;
 
+/**
+ * 
+ * @author Kevin and Amitav
+ *The board class represents the chess board, including the tiles and the game pieces
+ */
 public class Board {
 	private static int SIZE = 8;
 	private static final int TILE_SIZE = 20;
 	private TextDisplay textDisplay;
+	private Piece[][] board = new Piece[SIZE][SIZE];
+	private Tile[][] boardColor = new Tile[SIZE][SIZE];
+	private ArrayList<Piece> whitePieces = new ArrayList<Piece>();
+	private ArrayList<Piece> blackPieces = new ArrayList<Piece>();
 
+	/**
+	 * 
+	 * @return The size of the board
+	 */
 	public static int getSize() {
 		return SIZE;
 	}
 
+	/**
+	 * 
+	 * @return The model space width of each tile
+	 */
 	public static int getTileSize() {
 		return TILE_SIZE;
 	}
 
-	public static void setSize(int size) {
-		SIZE = size;
-	}
-
-	private Tile[][] boardColor = new Tile[SIZE][SIZE];
-	// private static boolean[][] boardColor = new boolean[SIZE][SIZE];// black
-	// =
-	//
-	// public static boolean[][] getBoardColor() {
-	// return boardColor;
-	// }
-
-	private Piece[][] board = new Piece[SIZE][SIZE];
-	private ArrayList<Piece> whitePieces = new ArrayList<Piece>();
-
-	private ArrayList<Piece> blackPieces = new ArrayList<Piece>();
-
+	/**
+	 * Creates a new board object, initializes the board tiles and the game pieces
+	 * @param screen The screen that this board will be drawn to
+	 */
 	public Board(Renderer screen) {
 		textDisplay = new TextDisplay(screen.getGraphics(), screen.getWidth());
 		for (int i = 0; i < SIZE; i++) {
 			for (int j = 0; j < SIZE; j++) {
 				if ((i + j) % 2 == 0) {
-					boardColor[i][j] = new Tile(ModelLoader.getModel("whiteSquare"),
+					boardColor[i][j] = new Tile(ModelLoader.getModel("blackSquare"),
 							new Vector(SIZE - j - 1, SIZE - i - 1), true);
 				} else {
-					boardColor[i][j] = new Tile(ModelLoader.getModel("blackSquare"),
+					boardColor[i][j] = new Tile(ModelLoader.getModel("whiteSquare"),
 							new Vector(SIZE - j - 1, SIZE - i - 1), false);
 				}
 			}
@@ -50,6 +54,10 @@ public class Board {
 	}
 
 	/**
+	 * Creates a new Board from a pre-started game
+	 * @param p The array of the pieces
+	 * @param whitePieces The ArrayList of the white pieces
+	 * @param blackPieces The ArrayList of the black pieces
 	 * @precondition Piece[][] p is same size as SIZE * SIZE
 	 */
 	public Board(Piece[][] p, ArrayList<Piece> whitePieces, ArrayList<Piece> blackPieces) {
@@ -58,25 +66,18 @@ public class Board {
 				board[i][j] = p[i][j];
 			}
 		}
-		// for (int i = 0; i < board.length; i++) {
-		// for (int j = 0; j < board[0].length; j++) {
-		// if ((i + j) % 2 == 0) {
-		// boardColor[i][j] = true;
-		// }
-		// }
-		// }
+
 		this.whitePieces = whitePieces;
 		this.blackPieces = blackPieces;
 	}
 
-	private String center(String s, int size) {
-		String out = String.format("%" + size + "s%s%" + size + "s", "", s, "");
-		float mid = (out.length() / 2);
-		float start = mid - (size / 2);
-		float end = start + size;
-		return out.substring((int) start, (int) end);
-	}
+	
 
+	/**
+	 * Checks if a given cord is in the board
+	 * @param c The coord to check
+	 * @return If the coord is in the board
+	 */
 	private boolean checkValid(Coord c) {
 		if (c.getX() < 0 || c.getX() >= SIZE || c.getY() < 0 || c.getY() >= SIZE) {
 			return false;
@@ -84,15 +85,10 @@ public class Board {
 		return true;
 	}
 
-	@SuppressWarnings("unused")
-	private String displayColor(boolean color) {
-		if (color) {
-			return "WHITE";
-		} else {
-			return "BLACK";
-		}
-	}
 
+	/**
+	 * Initializes the board with the correct peices
+	 */
 	private void initBoard() {
 		boolean color = false;
 		int row = 0; // black side
@@ -126,6 +122,9 @@ public class Board {
 
 	}
 
+	/**
+	 * Adds the peices from the board to the correct array
+	 */
 	private void initPieceArrayLists() {
 		for (int i = 0; i < SIZE; i++) {
 			for (int j = 0; j < SIZE; j++) {
@@ -141,44 +140,7 @@ public class Board {
 		}
 	}
 
-	/**
-	 * displays boardColor if null & Piece info in the format pieceColor
-	 * pieceName
-	 */
-	public void displayBoard() {
-		StringJoiner splitJoiner = new StringJoiner("+", "|", "|");
-		for (int index = 0; index < board[0].length; index++) {
-			splitJoiner.add(String.format("%-17s", "").replace(" ", "-"));
-		}
-		String lineSplit = splitJoiner.toString();
-		for (int i = 0; i < board.length; i++) {
-			StringJoiner sj = new StringJoiner(" | ", "| ", " |");
-			for (int j = 0; j < board[0].length; j++) {
-				if (board[i][j] == null) {
-					// sj.add(StringUtils.center(displayColor(boardColor[i][j]).toLowerCase()
-					// + " empty,",15));
-					// sj.add(String.format("%-15s",
-					// displayColor(boardColor[i][j]).toLowerCase() + "
-					// empty,"));
-					// sj.add(center(displayColor(boardColor[i][j]).toLowerCase()
-					// + " empty", 15));
-					sj.add("               ");
-				} else {
-					// sj.add(String.format("%-15s", board[i][j].getColor() + "
-					// " + board[i][j].getName()));
-					sj.add(center(board[i][j].getColor() + " " + board[i][j].getName(), 15));
-				}
-			}
-
-			System.out.println("  " + lineSplit);
-			System.out.println((SIZE - i - 1) + " " + sj.toString());
-		}
-		System.out.println("  " + lineSplit);
-		for (int index = 0; index < board[0].length; index++) {
-			System.out.printf("%-18s", "         " + (char) ((int) 'A' + index));
-		}
-		System.out.println();
-	}
+	
 
 	public ArrayList<Piece> getBlackPieces() {
 		return blackPieces;

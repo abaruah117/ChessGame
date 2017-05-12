@@ -255,11 +255,7 @@ public class ChessGame {
 		return lose;
 	}
 
-	public void displayGame() {
-		System.out.println(
-				"GAME: " + players.getWhitePlayerName() + "(WHITE) vs " + players.getBlackPlayerName() + "(BLACK)");
-		gameboard.displayBoard();
-	}
+
 
 	public ArrayList<Piece> getBlackPieces() {
 		return this.blackPieces;
@@ -471,7 +467,6 @@ public class ChessGame {
 							if (check(color.getBool())) {
 								System.out.println("REVERTING THO");
 								revertMove(c1, c2, rek);
-								displayGame();
 								System.out.println("invalid, king would be in check");
 								gameboard.getTextDisplay().add("Invalid, king would be in check");
 							} else {
