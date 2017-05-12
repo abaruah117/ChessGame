@@ -1,5 +1,4 @@
-import java.util.*;
-import java.io.*;
+
 
 public abstract class Piece {
 	private String name;

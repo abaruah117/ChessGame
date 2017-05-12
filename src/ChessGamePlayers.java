@@ -1,8 +1,7 @@
 import java.util.*;
-import java.io.*;
 public class ChessGamePlayers {
 	private ArrayList<String> playerNames = new ArrayList<String>(2);//pos 0 = white player, pos 1 = black player
-	private Iterator it = playerNames.iterator();
+	private Iterator<String> it = playerNames.iterator();
 	/**
 	 * Initializes names
 	 * @param p1 the white player's name

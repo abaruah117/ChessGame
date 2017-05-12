@@ -38,25 +38,28 @@ public class Renderer extends Canvas {
 	}
 
 	public void drawBoardPieces(Board b, Camera c, Vector boardTrans,
-			ArrayList<Coord> selected, float rotXAngle) {
+			ArrayList<Coord> selected, Vector rotationAngles) {
 
 		Vector align = new Vector(60, 0, 70);
 
-		Matrix xRot = new Matrix().rotationXMatrix(rotXAngle);
-		double angleRad = Math.toRadians(rotXAngle);
+		Matrix xRot = new Matrix().rotationXMatrix(rotationAngles.getX());
+		Matrix yRot = new Matrix().rotationYMatrix(rotationAngles.getY());
+		Matrix zRot = new Matrix().rotationZMatrix(rotationAngles.getZ()); //TODO get matrixies from engine, not needs but helps fps
+		
 		for (Piece p : b.getWhitePieces()) {
 			Coord pos = p.getCoord();
 			Vector posV = new Vector(
 					-pos.getX()
 							* Board.getTileSize(), 0, -pos.getY()
 							* Board.getTileSize()).add(align);
-			Vector titledPos = new Vector(posV.getX(), (float)(posV.getZ() * Math.sin(-angleRad)), (float)(posV.getZ() * Math.cos(angleRad)));
-			Vector totalTrans = boardTrans.add(titledPos);
+			//Vector titledPos = new Vector((float) (posV.getX() * Math.cos(angleRadY)) , (float)(posV.getZ() * Math.sin(-angleRadX)), (float)(posV.getZ() * Math.cos(angleRadX) + (posV.getX() * Math.sin(-angleRadY))));
+			Vector tiltedPos = posV.muliply(Matrix.multiply(yRot, zRot, xRot));
+			Vector totalTrans = boardTrans.add(tiltedPos);
 			Matrix positon = new Matrix().translationMatrix(totalTrans.getX(),
 					totalTrans.getY(), totalTrans.getZ());
 
 			Mesh m = ModelLoader.getModel(p.getClass().getName()).getMesh(c,
-					Matrix.multiply(positon, xRot));
+					Matrix.multiply(positon, yRot, zRot, xRot));
 			color = new Vector(255, 223, 173);
 
 			drawMesh(m, c);
@@ -70,14 +73,15 @@ public class Renderer extends Canvas {
 					-pos.getX()
 							* Board.getTileSize(), 0, -pos.getY()
 							* Board.getTileSize()).add(align);
-			Vector titledPos = new Vector(posV.getX(), (float)(posV.getZ() * Math.sin(-angleRad)), (float)(posV.getZ() * Math.cos(angleRad)));
-			Vector totalTrans = boardTrans.add(titledPos);
+			//Vector titledPos = new Vector((float) (posV.getX() * Math.cos(angleRadY)) , (float)(posV.getZ() * Math.sin(-angleRadX)), (float)(posV.getZ() * Math.cos(angleRadX) + (posV.getX() * Math.sin(-angleRadY))));
+			Vector tiltedPos = posV.muliply(Matrix.multiply(yRot, zRot, xRot));
+			Vector totalTrans = boardTrans.add(tiltedPos);
 			Matrix positon = new Matrix().translationMatrix(totalTrans.getX(),
 					totalTrans.getY(), totalTrans.getZ());
 
 			Mesh m = ModelLoader.getModel(p.getClass().getName()).getMesh(c,
-					Matrix.multiply(positon, xRot));
-			color = new Vector(100, 100, 100);
+					Matrix.multiply(positon, yRot, zRot, xRot));
+			color = new Vector(150, 150, 150);
 
 			drawMesh(m, c);
 
