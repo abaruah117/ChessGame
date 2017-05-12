@@ -114,7 +114,10 @@ public class Matrix {
 	public Matrix rotationXMatrix(float theta) {
 		float c = (float) Math.cos(Math.toRadians(theta));
 		float s = (float) Math.sin(Math.toRadians(theta));
-		mat = new float[][] { { 1, 0, 0, 0 }, { 0, c, -s, 0 }, { 0, -s, c, 0 },
+		mat = new float[][] { 
+				{ 1, 0, 0, 0 }, 
+				{ 0, c, -s, 0 }, 
+				{ 0, s, c, 0 },
 				{ 0, 0, 0, 1 } };
 		return this;
 	}

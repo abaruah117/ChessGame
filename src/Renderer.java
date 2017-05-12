@@ -37,21 +37,31 @@ public class Renderer extends Canvas {
 
 	}
 
-	public void drawBoard(Board b, Camera c, Matrix boardMatrix,
-			Matrix peiceMatrix, ArrayList<Coord> selected) {
+	public void drawBoardPieces(Board b, Camera c, Vector boardTrans,
+			ArrayList<Coord> selected, Vector rotationAngles) {
 
-		Tile[][] tiles = b.getBoardColor();
-		drawClickableTiles(tiles, boardMatrix, c, selected);
+		Vector align = new Vector(60, 0, 70);
+
+		Matrix xRot = new Matrix().rotationXMatrix(rotationAngles.getX());
+		Matrix yRot = new Matrix().rotationYMatrix(rotationAngles.getY());
+		Matrix zRot = new Matrix().rotationZMatrix(rotationAngles.getZ()); //TODO get matrixies from engine, not needs but helps fps
+		
 		for (Piece p : b.getWhitePieces()) {
-
 			Coord pos = p.getCoord();
-			Matrix position = new Matrix()
-					.translationMatrix(-pos.getX() * Board.getTileSize(), 0,
-							-pos.getY() * Board.getTileSize());
+			Vector posV = new Vector(
+					-pos.getX()
+							* Board.getTileSize(), 0, -pos.getY()
+							* Board.getTileSize()).add(align);
+			//Vector titledPos = new Vector((float) (posV.getX() * Math.cos(angleRadY)) , (float)(posV.getZ() * Math.sin(-angleRadX)), (float)(posV.getZ() * Math.cos(angleRadX) + (posV.getX() * Math.sin(-angleRadY))));
+			Vector tiltedPos = posV.muliply(Matrix.multiply(yRot, zRot, xRot));
+			Vector totalTrans = boardTrans.add(tiltedPos);
+			Matrix positon = new Matrix().translationMatrix(totalTrans.getX(),
+					totalTrans.getY(), totalTrans.getZ());
+
 			Mesh m = ModelLoader.getModel(p.getClass().getName()).getMesh(c,
-					Matrix.multiply(position, peiceMatrix));
+					Matrix.multiply(positon, yRot, zRot, xRot));
 			color = new Vector(255, 223, 173);
-			
+
 			drawMesh(m, c);
 
 		}
@@ -59,23 +69,38 @@ public class Renderer extends Canvas {
 		for (Piece p : b.getBlackPieces()) {
 
 			Coord pos = p.getCoord();
-			Matrix position = new Matrix()
-					.translationMatrix(-pos.getX() * Board.getTileSize(), 0,
-							-pos.getY() * Board.getTileSize());
+			Vector posV = new Vector(
+					-pos.getX()
+							* Board.getTileSize(), 0, -pos.getY()
+							* Board.getTileSize()).add(align);
+			//Vector titledPos = new Vector((float) (posV.getX() * Math.cos(angleRadY)) , (float)(posV.getZ() * Math.sin(-angleRadX)), (float)(posV.getZ() * Math.cos(angleRadX) + (posV.getX() * Math.sin(-angleRadY))));
+			Vector tiltedPos = posV.muliply(Matrix.multiply(yRot, zRot, xRot));
+			Vector totalTrans = boardTrans.add(tiltedPos);
+			Matrix positon = new Matrix().translationMatrix(totalTrans.getX(),
+					totalTrans.getY(), totalTrans.getZ());
+
 			Mesh m = ModelLoader.getModel(p.getClass().getName()).getMesh(c,
-					Matrix.multiply(position, peiceMatrix));
-			color = new Vector(100, 100, 100);
+					Matrix.multiply(positon, yRot, zRot, xRot));
+			color = new Vector(150, 150, 150);
+
 			drawMesh(m, c);
 
 		}
 
 	}
 
+	public void drawBoardTiles(Board b, Matrix boardMatrix, Camera c,
+			ArrayList<Coord> selected) {
+		Tile[][] tiles = b.getBoardColor();
+		drawClickableTiles(tiles, boardMatrix, c, selected);
+	}
+
 	public void drawClickableTiles(Tile[][] tiles, Matrix transform,
 			Camera camera, ArrayList<Coord> selected) {
-		//System.out.println();
+		// System.out.println();
 		for (int y = 0; y < tiles.length; y++) {
 			for (int x = 0; x < tiles[y].length; x++) {
+
 				Mesh m = tiles[y][x]
 						.getMesh(camera, Matrix.multiply(transform,
 								new Matrix().translationMatrix(
@@ -83,34 +108,37 @@ public class Renderer extends Canvas {
 												* Board.getTileSize(),
 										0,
 										(y - tiles.length / 2f)
-											* Board.getTileSize())));
+												* Board.getTileSize())));
 				boolean usedNewTexture = false;
-				if(tiles[y][x].isWhite()) {
-					for(Coord c:selected){
-						if(c.toVector().equals(tiles[y][x].getPos())) {
-							setTexture(ModelLoader.getTexture("whiteSquareSelected"));
-							//System.out.println("found a white square that has been selected");
+				if (tiles[y][x].isWhite()) {
+					for (Coord c : selected) {
+						if (c.toVector().equals(tiles[y][x].getPos())) {
+							setTexture(ModelLoader
+									.getTexture("whiteSquareSelected"));
+							// System.out.println("found a white square that has been selected");
 							usedNewTexture = true;
 						}
 					}
 				}
-				if(!tiles[y][x].isWhite()) {
-					for(Coord c:selected){
-						//System.out.println("Vector we want " + c.toVector());
-						//System.out.println("Vector we checkeing " + tiles[y][x].getPos());
-						if(c.toVector().equals(tiles[y][x].getPos())) {
-							//System.out.println("found a black square that has been selected");
-							setTexture(ModelLoader.getTexture("blackSquareSelected"));
+				if (!tiles[y][x].isWhite()) {
+					for (Coord c : selected) {
+						// System.out.println("Vector we want " + c.toVector());
+						// System.out.println("Vector we checkeing " +
+						// tiles[y][x].getPos());
+						if (c.toVector().equals(tiles[y][x].getPos())) {
+							// System.out.println("found a black square that has been selected");
+							setTexture(ModelLoader
+									.getTexture("blackSquareSelected"));
 							usedNewTexture = true;
 						}
 					}
-				} 
-			
-				if(!usedNewTexture) {
-					//System.out.println("Using norm tile");
+				}
+
+				if (!usedNewTexture) {
+					// System.out.println("Using norm tile");
 					setTexture(m.getTexture());
 				}
-				
+
 				OBJModel model = m.getModel();
 
 				Vertex v1 = model.getVertex(0).multiply(m.getTransform())

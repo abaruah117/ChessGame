@@ -1,9 +1,5 @@
 import java.util.*;
-import java.util.concurrent.SynchronousQueue;
-
 import javax.swing.JOptionPane;
-
-import java.io.*;
 
 public class ChessGame {
 
@@ -406,19 +402,23 @@ public class ChessGame {
 				System.exit(0);
 			}
 			System.out.println(((color.getBool()) ? "white" : "black") + " king is in check");
+			gameboard.getTextDisplay().add(((color.getBool()) ? "white" : "black") + " king is in check");
 			if (getPiece(c1) == null) {
 				System.out.println("no piece to move");
+				gameboard.getTextDisplay().add("No piece to move", 5);
 			} else {
 				Piece p1 = getPiece(c1);
-				boolean pawn = p1 instanceof Pawn;
+				//boolean pawn = p1 instanceof Pawn;
 				if (p1.getBooleanColor() != color.getBool()) {
 					System.out.println("Move a piece of your color, please");
+					gameboard.getTextDisplay().add("Move a piece of your color, please", 5);
 				} else {
 					if (getPiece(c2) != null) {
 						Piece p2 = getPiece(c2);
 						if (attack(c1, c2) != null) {
 							if (check(color.getBool())) {
 								System.out.println("STILL IN CHECK, INVALID");
+								gameboard.getTextDisplay().add("Still in check!");
 								revertMove(c1, c2, p2);
 							} else {
 								color.swap();
@@ -428,9 +428,11 @@ public class ChessGame {
 					} else {
 						if (!movePiece(c1, c2)) {
 							System.out.println("invalid move");
+							gameboard.getTextDisplay().add("Invalid move", 5);
 						} else {
 							if (check(color.getBool())) {
 								System.out.println("STILL IN CHECK, INVALID");
+								gameboard.getTextDisplay().add("Still in check!");
 								revertMove(c1, c2, null);
 							}
 							else{
@@ -446,14 +448,17 @@ public class ChessGame {
 		} else {
 			if (getPiece(c1) == null) {
 				System.out.println("no piece to move");
+				gameboard.getTextDisplay().add("No piece to move");
 			} else {
 				Piece p = getPiece(c1);
 				if (p.getBooleanColor() != color.getBool()) {
 					System.out.println("Move a piece of your color, please");
+					gameboard.getTextDisplay().add("Move a piece of your color, please");
 				} else {
 					if (p instanceof King) {
 						if (!castle(color.getBool(), c2)) {
 							System.out.println("invalid castle");
+							gameboard.getTextDisplay().add("Invalid castle");
 						} else {
 							color.swap();
 						}
@@ -468,6 +473,7 @@ public class ChessGame {
 								revertMove(c1, c2, rek);
 								displayGame();
 								System.out.println("invalid, king would be in check");
+								gameboard.getTextDisplay().add("Invalid, king would be in check");
 							} else {
 								promote(c2);
 								System.out.println("WE GOOD THO");
@@ -479,6 +485,7 @@ public class ChessGame {
 						System.out.println("GONNA MOVE!!!");
 						if (!movePiece(c1, c2)) {
 							System.out.println("invalid move");
+							gameboard.getTextDisplay().add("Invalid move");
 						} else {
 							System.out.println(
 									"CHECKING CHECK: NO ATTACK: " + color.getBool() + " " + check(color.getBool()));
@@ -627,26 +634,26 @@ public class ChessGame {
 		return targets;
 	}
 
-	public static void main(String[] args) {
-		ModelLoader.init("res");
-		ModelLoader.loadModel("blackSquare", new Matrix().identityMatrix(), false);
-		ModelLoader.loadModel("whiteSquare", new Matrix().identityMatrix(), false);
-		Board b = new Board();
-		ChessGame a = new ChessGame("xd", "xd", b);
-		a.movePiece(new Coord(4, 1), new Coord(4, 3));
-		a.movePiece(new Coord(4, 3), new Coord(4, 4));
-		a.movePiece(new Coord(4, 4), new Coord(4, 5));
-		a.displayGame();
-		System.out.println(a.movePiece(new Coord(4, 5), new Coord(4, 6)));
-		a.movePiece(new Coord(3, 0), new Coord(6, 3));
-		a.movePiece(new Coord(6, 3), new Coord(6, 4));
-		a.movePiece(new Coord(6, 4), new Coord(4, 6));
-		a.movePiece(new Coord(4, 6), new Coord(7, 3));
-		a.displayGame();
-		a.movePiece(new Coord(4, 5), new Coord(4, 6));
-		a.run(new Coord(4, 6), new Coord(3, 7), new SwapBool(true));
-		System.out.println(a.getPiece(new Coord(3, 7)));
-		a.movePiece(new Coord(3, 7), new Coord(5, 5));
-		a.displayGame();
-	}
+//	public static void main(String[] args) {
+//		ModelLoader.init("res");
+//		ModelLoader.loadModel("blackSquare", new Matrix().identityMatrix(), false);
+//		ModelLoader.loadModel("whiteSquare", new Matrix().identityMatrix(), false);
+//		Board b = new Board();
+//		ChessGame a = new ChessGame("xd", "xd", b);
+//		a.movePiece(new Coord(4, 1), new Coord(4, 3));
+//		a.movePiece(new Coord(4, 3), new Coord(4, 4));
+//		a.movePiece(new Coord(4, 4), new Coord(4, 5));
+//		a.displayGame();
+//		System.out.println(a.movePiece(new Coord(4, 5), new Coord(4, 6)));
+//		a.movePiece(new Coord(3, 0), new Coord(6, 3));
+//		a.movePiece(new Coord(6, 3), new Coord(6, 4));
+//		a.movePiece(new Coord(6, 4), new Coord(4, 6));
+//		a.movePiece(new Coord(4, 6), new Coord(7, 3));
+//		a.displayGame();
+//		a.movePiece(new Coord(4, 5), new Coord(4, 6));
+//		a.run(new Coord(4, 6), new Coord(3, 7), new SwapBool(true));
+//		System.out.println(a.getPiece(new Coord(3, 7)));
+//		a.movePiece(new Coord(3, 7), new Coord(5, 5));
+//		a.displayGame();
+//	}
 }

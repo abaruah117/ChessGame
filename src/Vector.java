@@ -52,15 +52,15 @@ public class Vector {
 	}
 
 	public float getX() {
-		return x;
+		return x%45==0?x+.01f:x;
 	}
 
 	public float getY() {
-		return y;
+		return y%45==0?y+.01f:y;
 	}
 
 	public float getZ() {
-		return z;
+		return z%45==0?z+.01f:z;
 	}
 
 	public float length() {
@@ -126,19 +126,6 @@ public class Vector {
 		return "Vector [x=" + x + ", y=" + y + ", z=" + z + ", w=" + w + "]";
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Float.floatToIntBits(w);
-		result = prime * result + Float.floatToIntBits(x);
-		result = prime * result + Float.floatToIntBits(y);
-		result = prime * result + Float.floatToIntBits(z);
-		return result;
-	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)

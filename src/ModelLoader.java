@@ -9,7 +9,7 @@ public class ModelLoader {
 	private static Map<String, Model> models;
 	private static Map<String, Canvas> textures;
 	private static String directoryPath;
-	
+
 	public static Model getModel(String name) {
 		Model m =  models.get(name);
 		if(m == null) {
@@ -19,8 +19,8 @@ public class ModelLoader {
 		return m;
 	}
 	
-	@SuppressWarnings("serial")
 	public static void init(String dirString) {
+
 		models = new HashMap<String, Model>();
 		textures = new HashMap<String, Canvas>();
 		directoryPath = dirString;
@@ -32,6 +32,7 @@ public class ModelLoader {
 	
 	public static void loadModel(String name, Matrix modelMatrix, boolean smoothNormals) {
 		System.out.println("Loading " + name);
+
 		File modelFile = new File(directoryPath + "/" + name + ".obj");
 		if(!modelFile.exists()) {
 			System.err.println("The file at " + modelFile.getAbsolutePath() + " does not exist");

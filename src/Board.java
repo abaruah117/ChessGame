@@ -4,6 +4,7 @@ import java.util.StringJoiner;
 public class Board {
 	private static int SIZE = 8;
 	private static final int TILE_SIZE = 20;
+	private TextDisplay textDisplay;
 
 	public static int getSize() {
 		return SIZE;
@@ -30,14 +31,8 @@ public class Board {
 
 	private ArrayList<Piece> blackPieces = new ArrayList<Piece>();
 
-	public Board() {
-		// for (int i = 0; i < board.length; i++) {
-		// for (int j = 0; j < board[0].length; j++) {
-		// if ((i + j) % 2 == 0) {
-		// boardColor[i][j] = true;
-		// }
-		// }
-		// }
+	public Board(Renderer screen) {
+		textDisplay = new TextDisplay(screen.getGraphics(), screen.getWidth());
 		for (int i = 0; i < SIZE; i++) {
 			for (int j = 0; j < SIZE; j++) {
 				if ((i + j) % 2 == 0) {
@@ -89,6 +84,7 @@ public class Board {
 		return true;
 	}
 
+	@SuppressWarnings("unused")
 	private String displayColor(boolean color) {
 		if (color) {
 			return "WHITE";
@@ -272,6 +268,10 @@ public class Board {
 		if (p != null) {
 			p.setCoord(c);
 		}
+	}
+
+	public TextDisplay getTextDisplay() {
+		return textDisplay;
 	}
 
 }
