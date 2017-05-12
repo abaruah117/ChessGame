@@ -1,5 +1,8 @@
 import java.util.*;
 import java.util.concurrent.SynchronousQueue;
+
+import javax.swing.JOptionPane;
+
 import java.io.*;
 
 public class ChessGame {
@@ -135,7 +138,7 @@ public class ChessGame {
 			}
 		}
 		for (Coord c1 : onTheWay) {
-			if (squareIsTargeted(!color, c1)) { // TODO iffy
+			if (squareIsTargeted(!color, c1)||gameboard.pieceAt(c1)!=null) { // TODO iffy
 				return false;
 			}
 		}
@@ -144,8 +147,8 @@ public class ChessGame {
 		gameboard.setPiece(new Coord(4, y), null);
 		gameboard.setPiece(new Coord(outerbound, y), null);
 		gameboard.setPiece(c, king);
-		int newX = 4 - (c.getX() - outerbound-1) / 2;
-		System.out.println(newX+" x "+outerbound+" outer "+c.getX());
+		int newX = 4 - (c.getX() - outerbound - 1) / 2;
+		System.out.println(newX + " x " + outerbound + " outer " + c.getX());
 		gameboard.setPiece(new Coord(newX, y), rook);
 		return true;
 	}
@@ -175,7 +178,9 @@ public class ChessGame {
 		}
 		if (squareIsTargeted(!color, c)) {
 			Piece p = gameboard.pieceAt(c);
-			((King) p).checked();
+			if (p != null) {
+				((King) p).checked();
+			}
 			return true;
 		} else {
 			return false;
@@ -187,7 +192,7 @@ public class ChessGame {
 	 * 
 	 * @param color
 	 * @return
-	 */
+	 */ //TODO for CHECKMATE, CHECK IF PIECE TARGETING KING IS TARGETED, CHECK IF SQUARES BETWEEN THAT PIECE AND KING IS TARGETED, if either are true, then ye! 
 	public boolean checkMate(boolean color) {
 		Coord c = null;
 		Piece king = null;
@@ -214,15 +219,6 @@ public class ChessGame {
 			System.out.println("KING: " + c.toString() + " is in check");
 			ArrayList<Coord> surr = Coord.surrounding(c);
 			for (Coord d : surr) {
-				// System.out.println("surrounding coordinate: " +
-				// d.toString());
-				// System.out.println("free square: " + d.toString() + " " +
-				// !squareIsTargeted(!color, d));
-				// System.out.println("occupied square: " + d.toString() + " " +
-				// gameboard.pieceAt(d));
-				// System.out.println("Attacking square " + d.toString() + " "
-				// + (gameboard.pieceAt(d).getBooleanColor() !=
-				// king.getBooleanColor()));
 				if (!squareIsTargeted(!color, d) && gameboard.pieceAt(d) == null) {
 					System.out.println("king can move");
 					lose = false;
@@ -355,6 +351,35 @@ public class ChessGame {
 		}
 		return false;
 	}
+	public boolean promote(Coord c){
+		Piece p = gameboard.pieceAt(c);
+		if(p==null){
+			return false;
+		}
+		else if(!(p instanceof Pawn)){
+			return false;
+		}
+		Pawn pawn = (Pawn)p;
+		boolean color = pawn.getBooleanColor();
+		if(!pawn.promote()){
+			return false;
+		}
+		else{//legal promotion
+			Piece[] choices = {new Rook(color,c),new Knight(color, c), new Bishop(color,c),new Queen(color,c)};
+			int rc = JOptionPane.showOptionDialog(null, "Choose a piece to promote your pawn to: ", "Promotion", JOptionPane.WARNING_MESSAGE, 0, null, choices, null);
+			Piece pNew = choices[rc];
+			if(color){
+				whitePieces.remove(p);
+				whitePieces.add(pNew);
+			}
+			else{
+				blackPieces.remove(p);
+				blackPieces.add(pNew);
+			}
+			gameboard.setPiece(c, pNew);
+			return true;
+		}
+	}
 
 	public void revertMove(Coord cStart, Coord cFinal, Piece p) {
 		gameboard.setPiece(cStart, gameboard.pieceAt(cFinal));
@@ -385,6 +410,7 @@ public class ChessGame {
 				System.out.println("no piece to move");
 			} else {
 				Piece p1 = getPiece(c1);
+				boolean pawn = p1 instanceof Pawn;
 				if (p1.getBooleanColor() != color.getBool()) {
 					System.out.println("Move a piece of your color, please");
 				} else {
@@ -396,50 +422,20 @@ public class ChessGame {
 								revertMove(c1, c2, p2);
 							} else {
 								color.swap();
-								boolean valid = false;
-								while (!valid) {
-									System.out.println("Enter the piece you want to promote the pawn too");
-									String b = (new Scanner(System.in)).next();
-									b = b.trim().toLowerCase();
-									switch (b) {
-									case "queen":
-										gameboard.setPiece(p1.getCoord(),
-												new Queen(p1.getBooleanColor(), p1.getCoord()));
-										valid = true;
-										break;
-
-									case "rook":
-										gameboard.setPiece(p1.getCoord(),
-												new Rook(p1.getBooleanColor(), p1.getCoord()));
-										valid = true;
-										break;
-
-									case "knight":
-										gameboard.setPiece(p1.getCoord(),
-												new Knight(p1.getBooleanColor(), p1.getCoord()));
-										valid = true;
-										break;
-
-									case "bishop":
-										gameboard.setPiece(p1.getCoord(),
-												new Bishop(p1.getBooleanColor(), p1.getCoord()));
-										valid = true;
-										break;
-									default:
-										System.out.println("error, invalid piece name");
-									}
-								}
+								promote(c2);
 							}
 						}
 					} else {
 						if (!movePiece(c1, c2)) {
 							System.out.println("invalid move");
-							color.swap();
 						} else {
 							if (check(color.getBool())) {
 								System.out.println("STILL IN CHECK, INVALID");
-								color.swap();
 								revertMove(c1, c2, null);
+							}
+							else{
+								promote(c2);
+								color.swap();
 							}
 						}
 					}
@@ -473,41 +469,7 @@ public class ChessGame {
 								displayGame();
 								System.out.println("invalid, king would be in check");
 							} else {
-								if (p.getClass().getName().equalsIgnoreCase("pawn") && ((Pawn) p).promote()) {
-									boolean valid = false;
-									while (!valid) {
-										System.out.println("Enter the piece you want to promote the pawn too");
-										String b = (new Scanner(System.in)).next();
-										b = b.trim().toLowerCase();
-										switch (b) {
-										case "queen":
-											gameboard.setPiece(p.getCoord(),
-													new Queen(p.getBooleanColor(), p.getCoord()));
-											valid = true;
-											break;
-
-										case "rook":
-											gameboard.setPiece(p.getCoord(),
-													new Rook(p.getBooleanColor(), p.getCoord()));
-											valid = true;
-											break;
-
-										case "knight":
-											gameboard.setPiece(p.getCoord(),
-													new Knight(p.getBooleanColor(), p.getCoord()));
-											valid = true;
-											break;
-
-										case "bishop":
-											gameboard.setPiece(p.getCoord(),
-													new Bishop(p.getBooleanColor(), p.getCoord()));
-											valid = true;
-											break;
-										default:
-											System.out.println("error, invalid piece name");
-										}
-									}
-								}
+								promote(c2);
 								System.out.println("WE GOOD THO");
 								color.swap();
 
@@ -524,6 +486,7 @@ public class ChessGame {
 								System.out.println("GONNA MOVE PIECE BACK");
 								revertMove(c1, c2, null);
 							} else {
+								promote(c2);
 								color.swap();
 							}
 

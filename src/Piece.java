@@ -49,7 +49,7 @@ public abstract class Piece {
 
 	public boolean equals(Piece other){
 		return this.getName()==other.getName() && this.getBooleanColor() == other.getBooleanColor()
-				&& this.getCoord() == other.getCoord();
+				&& this.getCoord().equals(other.getCoord());
 	}
 
 	/**
@@ -76,6 +76,15 @@ public abstract class Piece {
 
 	public int getPointVal() {
 		return pointVal;
+	}
+	public String info(){
+		String color = "color: ";
+		if (this.color) {
+			color += "white";
+		} else {
+			color += "black";
+		}
+		return "piece: " + getName() + " value: " + getPointVal() + " " + color+" "+pos.toString()+" ";
 	}
 	public abstract boolean legalMove(Coord c);
 	public void setColor(boolean b) {
@@ -104,13 +113,7 @@ public abstract class Piece {
 	}
 
 	public String toString() {
-		String color = "color: ";
-		if (this.color) {
-			color += "white";
-		} else {
-			color += "black";
-		}
-		return "piece: " + getName() + " value: " + getPointVal() + " " + color+" "+pos.toString()+" ";
+		return this.getName();
 	}
 
 

@@ -43,7 +43,6 @@ public class Renderer extends Canvas {
 		Tile[][] tiles = b.getBoardColor();
 		drawClickableTiles(tiles, boardMatrix, c, selected);
 		for (Piece p : b.getWhitePieces()) {
-			// System.out.println(p.getClass().getName());
 
 			Coord pos = p.getCoord();
 			Matrix position = new Matrix()
@@ -58,7 +57,6 @@ public class Renderer extends Canvas {
 		}
 
 		for (Piece p : b.getBlackPieces()) {
-			// System.out.println(p.getClass().getName());
 
 			Coord pos = p.getCoord();
 			Matrix position = new Matrix()
@@ -66,7 +64,6 @@ public class Renderer extends Canvas {
 							-pos.getY() * Board.getTileSize());
 			Mesh m = ModelLoader.getModel(p.getClass().getName()).getMesh(c,
 					Matrix.multiply(position, peiceMatrix));
-			System.out.println(p.getClass().getName()+" "+p.getCoord().toString());
 			color = new Vector(100, 100, 100);
 			drawMesh(m, c);
 
