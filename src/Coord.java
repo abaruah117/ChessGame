@@ -1,8 +1,28 @@
 import java.util.ArrayList;
 
 public class Coord {
-	public static void main(String[] args) {
-		System.out.println(surrounding(new Coord(1,1)).toString());
+	public static ArrayList<Coord> squaresBetween(Coord c1, Coord c2){
+		ArrayList<Coord> squares = new ArrayList<Coord>();
+		int x1 = c1.getX();
+		int x2 = c2.getX();
+		int y1 = c1.getY();
+		int y2 = c2.getY();
+		int incX = 0;
+		int incY = 0;
+		if (x2 - x1 > 0) {
+			incX = 1;
+		} else if (x2 - x1 < 0) {
+			incX = -1;
+		}
+		if (y2 - y1 > 0) {
+			incY = 1;
+		} else if (y2 - y1 < 0) {
+			incY = -1;
+		}
+		for (int x = x1 + incX, y = y1 + incY; x != x2 || y != y2; x += incX, y += incY) {
+			squares.add(new Coord(x,y));
+		}
+		return squares;
 	}
 	public static ArrayList<Coord> surrounding(Coord c) {
 		ArrayList<Coord> out = new ArrayList<Coord>();
@@ -15,7 +35,7 @@ public class Coord {
 			}
 			if (y < 7) {
 				out.add(new Coord(x - 1, y + 1));
-
+				
 			}
 		}
 		if( x < 7){
@@ -100,6 +120,10 @@ public class Coord {
 		if (y != other.y)
 			return false;
 		return true;
+	}	
+	public static void main(String[] args) {
+		System.out.println(Coord.squaresBetween(new Coord(0,0), new Coord(4,4)));
 	}
+	
 
 }
