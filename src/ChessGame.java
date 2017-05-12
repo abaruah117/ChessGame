@@ -134,7 +134,7 @@ public class ChessGame {
 			}
 		}
 		for (Coord c1 : onTheWay) {
-			if (squareIsTargeted(!color, c1)||gameboard.pieceAt(c1)!=null) { // TODO iffy
+			if (squareIsTargeted(!color, c1) || gameboard.pieceAt(c1) != null) {
 				return false;
 			}
 		}
@@ -184,11 +184,14 @@ public class ChessGame {
 	}
 
 	/**
-	 * Checks if the King of color (passed in as a parameter) is checkmated or stalemated
+	 * Checks if the King of color (passed in as a parameter) is checkmated or
+	 * stalemated
 	 * 
 	 * @param color
 	 * @return
-	 */ //TODO for CHECKMATE, CHECK IF PIECE TARGETING KING IS TARGETED, CHECK IF SQUARES BETWEEN THAT PIECE AND KING IS TARGETED, if either are true, then ye! 
+	 */ // TODO for CHECKMATE, CHECK IF PIECE TARGETING KING IS TARGETED, CHECK
+		// IF SQUARES BETWEEN THAT PIECE AND KING IS TARGETED, if either are
+		// true, then ye!
 	public boolean checkMate(boolean color) {
 		Coord c = null;
 		Piece king = null;
@@ -233,33 +236,55 @@ public class ChessGame {
 			}
 			Iterator<Piece> ab = pieces.iterator();
 			ArrayList<Piece> pieceToKill = new ArrayList<Piece>();
-			while(ab.hasNext()){
+			while (ab.hasNext()) {
 				Piece p = ab.next();
 				Coord pos = p.getCoord();
-				if(targets(pos,c)){
+				if (targets(pos, c)) {
 					pieceToKill.add(p);
 				}
 			}
-			if(pieceToKill.size()>1){
+			if (pieceToKill.size() > 1) {
 				return true;
 			}
-			boolean killAll = true;
-			for(Piece p: pieceToKill){
+			// Postcondition: only one piece targeting
+			boolean kill = true;
+			for (Piece p : pieceToKill) {
 				Coord d = p.getCoord();
-				if(!squareIsTargeted(!color,d)){
-					killAll = false;
+				if (!squareIsTargeted(!color, d)) {
+					kill = false;
 				}
 			}
+			if (!kill) {
+				return false;
+			}
+			ArrayList<Coord> between = new ArrayList<Coord>();
+			for (Piece p : pieceToKill) {
+				Coord d = p.getCoord();
+				between = Coord.squaresBetween(d, c);
+			}
+			if (color) {
+				pieces = whitePieces;
+			} else {
+				pieces = blackPieces;
+			}
+			for (Piece p : pieces) {
+				for (Coord d : between) {
+					if (targets(p.getCoord(), d)) {
+						return false;
+					}
+				}
+			}
+			return true;
+		} else {
+			stale = staleMate(color);
 		}
-		else{
-			stale = true; 
-		}
-		if(stale){
+		if (stale) {
 			gameboard.getTextDisplay().add("GAME IS OVER, DRAW");
 			return true;
 		}
 		return lose;
 	}
+
 	public ArrayList<Piece> getBlackPieces() {
 		return this.blackPieces;
 	}
@@ -346,28 +371,27 @@ public class ChessGame {
 		}
 		return false;
 	}
-	public boolean promote(Coord c){
+
+	public boolean promote(Coord c) {
 		Piece p = gameboard.pieceAt(c);
-		if(p==null){
+		if (p == null) {
+			return false;
+		} else if (!(p instanceof Pawn)) {
 			return false;
 		}
-		else if(!(p instanceof Pawn)){
-			return false;
-		}
-		Pawn pawn = (Pawn)p;
+		Pawn pawn = (Pawn) p;
 		boolean color = pawn.getBooleanColor();
-		if(!pawn.promote()){
+		if (!pawn.promote()) {
 			return false;
-		}
-		else{//legal promotion
-			Piece[] choices = {new Rook(color,c),new Knight(color, c), new Bishop(color,c),new Queen(color,c)};
-			int rc = JOptionPane.showOptionDialog(null, "Choose a piece to promote your pawn to: ", "Promotion", JOptionPane.WARNING_MESSAGE, 0, null, choices, null);
+		} else {// legal promotion
+			Piece[] choices = { new Rook(color, c), new Knight(color, c), new Bishop(color, c), new Queen(color, c) };
+			int rc = JOptionPane.showOptionDialog(null, "Choose a piece to promote your pawn to: ", "Promotion",
+					JOptionPane.WARNING_MESSAGE, 0, null, choices, null);
 			Piece pNew = choices[rc];
-			if(color){
+			if (color) {
 				whitePieces.remove(p);
 				whitePieces.add(pNew);
-			}
-			else{
+			} else {
 				blackPieces.remove(p);
 				blackPieces.add(pNew);
 			}
@@ -379,10 +403,9 @@ public class ChessGame {
 	public void revertMove(Coord cStart, Coord cFinal, Piece p) {
 		gameboard.setPiece(cStart, gameboard.pieceAt(cFinal));
 		gameboard.setPiece(cFinal, p);
-		if(p.getBooleanColor()){
+		if (p.getBooleanColor()) {
 			whitePieces.add(p);
-		}
-		else{
+		} else {
 			blackPieces.add(p);
 		}
 	}
@@ -397,12 +420,13 @@ public class ChessGame {
 	public void run(Coord c1, Coord c2, SwapBool color) {
 		if (check(color.getBool())) {
 			if (checkMate(color.getBool())) {
-				System.out.println("Checkmate: " + ((!color.getBool()) ? "white" : "black") + " wins");
-				String[] choices = {"GG WP"};
-				int rc = JOptionPane.showOptionDialog(null, "GAME OVER", "GameManager", JOptionPane.WARNING_MESSAGE, 0, null, choices, null);
+				String b = (!color.getBool()) ? (this.getChessPlayers().getWhitePlayerName() + " wins")
+						: "The computer wins";
+				String[] choices = { "GG WP " + b };
+				JOptionPane.showOptionDialog(null, "GAME OVER", "GameManager", JOptionPane.WARNING_MESSAGE, 0, null,
+						choices, null);
 				System.exit(0);
 			}
-			System.out.println(((color.getBool()) ? "white" : "black") + " king is in check");
 			gameboard.getTextDisplay().add(((color.getBool()) ? "white" : "black") + " king is in check");
 			if (getPiece(c1) == null) {
 				gameboard.getTextDisplay().add("No piece to move", 5);
@@ -429,8 +453,7 @@ public class ChessGame {
 							if (check(color.getBool())) {
 								gameboard.getTextDisplay().add("Still in check!");
 								revertMove(c1, c2, null);
-							}
-							else{
+							} else {
 								promote(c2);
 								color.swap();
 							}
@@ -449,7 +472,9 @@ public class ChessGame {
 					gameboard.getTextDisplay().add("Move a piece of your color, please");
 				} else {
 					if (p instanceof King) {
-						if (!castle(color.getBool(), c2)) {
+						if (!p.legalMove(c2)) {
+
+						} else if (!castle(color.getBool(), c2)) {
 							gameboard.getTextDisplay().add("Invalid castle");
 						} else {
 							color.swap();
@@ -471,7 +496,7 @@ public class ChessGame {
 						if (!movePiece(c1, c2)) {
 							gameboard.getTextDisplay().add("Invalid move");
 						} else {
-							
+
 							if (check(color.getBool())) {
 								revertMove(c1, c2, null);
 							} else {
@@ -612,9 +637,12 @@ public class ChessGame {
 			pawnAttack = ((Pawn) p1).pawnAttack(c2);
 			return pawnAttack;
 		}
-		boolean targets =((!obstruction) && legal);
+		boolean targets = ((!obstruction) && legal);
 		return targets;
 	}
 
+	public static void main(String[] args) {
+		System.out.println("XD");
+	}
 
 }
