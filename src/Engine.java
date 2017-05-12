@@ -141,14 +141,14 @@ public class Engine {
 
 		SwapBool color = new SwapBool(true);
 		while (true) {
-			float boardTilt = 0 * Time.getTotalTime()/1000000000f;// Dont use 45
-			Matrix trans = new Matrix().translationMatrix(10, 100, -200);
-			Matrix rotX = new Matrix().rotationXMatrix(-boardTilt); 
-			Matrix negRotX = new Matrix().rotationXMatrix(boardTilt);
+			float boardTilt = -5 * Time.getTotalTime()/1000000000f;// Dont use 45
+			Matrix trans = new Matrix().translationMatrix(10, 0, -200);
+			Vector transVector = new Vector(10, 0, -200);
+			Matrix rotX = new Matrix().rotationXMatrix(boardTilt); 
 			Matrix PeiceAlign = new Matrix().translationMatrix(60, 0, 70);
 			Matrix boardAlign = new Matrix().translationMatrix(Board.getTileSize()/2, 0, Board.getTileSize()/2f);
-			Matrix boardMatrix = Matrix.multiply(trans,   boardAlign, rotX);
-			Matrix peiceMatrix = Matrix.multiply(trans, PeiceAlign, negRotX);
+			Matrix boardMatrix = Matrix.multiply(trans, rotX, boardAlign);
+			Matrix peiceMatrix = Matrix.multiply(trans);
 			Time.update();
 
 			renderer.getGraphics().drawString("FPS: " + Time.getLastFrames(),
@@ -159,7 +159,8 @@ public class Engine {
 				selected.clear();
 			}
 			
-			renderer.drawBoard(board, camera, boardMatrix, peiceMatrix, selected);
+			renderer.drawBoardPieces(board, camera, transVector, selected, boardTilt);
+			renderer.drawBoardTiles(board, boardMatrix, camera, selected);
 
 			display.swapBuffers();
 			display.clear(Color.LIGHT_GRAY);
