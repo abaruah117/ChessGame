@@ -7,7 +7,10 @@ import java.util.Scanner;
 
 /**
  * 
- * @author Kevin
+ * @author Amitav & Kevin 
+ * Period 3
+ */
+/*
  *Represents an OBJModel, and can load one from file
  */
 public class OBJModel {

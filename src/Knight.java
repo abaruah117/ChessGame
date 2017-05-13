@@ -1,8 +1,9 @@
-
 /**
  * 
- * @author Amitav
- *
+ * @author Amitav & Kevin 
+ * Period 3
+ */
+/*
  *The Knight class represents a Knight chess piece
  */
 public class Knight extends Piece {
@@ -13,6 +14,7 @@ public class Knight extends Piece {
 	
 	/**
 	 * Checks if the knight can move to a spot
+	 * @param Coord c the Coord which the Knight aims to move to
 	 */
 	@Override
 	public boolean legalMove(Coord c) {

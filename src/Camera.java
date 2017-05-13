@@ -1,11 +1,13 @@
 
 /**
  * 
- * @author Kevin
+ * @author Amitav & Kevin 
+ * Period 3
+ */
+/*
  * The camera class combines the matricies to project the points onto the screen
  */
 public class Camera {
-	
 	private Matrix cameraMatrix, invCameraMatrix;
 	private Vector pos;
 	private Matrix perspectiveMatrix, invPerspectiveMatrix;
@@ -15,7 +17,7 @@ public class Camera {
 	private int screenWidth, screenHeight;
 	
 	/**
-	 * Creates a new camera object
+	 * A constructor that creates a new camera object
 	 * @param screenWidth The width of the screen
 	 * @param screenHeight The height of the screen
 	 * @param right The distance from the center to the right in the world space
@@ -43,7 +45,7 @@ public class Camera {
 	}
 	
 	/**
-	 * 
+	 * A method that gets the camera matrix
 	 * @return The matrix that represents the cameras position and orientation
 	 */
 	public Matrix getCameraMatrix() {
@@ -51,7 +53,7 @@ public class Camera {
 	}
 	
 	/**
-	 * 
+	 * A method that gets the inverse of the camera matrix
 	 * @return The inverse of the camera matrix
 	 */
 	public Matrix getInvCameraMatrix() {
@@ -59,7 +61,7 @@ public class Camera {
 	}
 
 	/**
-	 * 
+	 * A method that gets the inverse perspective matrix
 	 * @return The inverse the perspective matrix, which can be used to go from normalized screen space to clipping space
 	 */
 	public Matrix getInvPerspectiveMatrix() {
@@ -68,7 +70,7 @@ public class Camera {
 
 
 	/**
-	 * 
+	 * A method that gets the inverse of the screen matrix
 	 * @return The inverse of the screen matrix
 	 */
 	public Matrix getInvScreenMatrix() {
@@ -76,7 +78,7 @@ public class Camera {
 	}
 
 	/**
-	 * 
+	 * A method that gets the distance from the camera to the near clipping plane
 	 * @return The distance from the camera to the near clipping plane
 	 */
 	public float getNearCliping() {
@@ -84,7 +86,7 @@ public class Camera {
 	}
 
 	/**
-	 * 
+	 * A method to get the perspective matrix
 	 * @return The perspective matrix which goes from clipping space to normalized screen space
 	 */
 	public Matrix getPerspectiveMatrix() {
@@ -92,15 +94,15 @@ public class Camera {
 	}
 
 	/**
-	 * 
-	 * @return The position of the camera
+	 * A method to get the position vector
+	 * @return A Vector - the position of the camera
 	 */
 	public Vector getPos() {
 		return pos;
 	}
 
 	/**
-	 * 
+	 * A method to get the projectiontransform matrix
 	 * @return The total projection transform, which can go from world space to screen space
 	 */
 	public Matrix getProjectionTransform() {
@@ -108,7 +110,7 @@ public class Camera {
 	}
 	
 	/**
-	 * 
+	 * A method to get the height of the screen
 	 * @return The height of the screen
 	 */
 
@@ -117,7 +119,7 @@ public class Camera {
 	}
 
 	/**
-	 * 
+	 * A method to get the screen matrix
 	 * @return The screen matrix, which goes from normalized screen space to screen space
 	 */
 	public Matrix getScreenMatrix() {
@@ -125,7 +127,7 @@ public class Camera {
 	}
 
 	/**
-	 * 
+	 * A method to get the screen width
 	 * @return The width of the screen
 	 */
 	public int getScreenWidth() {
@@ -133,7 +135,7 @@ public class Camera {
 	}
 
 	/**
-	 * Transforms the camera
+	 * A method which transforms the camera by by a Matrix
 	 * @param t The matrix to transform it by
 	 */
 	public void Transform(Matrix t) {

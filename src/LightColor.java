@@ -1,7 +1,10 @@
 
 /**
  * 
- * @author Kevin Palani
+ * @author Amitav & Kevin 
+ * Period 3
+ */
+/*
  * This class holds information about the color and strength of a light
  */
 public class LightColor {
@@ -26,31 +29,35 @@ public class LightColor {
 	}
 
 	/**
-	 * @return the diffuseColor
-	 */
-	public Vector getDiffuseColor() {
-		return diffuseColor;
-	}
-
-	/**
-	 * @return the ambientColor
-	 */
-	public Vector getAmbientColor() {
-		return ambientColor;
-	}
-
-	/**
-	 * @return the ambientBrightness
+	 * Gets the ambient brightness
+	 * @return the float ambientBrightness
 	 */
 	public float getAmbientBrightness() {
 		return ambientBrightness;
 	}
 
 	/**
-	 * @return the diffuseBrightness
+	 * Gets the ambient color
+	 * @return the ambientColor Vector
+	 */
+	public Vector getAmbientColor() {
+		return ambientColor;
+	}
+
+	/**
+	 * Gets the diffuse brightness
+	 * @return the diffuseBrightness float
 	 */
 	public float getDiffuseBrightness() {
 		return diffuseBrightness;
+	}
+
+	/**
+	 * Gets the diffused color
+	 * @return the diffuseColor Vector
+	 */
+	public Vector getDiffuseColor() {
+		return diffuseColor;
 	}
 
 

@@ -2,37 +2,67 @@ import java.util.ArrayList;
 
 /**
  * 
- * @author Kevin and mostly Amitav
- *The board class represents the chess board, including the tiles and the game pieces
+ * @author Amitav & Kevin 
+ * Period 3
+ */
+/*
+ * The board class represents the chess board, including the tiles and the game
+ * pieces
  */
 public class Board {
 	private static int SIZE = 8;
 	private static final int TILE_SIZE = 20;
-	private TextDisplay textDisplay;
-	private Piece[][] board = new Piece[SIZE][SIZE];
-	private Tile[][] boardColor = new Tile[SIZE][SIZE];
-	private ArrayList<Piece> whitePieces = new ArrayList<Piece>();
-	private ArrayList<Piece> blackPieces = new ArrayList<Piece>();
-
 	/**
+	 * A method to get the size of the board
 	 * 
 	 * @return The size of the board
 	 */
 	public static int getSize() {
 		return SIZE;
 	}
-
 	/**
-	 * 
+	 * A method to get the size of each tile
 	 * @return The model space width of each tile
 	 */
 	public static int getTileSize() {
 		return TILE_SIZE;
 	}
+	private TextDisplay textDisplay;
+	private Piece[][] board = new Piece[SIZE][SIZE];
+	private Tile[][] boardColor = new Tile[SIZE][SIZE];
+
+	private ArrayList<Piece> whitePieces = new ArrayList<Piece>();
+
+	private ArrayList<Piece> blackPieces = new ArrayList<Piece>();
 
 	/**
-	 * Creates a new board object, initializes the board tiles and the game pieces
-	 * @param screen The screen that this board will be drawn to
+	 * A constructor that creates a new Board from a pre-started game
+	 * 
+	 * @param p
+	 *            The 2D array of the pieces
+	 * @param whitePieces
+	 *            The ArrayList of the white pieces
+	 * @param blackPieces
+	 *            The ArrayList of the black pieces
+	 * @precondition Piece[][] p is same size as SIZE * SIZE
+	 */
+	public Board(Piece[][] p, ArrayList<Piece> whitePieces, ArrayList<Piece> blackPieces) {
+		for (int i = 0; i < p.length; i++) {
+			for (int j = 0; j < p[0].length; j++) {
+				board[i][j] = p[i][j];
+			}
+		}
+
+		this.whitePieces = whitePieces;
+		this.blackPieces = blackPieces;
+	}
+
+	/**
+	 * A constructor that creates a new board object, initializes the board tiles and the game
+	 * pieces
+	 * 
+	 * @param screen
+	 *            The screen that this board will be drawn to
 	 */
 	public Board(Renderer screen) {
 		textDisplay = new TextDisplay(screen.getGraphics(), screen.getWidth());
@@ -53,29 +83,11 @@ public class Board {
 	}
 
 	/**
-	 * Creates a new Board from a pre-started game
-	 * @param p The array of the pieces
-	 * @param whitePieces The ArrayList of the white pieces
-	 * @param blackPieces The ArrayList of the black pieces
-	 * @precondition Piece[][] p is same size as SIZE * SIZE
-	 */
-	public Board(Piece[][] p, ArrayList<Piece> whitePieces, ArrayList<Piece> blackPieces) {
-		for (int i = 0; i < p.length; i++) {
-			for (int j = 0; j < p[0].length; j++) {
-				board[i][j] = p[i][j];
-			}
-		}
-
-		this.whitePieces = whitePieces;
-		this.blackPieces = blackPieces;
-	}
-
-	
-
-	/**
-	 * Checks if a given cord is in the board
-	 * @param c The coord to check
-	 * @return If the coord is in the board
+	 * Checks if a given Coord is in the board
+	 * 
+	 * @param c
+	 *            The Coord to check
+	 * @return If the Coord is in the board
 	 */
 	private boolean checkValid(Coord c) {
 		if (c.getX() < 0 || c.getX() >= SIZE || c.getY() < 0 || c.getY() >= SIZE) {
@@ -84,9 +96,8 @@ public class Board {
 		return true;
 	}
 
-
 	/**
-	 * Initializes the board with the correct peices
+	 * Initializes the board with the correct pieces
 	 */
 	private void initBoard() {
 		boolean color = false;
@@ -122,7 +133,7 @@ public class Board {
 	}
 
 	/**
-	 * Adds the peices from the board to the correct array
+	 * Adds the pieces from the board to the correct array, white or black
 	 */
 	private void initPieceArrayLists() {
 		for (int i = 0; i < SIZE; i++) {
@@ -138,31 +149,48 @@ public class Board {
 			}
 		}
 	}
-
-	
-
+	/**
+	 * A getter method for the black pieces
+	 * @return the black pieces as an ArrayList
+	 */
 	public ArrayList<Piece> getBlackPieces() {
 		return blackPieces;
 	}
-
+	/**
+	 * A getter method for the Board's array
+	 * @return the 2D Piece array
+	 */
 	public Piece[][] getBoard() {
 		return board;
 	}
-
+	/**
+	 * A getter method for the Board's Tile array
+	 * @return the 2D Tile array
+	 */
 	public Tile[][] getBoardColor() {
 		return boardColor;
 	}
-
-	public ArrayList<Piece> getWhitePieces() {
-		return whitePieces;
+	/**
+	 * A method to get the TextDisplay instance variable
+	 * @return the TextDisplay object
+	 */
+	public TextDisplay getTextDisplay() {
+		return textDisplay;
 	}
 
 	/**
-	 * Will update hasMoved
-	 * 
-	 * @param cStart
-	 * @param cFinal
-	 * @return
+	 * A getter method for the white pieces
+	 * @return the white pieces as an ArrayList
+	 */
+	public ArrayList<Piece> getWhitePieces() {
+		return whitePieces;
+	}
+	/**
+	 * A method to move a piece, checking for legality and updating instance variables 
+	 * as needed, that returns a boolean.
+	 * @param cStart the Coord of the piece to be moved
+	 * @param cFinal the Coord to move to
+	 * @return true if the piece moved, false for an invalid move
 	 */
 	public boolean movePiece(Coord cStart, Coord cFinal) {
 		if (!checkValid(cStart)) {
@@ -200,7 +228,11 @@ public class Board {
 		}
 		return true;
 	}
-
+	/**
+	 * A method to convert a Vector point symbolizing a mouse click to a actual Coord
+	 * @param point the point that is clicked
+	 * @return a Coord representing the point
+	 */
 	public Coord onClick(Vector point) {
 		for (int y = 0; y < boardColor.length; y++) {
 			for (int x = 0; x < boardColor[y].length; x++) {
@@ -212,7 +244,11 @@ public class Board {
 		return null;
 
 	}
-
+	/**
+	 * A method to get the Piece at a specific Coord in the Board
+	 * @param c the Coord to access the piece at
+	 * @return the Piece at Coord c or null if no piece
+	 */
 	public Piece pieceAt(Coord c) {
 		if (!checkValid(c)) {
 			return null;
@@ -220,7 +256,11 @@ public class Board {
 			return board[SIZE - 1 - c.getY()][c.getX()];
 		}
 	}
-
+	/**
+	 * A method to set a Piece a specific point in the Board 
+	 * @param c the Coord of the location to be set
+	 * @param p the Piece to set at Coord c
+	 */
 	public void setPiece(Coord c, Piece p) {
 		if (!checkValid(c)) {
 			return;
@@ -229,10 +269,6 @@ public class Board {
 		if (p != null) {
 			p.setCoord(c);
 		}
-	}
-
-	public TextDisplay getTextDisplay() {
-		return textDisplay;
 	}
 
 }

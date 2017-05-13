@@ -53,6 +53,7 @@ public class Edge {
 	}
 
 	/**
+	 * Gets the bottom vertex
 	 * @return The bottom vertex
 	 */
 	public Vertex getBot() {
@@ -60,7 +61,7 @@ public class Edge {
 	}
 
 	/**
-	 * 
+	 * Gets the currentX
 	 * @return The current X value based on the current step
 	 */
 	public float getCurrentX() {
@@ -68,6 +69,7 @@ public class Edge {
 	}
 
 	/**
+	 * gets the currentY
 	 * @return The current Y value based on the current step
 	 */
 	public float getCurrentY() {
@@ -75,6 +77,7 @@ public class Edge {
 	}
 
 	/**
+	 * Gets the currentZ
 	 * @return The current Z value based on the current step
 	 */
 	public float getCurrentZ() {
@@ -82,7 +85,7 @@ public class Edge {
 	}
 
 	/**
-	 * 
+	 * Gets the maxX
 	 * @return The maximum X value that can be stepped to
 	 */
 	public float getMaxX() {
@@ -90,7 +93,7 @@ public class Edge {
 	}
 
 	/**
-	 * 
+	 * Gets the maxY
 	 * @return The maximum Y value that can be stepped to
 	 */
 	public float getMaxY() {
@@ -98,7 +101,7 @@ public class Edge {
 	}
 
 	/**
-	 * 
+	 * Gets the maximum Z value
 	 * @return The maximum Z value that can be stepped to
 	 */
 	public float getMaxZ() {
@@ -106,7 +109,7 @@ public class Edge {
 	}
 
 	/**
-	 * 
+	 * Gets the minimum x value
 	 * @return The minimum X value that can be stepped to
 	 */
 	public float getMinX() {
@@ -114,7 +117,7 @@ public class Edge {
 	}
 
 	/**
-	 * 
+	 * gets the minimum Y value
 	 * @return The minimum Y value that can be stepped to
 	 */
 	public float getMinY() {
@@ -122,7 +125,7 @@ public class Edge {
 	}
 
 	/**
-	 * 
+	 * Gets the minimum Z value
 	 * @return The minimum Z value that can be stepped to
 	 */
 	public float getMinZ() {

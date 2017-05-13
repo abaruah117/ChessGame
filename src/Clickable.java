@@ -4,8 +4,11 @@ import java.util.Comparator;
 
 /**
  * 
- * @author Kevin Palani
- * A class used to calculate if the used has clicked inside a quadralateral
+ * @author Amitav & Kevin 
+ * Period 3
+ */
+/*
+ * A class used to calculate if the used has clicked inside a quadrilateral
  */
 public class Clickable {
     
@@ -13,7 +16,7 @@ public class Clickable {
     private float slopeLeft, slopeRight, slopeTop, slopeBot;
     
     /**
-     * Creates a new Clickable
+     * Constructor that creates a new Clickable
      * @param topLeft The top left coord
      * @param topRight The top right coord
      * @param botLeft The bot left coord
@@ -44,19 +47,10 @@ public class Clickable {
 		Vector[] sortingXBot = new Vector[]{sortingY[2], sortingY[3]};
 		Arrays.sort(sortingXTop, xCompare);
 		Arrays.sort(sortingXBot, xCompare);
-		
-//		System.out.println(topLeft + " " + botLeft);
-//		System.out.println(Arrays.toString(sortingY));
 		this.topLeft = sortingXTop[1];
 		this.topRight = sortingXTop[0];
 		this.botLeft = sortingXBot[1];
 		this.botRight = sortingXBot[0];
-		
-//		System.out.println("topleft " + topLeft );
-//		System.out.println("topRight " + topRight );
-//		System.out.println("botLeft " + botLeft );
-//		System.out.println("botRight " + botRight );
-//		System.exit(0);
 		slopeTop = (this.topLeft.getY() - this.topRight.getY())/(this.topLeft.getX() - this.topRight.getX());
 		slopeBot = (this.botLeft.getY() - this.botRight.getY())/(this.botLeft.getX() - this.botRight.getX());
 		slopeLeft = (this.botLeft.getX() - this.topLeft.getX())/(this.botLeft.getY() - this.topLeft.getY());
@@ -107,12 +101,6 @@ public class Clickable {
 	public boolean testClick(Vector point) {
 		float x = point.getX();
 		float y = point.getY();
-//		System.out.println("Clicked at " + x + ", " + y);
-//		System.out.println("Bounds:");
-//		System.out.println("minX: " + getMinX(y));
-//		System.out.println("maxX: " + getMaxX(y));
-//		System.out.println("minY: " + getMinY(x));
-//		System.out.println("maxY: " + getMaxY(x));
 		return x > getMinX(y) && x <= getMaxX(y) && y > getMinY(x) && y <= getMaxY(x);
 	}
 	

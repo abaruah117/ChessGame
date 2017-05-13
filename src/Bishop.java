@@ -1,9 +1,11 @@
 
-
 /**
  * 
- * @author Amitav
- *A class that represents a bishop chess peice
+ * @author Amitav & Kevin 
+ * Period 3
+ */
+/*
+ *A class that represents a bishop chess piece
  */
 public class Bishop extends Piece {
 	public Bishop(boolean color,Coord pos){
@@ -12,6 +14,8 @@ public class Bishop extends Piece {
 
 	/**
 	 * Checks to see if the bishop is allowed to move to a spot, which are diagonal spots
+	 * @param Coord c - the spot to check if it is a valid move
+	 * @return true if valid move, false if not
 	 */
 	@Override
 	public boolean legalMove(Coord c) {

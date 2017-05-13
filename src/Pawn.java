@@ -1,4 +1,11 @@
-
+/**
+ * 
+ * @author Amitav & Kevin 
+ * Period 3
+ */
+/*
+ * A class representing a Pawn chess piece
+ */
 public class Pawn extends Piece {
 	public static void main(String[] args) {
 		Pawn b = new Pawn(false, new Coord(2, 6));
@@ -10,7 +17,12 @@ public class Pawn extends Piece {
 	}
 
 	private boolean promote = false;
-
+	/**
+	 * Initializes Pawn to a piece with name "pawn", a boolean color and a position, 
+	 * and sets promote to false unless it is at the 7th or 0th row.
+	 * @param color the color boolean
+	 * @param pos the position Coord
+	 */
 	public Pawn(boolean color, Coord pos) {
 		super("pawn", color, pos);
 		if (color && pos.getY() == 7) {
@@ -20,7 +32,11 @@ public class Pawn extends Piece {
 			promote = true;
 		}
 	}
-
+	
+	/**
+	 * Checks legality of a move to Coord c
+	 * @param Coord c the Coord to check if legal move
+	 */
 	@Override
 	public boolean legalMove(Coord c) {
 		int x1 = this.getCoord().getX();
@@ -57,7 +73,11 @@ public class Pawn extends Piece {
 		}
 
 	}
-
+	
+	/**
+	 * Checks legality of a pawn attacking Coord c
+	 * @param Coord c the Coord to check if this Pawn can legally attack Coord c
+	 */
 	public boolean pawnAttack(Coord c2) {
 		Coord pos = this.getCoord();
 		int diffX = Math.abs(c2.getX() - pos.getX());
@@ -78,11 +98,12 @@ public class Pawn extends Piece {
 
 	}
 
+	/**
+	 * Checks if this pawn can be promoted
+	 * @return this pawn can be promoted
+	 */
 	public boolean promote() {
 		return promote;
-	}
-	public String toString(){
-		return super.toString()+" promotion-capable: "+promote();
 	}
 
 }

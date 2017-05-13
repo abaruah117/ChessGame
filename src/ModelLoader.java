@@ -17,6 +17,38 @@ public class ModelLoader {
 
 
 	/**
+	 * Gets a a model from memory<b>
+	 * Must of been loaded beforehand <b>
+	 * Use the same name used to load the model
+	 * @param name The name of the model
+	 * @return The model
+	 */
+	public static Model getModel(String name) {
+		Model m =  models.get(name);
+		if(m == null) {
+			System.err.println("The model for " + name + " does not exists");
+			System.exit(1);
+		}
+		return m;
+	}
+	
+	/**
+	 * Gets a a texture from memory<b>
+	 * Must of been loaded beforehand <b>
+	 * Use the same name used to load the texture
+	 * @param name The name of the texture
+	 * @return The texture
+	 */
+	public static Canvas getTexture(String name) {
+		Canvas c =  textures.get(name);
+		if(c == null) {
+			System.err.println("The model for " + name + " does not exists");
+			System.exit(1);
+		}
+		return c;
+	}
+	
+	/**
 	 * Initializes the model loader to search in a directory. All files to be loaded must be in this folder
 	 * @param dirString
 	 */
@@ -76,38 +108,6 @@ public class ModelLoader {
 	public static void loadTexture(String name) {
 		Canvas s = new Canvas(directoryPath + "/" + name + ".png");
 		textures.put(name, s);
-	}
-	
-	/**
-	 * Gets a a texture from memory<b>
-	 * Must of been loaded beforehand <b>
-	 * Use the same name used to load the texture
-	 * @param name The name of the texture
-	 * @return The texture
-	 */
-	public static Canvas getTexture(String name) {
-		Canvas c =  textures.get(name);
-		if(c == null) {
-			System.err.println("The model for " + name + " does not exists");
-			System.exit(1);
-		}
-		return c;
-	}
-	
-	/**
-	 * Gets a a model from memory<b>
-	 * Must of been loaded beforehand <b>
-	 * Use the same name used to load the model
-	 * @param name The name of the model
-	 * @return The model
-	 */
-	public static Model getModel(String name) {
-		Model m =  models.get(name);
-		if(m == null) {
-			System.err.println("The model for " + name + " does not exists");
-			System.exit(1);
-		}
-		return m;
 	}
 	
 }

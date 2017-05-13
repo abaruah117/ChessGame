@@ -5,7 +5,10 @@ import java.util.ArrayList;
 
 /**
  * 
- * @author Kevin
+ * @author Amitav & Kevin 
+ * Period 3
+ */
+/*
  *This class deals with getting input from the mouse and changing the game in response
  */
 public class InputManager implements MouseListener, MouseMotionListener{
@@ -25,9 +28,25 @@ public class InputManager implements MouseListener, MouseMotionListener{
 		this.selected = selected;
 		this.board = board;
 	}
-	
+	/**
+	 * Gets the rotations Vector
+	 * @return the rotations Vector
+	 */
+	public Vector getRotations() {
+		return rotations;
+	}
+
+	/**
+	 * Gets the selected Coordinates
+	 * @return The array list of selected cords
+	 */
+	public ArrayList<Coord> getSelected() {
+		return selected;
+	}
+
 	/**
 	 * Selects the correct piece based on where the mouse was clicked, and resets board orientation
+	 * @param MouseEvent e the mouse was clicked
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -53,41 +72,9 @@ public class InputManager implements MouseListener, MouseMotionListener{
 		
 	}
 
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stubS
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		
-	}
-
-	/**
-	 * Resets the deltas when the mouse is released
-	 */
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		lastPos = new Vector(-1, -1, -1);
-	}
-
-	/**
-	 * 
-	 * @return The array list of selected cords
-	 */
-	public ArrayList<Coord> getSelected() {
-		return selected;
-	}
-
 	/**
 	 * Deals with dragging the mouse, updates deltas and rotates board
+	 * @param MouseEvent e the mouse's actions
 	 */
 	@Override
 	public void mouseDragged(MouseEvent e) {
@@ -116,13 +103,32 @@ public class InputManager implements MouseListener, MouseMotionListener{
 	}
 
 	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stubS
+		
+	}
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
 	public void mouseMoved(MouseEvent paramMouseEvent) {
 		// TODO Auto-generated method stub
 		
 	}
+	@Override
+	public void mousePressed(MouseEvent e) {
+		
+	}
 
-	public Vector getRotations() {
-		return rotations;
+	/**
+	 * Resets the deltas when the mouse is released
+	 * @param MouseEvent e the mouse's actions
+	 */
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		lastPos = new Vector(-1, -1, -1);
 	}
 
 

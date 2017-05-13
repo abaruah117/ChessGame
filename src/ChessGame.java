@@ -3,14 +3,21 @@ import javax.swing.JOptionPane;
 
 /**
  * 
- * @author Amitav
- *The chess game class contains all the methods to play chess <b> Each method deals with a specific event in chess
+ * @author Amitav & Kevin 
+ * Period 3
+ */
+/*
+ * The chess game class contains all the methods to play chess 
+ * Each method deals with a specific event in chess
  */
 public class ChessGame {
-
+	public static void main(String[] args) {
+		System.out.println("XD");
+	}
 	private ChessGamePlayers players;
 	private Board gameboard;
 	private ArrayList<Piece> blackRemoved = new ArrayList<Piece>();
+
 	private ArrayList<Piece> whiteRemoved = new ArrayList<Piece>();
 
 	private ArrayList<Piece> whitePieces = new ArrayList<Piece>();
@@ -18,7 +25,7 @@ public class ChessGame {
 	private ArrayList<Piece> blackPieces = new ArrayList<Piece>();
 
 	/**
-	 * 
+	 * A constructor to initialize a ChessGame based off existing objects pertaining to the ChessGame
 	 * @param a
 	 *            ChessGamePlayers
 	 * @param b
@@ -57,10 +64,11 @@ public class ChessGame {
 	}
 
 	/**
-	 * Attempts to have the piece at coord1 attack the piece at coord2 <b> Moves the pieces if sucsessfull
+	 * Attempts to have the piece at coord1 attack the piece at coord2 
+	 * Moves the pieces if successful
 	 * 
 	 * @param p1 The coord of the attacker
-	 * @param p2 The corrd of where the attacker is attacking
+	 * @param p2 The coord of where the attacker is attacking
 	 * @return The piece that was killed, or null if nothing was killed
 	 */
 	public Piece attack(Coord c1, Coord c2) {
@@ -104,7 +112,7 @@ public class ChessGame {
 	 *            Player attempting to castle
 	 * @param c
 	 *            Coordinate of King's movement
-	 * @return true if legal castle (and pieces moved)
+	 * @return true if legal castle (and pieces moved), false if invalid castle
 	 */
 	public boolean castle(boolean color, Coord c) {
 		if (c.getX() != 2 && c.getX() != 6) {
@@ -165,7 +173,7 @@ public class ChessGame {
 	 * Checks if the King of color (passed in as a parameter) is in check
 	 * 
 	 * @param color The color of the king to check
-	 * @return If the king of that color is in check
+	 * @return True if the king of that color is in check, false otherwise
 	 */
 	public boolean check(boolean color) {
 		Coord c = null;
@@ -200,10 +208,8 @@ public class ChessGame {
 	 * stalemated
 	 * 
 	 * @param color
-	 * @return
-	 */ // TODO for CHECKMATE, CHECK IF PIECE TARGETING KING IS TARGETED, CHECK
-		// IF SQUARES BETWEEN THAT PIECE AND KING IS TARGETED, if either are
-		// true, then ye!
+	 * @return true if the king is checkmated or is a stalemate, false otherwise
+	 */
 	public boolean checkMate(boolean color) {
 		Coord c = null;
 		Piece king = null;
@@ -298,7 +304,7 @@ public class ChessGame {
 	}
 
 	/**
-	 * 
+	 * Gets the black pieces
 	 * @return An array list containing all the black pieces
 	 */ 
 	public ArrayList<Piece> getBlackPieces() {
@@ -306,7 +312,7 @@ public class ChessGame {
 	}
 
 	/**
-	 * 
+	 * Gets the dead/removed black pieces
 	 * @return An array list containing all the dead black pieces
 	 */
 	public ArrayList<Piece> getBlackRemoved() {
@@ -314,7 +320,7 @@ public class ChessGame {
 	}
 
 	/**
-	 * 
+	 * Gets the ChessGame's board
 	 * @return The board the game is being played on
 	 */
 	public Board getBoard() {
@@ -322,7 +328,7 @@ public class ChessGame {
 	}
 
 	/**
-	 * 
+	 * Gets the ChessGamePlayers
 	 * @return ChessGamePlayers object
 	 */
 	public ChessGamePlayers getChessPlayers() {
@@ -330,16 +336,16 @@ public class ChessGame {
 	}
 
 	/**
-	 * Gets the peice at a specific cord
-	 * @param c The coord
-	 * @return The peice at that coord
+	 * Gets the piece at a specific Coord
+	 * @param c The Coord
+	 * @return The piece at that Coord
 	 */
 	public Piece getPiece(Coord c) {
 		return gameboard.pieceAt(c);
 	}
 
 	/**
-	 * 
+	 * Get the player's names
 	 * @return A string of the players names
 	 */
 	public String getPlayers() {
@@ -347,7 +353,7 @@ public class ChessGame {
 	}
 
 	/**
-	 * 
+	 * Get the white pieces
 	 * @return An array list of all the white pieces
 	 */
 	public ArrayList<Piece> getWhitePieces() {
@@ -355,7 +361,7 @@ public class ChessGame {
 	}
 
 	/**
-	 * 
+	 * Get the dead white pieces
 	 * @return An array list of all the dead white pieces
 	 */
 	public ArrayList<Piece> getWhiteRemoved() {
@@ -363,10 +369,10 @@ public class ChessGame {
 	}
 
 	/**
-	 * Attemps to move a piece from one spot to another, and checks for obstruction
-	 * @param cStart The coord of the peice attempting to move
-	 * @param cFinal The spot where it is trying to move
-	 * @return if the piece could move
+	 * Attempts to move a piece from one spot to another, and checks for obstruction
+	 * @param cStart The Coord of the Piece attempting to move
+	 * @param cFinal The Coord of the spot which it is trying to move to
+	 * @return true if the piece could and did move, false otherwise
 	 */
 	public boolean movePiece(Coord cStart, Coord cFinal) {
 		if (!obstruct(cStart, cFinal)) {
@@ -378,10 +384,9 @@ public class ChessGame {
 	}
 
 	/**
-	 * Precondition: Piece p1 exists at Coord c1<b>
-	 * Checks to see if there is another piece between the piece at coord one and coord two
-	 * @param c1 The coord at which the piece is
-	 * @param c2 The coord to check to see if there is anything in between
+	 * Checks to see if there is another piece between the piece at Coord one and a parameter, Coord two
+	 * @param c1 The Coord at which the piece is
+	 * @param c2 The Coord to check to see if there is anything in between
 	 * @return If there is a piece in between the two coords
 	 */
 	public boolean obstruct(Coord c1, Coord c2) {
@@ -422,7 +427,7 @@ public class ChessGame {
 	/**
 	 * Promotes the piece at a coord by giving the user a pop up box to choose the desired piece from
 	 * @param c The coord which to try and promote
-	 * @return If the promotion was succsessfull
+	 * @return If the promotion was successful
 	 */
 	public boolean promote(Coord c) {
 		Piece p = gameboard.pieceAt(c);
@@ -469,11 +474,11 @@ public class ChessGame {
 	}
 
 	/**
-	 * This method runs an entire turn and checks all necessary options and conditions
+	 * This method runs an entire turn and checks all necessary options and conditions to simulate a Chess game
 	 * @param c1 The coord of the selected piece
 	 * @param c2 The location where the piece is trying to go to
 	 * @param color
-	 *            piece whose turn it is
+	 *            whose turn it is
 	 */
 	public void run(Coord c1, Coord c2, SwapBool color) {
 		if (check(color.getBool())) {
@@ -583,9 +588,9 @@ public class ChessGame {
 	}
 
 	/**
-	 * 
+	 * Checks if a square/position is targeted by a color (white/black)
 	 * @param color
-	 *            the color that is being checked whether it targets the given
+	 *            the boolean referring to a color that is being checked whether it targets the given
 	 *            square
 	 * @param c2
 	 *            the Coord referring to the square
@@ -638,9 +643,9 @@ public class ChessGame {
 	}
 
 	/**
-	 * 
+	 * Checks for a stalemate
 	 * @param color
-	 *            the color to check if in stalemate
+	 *            the boolean color to check if in stalemate
 	 * @return true if it is a stalemate
 	 */
 	public boolean staleMate(boolean color) {
@@ -672,7 +677,12 @@ public class ChessGame {
 		}
 		return !check(color) && noMoves;
 	}
-
+	/**
+	 * Checks if the piece at c1 targets the piece at c2
+	 * @param c1 the Coord of the first Piece
+	 * @param c2 the Coord of the second Piece
+	 * @return boolean, if the piece at c1 targets the piece at c2 true, else false
+	 */
 	public boolean targets(Coord c1, Coord c2) {
 		Piece p1 = gameboard.pieceAt(c1);
 		Piece p2 = gameboard.pieceAt(c2);
@@ -702,10 +712,6 @@ public class ChessGame {
 		}
 		boolean targets = ((!obstruction) && legal);
 		return targets;
-	}
-
-	public static void main(String[] args) {
-		System.out.println("XD");
 	}
 
 }

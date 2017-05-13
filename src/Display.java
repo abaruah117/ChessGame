@@ -10,7 +10,10 @@ import javax.swing.JLabel;
 
 /**
  * 
- * @author Kevin Palani
+ * @author Amitav & Kevin 
+ * Period 3
+ */
+/*
  *A class that deals with the display and drawing, using Swing
  */
 public class Display {
@@ -60,6 +63,7 @@ public class Display {
 	}
 	
 	/**
+	 * Gets the display
 	 * @return The JLabel that holds the image
 	 */
 	public JLabel getDisplay() {
@@ -67,6 +71,7 @@ public class Display {
 	}
 
 	/**
+	 * Gets the JFrame window
 	 * @return The JFrame window
 	 */
 	public JFrame getWindow() {

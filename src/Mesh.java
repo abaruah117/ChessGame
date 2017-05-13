@@ -1,6 +1,10 @@
+
 /**
  * 
- * @author Kevin
+ * @author Amitav & Kevin 
+ * Period 3
+ */
+/*
  *	The Mesh class represents an object to be drawn on screen at a particular location
  */
 public class Mesh {
@@ -39,7 +43,7 @@ public class Mesh {
 	}
 
 	/**
-	 * 
+	 * Gets the obj model
 	 * @return The OBJ Model of this mesh
 	 */
 	public OBJModel getModel() {
@@ -47,7 +51,7 @@ public class Mesh {
 	}
 
 	/**
-	 * 
+	 * Gets the texture of this mesh
 	 * @return The texture of this mesh, null means no texture
 	 */
 	public Canvas getTexture() {
@@ -55,7 +59,7 @@ public class Mesh {
 	}
 
 	/**
-	 * 
+	 * Gets the transform of the mesh
 	 * @return The transform of the mesh
 	 */
 	public Matrix getTransform() {

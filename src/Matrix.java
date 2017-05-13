@@ -4,14 +4,16 @@ import javax.management.RuntimeErrorException;
 
 /**
  * 
- * @author Kevin 
+ * @author Amitav & Kevin 
+ * Period 3
+ */
+/*
  *The matrix class holds all the math required to move, rotate, scale, and project vectors. Uses column major order
  */
 public class Matrix {
 
-
 	private float[][] mat;
-	
+
 	/**
 	 * Multiplies a bunch of matrices. The matrices are read right to left
 	 * @param mats The Matrices to multiply
@@ -29,7 +31,7 @@ public class Matrix {
 
 
 	/**
-	 * Creates a new matrix with every thing as 0
+	 * Default constructor creates a new matrix with every thing as 0
 	 */
 	public Matrix() {
 		mat = new float[4][4];
@@ -44,7 +46,7 @@ public class Matrix {
 	}
 
 	/**
-	 * 
+	 * Gets the matrix 
 	 * @return A 4x4 float array holding the values in the matrix
 	 */
 	public float[][] getMat() {
@@ -235,6 +237,7 @@ public class Matrix {
 	
 	/**
 	 * Returns a string representation of this matrix
+	 * @return a String with the matrix's values
 	 */
 	public String toString() {
 		String s = "";
@@ -261,7 +264,7 @@ public class Matrix {
 	}
 	
 	/**
-	 * Transposed a matrix, which converts it from row major to column major or clumn major to row major
+	 * Transposed a matrix, which converts it from row major to column major or column major to row major
 	 * @return A new, transposed version of this matrix
 	 */
 	public Matrix transpose() {

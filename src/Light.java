@@ -39,7 +39,7 @@ public class Light {
 
 
 	/**
-	 *
+	 *Gets the ambientColor Vector
 	 * @return A vector that represents the color of the ambient light
 	 */
 	public Vector getAmbientColor() {
@@ -48,22 +48,22 @@ public class Light {
 	
 	/**
 	 * Diffuse light represents light that hits the object without being bounces off anything else
-	 * @return
+	 * @return the float diffuseBrightness
 	 */
 	public float getDiffuseBrightness() {
 		return diffuseBrightness;
 	}
 
 	/**
-	 * 
-	 * @return A Vector that represents the color of the diffure light
+	 * Gets the diffused color Vector
+	 * @return A Vector that represents the color of the diffused light
 	 */
 	public Vector getDiffuseColor() {
 		return diffuseColor;
 	}
 
 	/**
-	 * 
+	 * Gets the light's position Vector
 	 * @return The position of the light
 	 */
 	public Vector getPosition() {
@@ -79,7 +79,10 @@ public class Light {
 		return new Light(position.muliply(transform), lightColor);
 	}
 
-
+	/**
+	 * Sets position to a new position
+	 * @param position - the new position
+	 */
 	public void setPosition(Vector position) {
 		this.position = position;
 	}

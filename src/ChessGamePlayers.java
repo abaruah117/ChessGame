@@ -2,14 +2,17 @@ import java.util.*;
 
 /**
  * 
- * @author Amitav
- *A class the hold the players names
+ * @author Amitav & Kevin 
+ * Period 3
+ */
+/*
+ *A class to hold the players names
  */
 public class ChessGamePlayers {
 	private ArrayList<String> playerNames = new ArrayList<String>(2);//pos 0 = white player, pos 1 = black player
 	private Iterator<String> it = playerNames.iterator();
 	/**
-	 * Initializes names
+	 * A constructor nitializes names
 	 * @param p1 the white player's name
 	 * @param p2 the black player's name
 	 */
@@ -51,7 +54,8 @@ public class ChessGamePlayers {
 	}
 	
 	/**
-	 * Returns the players as a string
+	 * Returns the player names as a string
+	 * @return a String formatted with the white and black player's name
 	 */
 	public String toString(){
 		String out = "White player: " + it.next() + "\nBlack player: "+it.next();

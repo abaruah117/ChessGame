@@ -8,7 +8,10 @@ import javax.imageio.ImageIO;
 
 /**
  * 
- * @author Kevin Palani
+ * @author Amitav & Kevin 
+ * Period 3
+ */
+/*
  *The canvas class represents an image, with methods to change or get individual pixels
  */
 public class Canvas {
@@ -18,7 +21,7 @@ public class Canvas {
 	private Graphics g;
 
 	/**
-	 * Creates a new Canvas with the given width and height
+	 * A constructor that creates a new Canvas with the given width and height
 	 * @param width The width of the canvas
 	 * @param height the height of the canvas
 	 */
@@ -63,8 +66,8 @@ public class Canvas {
 
 	/**
 	 * Draws a pixel at a location on the canvas
-	 * @param x The X cord
-	 * @param y The Y cord
+	 * @param x The X coord
+	 * @param y The Y coord
 	 * @param c The color to draw the pixel
 	 */
 	public void drawPixel(int x, int y, Color c) {
@@ -77,8 +80,8 @@ public class Canvas {
 
 	/**
 	 * Draws a pixel at a location on the canvas
-	 * @param x The X cord
-	 * @param y The Y cord
+	 * @param x The X coord
+	 * @param y The Y coord
 	 * @param r The Red value of the color
 	 * @param g The Green value of the color
 	 * @param b The Blue value of the color
@@ -97,8 +100,8 @@ public class Canvas {
 
 	/**
 	 * Draws a pixel at a location on the canvas
-	 * @param x The X cord
-	 * @param y The Y cord
+	 * @param x The X coord
+	 * @param y The Y corod
 	 * @param color A vector representing the color
 	 */
 	public void drawPixel(int x, int y, Vector color) {
@@ -107,6 +110,7 @@ public class Canvas {
 	}
 
 	/**
+	 * A method to get the graphics object
 	 * @return The graphics object for the underlying Buffered Image
 	 */
 	public Graphics getGraphics() {
@@ -114,6 +118,7 @@ public class Canvas {
 	}
 
 	/**
+	 * A method to get canvas height
 	 * @return The height of the canvas
 	 */
 	public int getHeight() {
@@ -121,6 +126,7 @@ public class Canvas {
 	}
 
 	/**
+	 * A method to get the BufferedImage
 	 * @return The underlying BufferedImage
 	 */
 	public BufferedImage getImage() {
@@ -156,6 +162,7 @@ public class Canvas {
 	}
 
 	/**
+	 * A method to get the width of the canvas
 	 * @return The Width of the canvas
 	 */
 	public int getWidth() {

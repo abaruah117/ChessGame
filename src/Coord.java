@@ -2,33 +2,13 @@ import java.util.ArrayList;
 
 /**
  * 
- * @author Amitav
+ * @author Amitav & Kevin 
+ * Period 3
+ */
+/*
  *Represents a point in 2d, as well as methods to compare coords
  */
 public class Coord {
-	
-	
-	private int x;
-
-	private int y;
-
-	/**
-	 * Creates a new coord with value (0,0)
-	 */
-	public Coord() {
-		x = 0;
-		y = 0;
-	}
-	
-	/**
-	 * Creates a new coord with value (x,y)
-	 * @param x The X value of the coord
-	 * @param y The Y value of the coord
-	 */
-	public Coord(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
 	
 	
 	/**
@@ -60,11 +40,11 @@ public class Coord {
 		}
 		return squares;
 	}
-	
+
 	/**
 	 * Returns an array list of coords surrounding a coord
 	 * @param c The center coord
-	 * @return An array list of coords around the center coord
+	 * @return An ArrayList of coords around the center coord
 	 */
 	public static ArrayList<Coord> surrounding(Coord c) {
 		ArrayList<Coord> out = new ArrayList<Coord>();
@@ -99,17 +79,51 @@ public class Coord {
 
 	}
 
+	private int x;
+	
+	private int y;
+	
+	
 	/**
-	 * Converts a coord into a Vector
-	 * @return A vector with the x and y having the same values as this coord
+	 * Default constructor creates a new coord with value (0,0)
 	 */
-	public Vector toVector() {
-		return new Vector(x, y);
+	public Coord() {
+		x = 0;
+		y = 0;
+	}
+	
+	/**
+	 * Parameterized constructor c reates a new coord with value (x,y)
+	 * @param x The X value of the coord
+	 * @param y The Y value of the coord
+	 */
+	public Coord(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+
+	/**
+	 * Checks if this coord has the same values as another coord
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Coord))
+			return false;
+		Coord other = (Coord) obj;
+		if (x != other.x)
+			return false;
+		if (y != other.y)
+			return false;
+		return true;
 	}
 	
 
 	/**
-	 * 
+	 * Gets the x value
 	 * @return The X value of the coord
 	 */
 	public int getX() {
@@ -117,7 +131,7 @@ public class Coord {
 	}
 
 	/**
-	 * 
+	 * Gets the y value
 	 * @return The Y value of the coord
 	 */
 	public int getY() {
@@ -150,13 +164,21 @@ public class Coord {
 	}
 
 	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	 * toString method that returns the Coord's x and y values
+	 * @return a String containing the Coord's x and y values
 	 */
 	public String toString() {
 		return getX() + "," + getY();
 	}
 
+	/**
+	 * Converts a coord into a Vector
+	 * @return A vector with the x and y having the same values as this coord
+	 */
+	public Vector toVector() {
+		return new Vector(x, y);
+	}
+	
 	/**
 	 * Gets the vertical distance between this coord and another
 	 * @param other The other coord
@@ -165,6 +187,7 @@ public class Coord {
 	public int vertDistance(Coord other) {
 		return other.getY() - this.getY();
 	}
+
 	
 	/**
 	 * Gets the horizontal distance between this coord and another
@@ -173,26 +196,6 @@ public class Coord {
 	 */
 	public int xDistance(Coord other) {
 		return other.getX() - this.getX();
-	}
-
-	
-	/**
-	 * Checks if this coord has the same values as another coord
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof Coord))
-			return false;
-		Coord other = (Coord) obj;
-		if (x != other.x)
-			return false;
-		if (y != other.y)
-			return false;
-		return true;
 	}	
 
 	
