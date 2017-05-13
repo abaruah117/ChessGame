@@ -5,20 +5,32 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * 
+ * @author Kevin
+ *Represents an OBJModel, and can load one from file
+ */
 public class OBJModel {
 
 	private ArrayList<Vector> positions;
 	private ArrayList<Vector> textureCords;
 	private ArrayList<Vector> normals;
 	private ArrayList<Vertex> verticies;
-	private boolean smoothNormals;
 
+	/**
+	 * Loads an obj model from file
+	 * @param path The path to the obj file
+	 */
 	public OBJModel(String path) {
 		this(path, true);
 	}
 	
+	/**
+	 * Loads an obj model from file
+	 * @param path The path to the file
+	 * @param smoothNormals Whether or not to smooth vertex normals
+	 */
 	public OBJModel(String path, boolean smoothNormals) {
-		this.smoothNormals = smoothNormals;
 		positions = new ArrayList<Vector>();
 		textureCords = new ArrayList<Vector>();
 		normals = new ArrayList<Vector>();
@@ -148,18 +160,27 @@ public class OBJModel {
 		
 	}
 
+	/**
+	 * Gets a vertex from the vertex array
+	 * @param index  The index of the vertex to get
+	 * @return The vertex
+	 */
 	public Vertex getVertex(int index) {
 		return verticies.get(index);
 	}
 
+	/**
+	 * 
+	 * @return An ArrayList of all the vertices
+	 */
 	public ArrayList<Vertex> getVerticies() {
 		return verticies;
 	}
-
-	public boolean isSmoothNormals() {
-		return smoothNormals;
-	}
-
+	
+	/**
+	 * 
+	 * @return How many vertices there are
+	 */
 	public int VertexCount() {
 		return verticies.size();
 	}
