@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
+/**
+ * 
+ * @author Kevin 
+ *The Engine class contains the main method and the main game loop to run the game
+ */
 public class Engine {
 
 	private static final int WIDTH = 512, HEIGHT = 512;
@@ -27,11 +32,21 @@ public class Engine {
 
 	Light light1 = new Light(lightPosition, lightColor1);
 
+	/**
+	 * 
+	 * Main method
+	 */
 	public static void main(String[] args) {
 		Engine e = new Engine(WIDTH, HEIGHT, TITLE);
 		e.run();
 	}
 
+	/**
+	 * Creates a new Engine which handles the game, and loads all the models required, as well as initializes everything required
+	 * @param width The width of the screen to be created
+	 * @param height The height of the screen to be created
+	 * @param title The title of the screen to be created
+	 */
 	public Engine(int width, int height, String title) {
 
 		ModelLoader.init(resPath);
@@ -65,16 +80,19 @@ public class Engine {
 
 		String player1 = JOptionPane.showInputDialog("Enter the first player's name: ");
 		chessGame = new ChessGame(player1, "Computer", board);
-	}
-
-	public void run() {
-
 		renderer.getGraphics().setColor(Color.BLACK);
 		renderer.getGraphics().setFont(new Font("Arial", 0, 20));
 
 		Time.init();
 
 		renderer.addLight(light1);
+	}
+
+	/**
+	 * Holds the main game loop. Updated the game every frame
+	 */
+	public void run() {
+
 		Matrix boardAlign = new Matrix().translationMatrix(Board.getTileSize() / 2, 0, Board.getTileSize() / 2f);
 		Vector transVector = new Vector(10, 0, -200);
 		Matrix trans = new Matrix().translationMatrix(transVector.getX(), transVector.getY() + 3, transVector.getZ());

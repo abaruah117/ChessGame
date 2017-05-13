@@ -1,11 +1,21 @@
-
-
+/**
+ * 
+ * @author Kevin
+ *	The Mesh class represents an object to be drawn on screen at a particular location
+ */
 public class Mesh {
 
 	private OBJModel model;
 	private Matrix transform;
 	private Canvas texture;
 
+	/**
+	 * Creates a new Mesh from the object, and transforms the normals accordingly
+	 * @param model An OBJ model to create the mesh from
+	 * @param projectionTransform The projection transform to draw the mesh
+	 * @param transform The transform that represents the position/rotation/size of the mesh
+	 * @param texture A texture to be drawn on the mesh, or null if none needed
+	 */
 	public Mesh(OBJModel model, Matrix projectionTransform, Matrix transform,
 			Canvas texture) {
 		this.model = model;
@@ -14,49 +24,50 @@ public class Mesh {
 		}
 		this.transform = Matrix.multiply(projectionTransform, transform);
 		this.texture = texture;
-		
+
 		Matrix normalMatrix = transform.inverse().transpose();
-		//System.out.println(transform + "\n");
-		//System.out.println(normalMatrix + "\n");
+
 		for (int i = 0; i < model.getVerticies().size(); i++) {
-			//System.out.println("Vertex pre reset: " + model.getVertex(i).getNormal());
+
 			model.getVertex(i).resetNormal();
-			//System.out.println("Vertex after reset " + model.getVertex(i).getNormal());
-			//System.out.println(model.getVertex(i).getNormal());
-			
+
 			model.getVertex(i).transformNormal(normalMatrix);
 			model.getVertex(i).normalizeNormal();
-			//System.out.println("Vertex after transform " + model.getVertex(i).getNormal().normalize());
-			//System.out.println();
-		}
-		//System.exit(0);
-	}
-	
 
+		}
+
+	}
+
+	/**
+	 * 
+	 * @return The OBJ Model of this mesh
+	 */
 	public OBJModel getModel() {
 		return model;
 	}
 
+	/**
+	 * 
+	 * @return The texture of this mesh, null means no texture
+	 */
 	public Canvas getTexture() {
 		return texture;
 	}
 
+	/**
+	 * 
+	 * @return The transform of the mesh
+	 */
 	public Matrix getTransform() {
 		return transform;
 	}
 
-	public void setModel(OBJModel model) {
-		this.model = model;
-	}
-
+	/**
+	 * Changes the texture of this Mesh
+	 * @param texture The new texture
+	 */
 	public void setTexture(Canvas texture) {
 		this.texture = texture;
 	}
-
-	public void setTransform(Matrix transform) {
-		this.transform = transform;
-	}
-
-
 
 }

@@ -14,10 +14,10 @@ public class Clickable {
     
     /**
      * Creates a new Clickable
-     * @param topLeft The top left cord
-     * @param topRight The top right cord
-     * @param botLeft The bot left cordd
-     * @param botRight The bot right cord
+     * @param topLeft The top left coord
+     * @param topRight The top right coord
+     * @param botLeft The bot left coord
+     * @param botRight The bot right coord
      */
 	public Clickable(Vector topLeft, Vector topRight, Vector botLeft,
 			Vector botRight) {

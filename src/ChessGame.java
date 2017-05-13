@@ -1,6 +1,11 @@
 import java.util.*;
 import javax.swing.JOptionPane;
 
+/**
+ * 
+ * @author Amitav
+ *The chess game class contains all the methods to play chess <b> Each method deals with a specific event in chess
+ */
 public class ChessGame {
 
 	private ChessGamePlayers players;
@@ -38,6 +43,12 @@ public class ChessGame {
 
 	}
 
+	/**
+	 * Creates a new chess game
+	 * @param p1 The name of player one
+	 * @param p2 The name of player two
+	 * @param b The board that this game is being played on
+	 */
 	public ChessGame(String p1, String p2, Board b) {
 		players = new ChessGamePlayers(p1, p2);
 		gameboard = b;
@@ -46,10 +57,11 @@ public class ChessGame {
 	}
 
 	/**
-	 * Piece p1 attacks p2
+	 * Attempts to have the piece at coord1 attack the piece at coord2 <b> Moves the pieces if sucsessfull
 	 * 
-	 * @param p1
-	 * @param p2
+	 * @param p1 The coord of the attacker
+	 * @param p2 The corrd of where the attacker is attacking
+	 * @return The piece that was killed, or null if nothing was killed
 	 */
 	public Piece attack(Coord c1, Coord c2) {
 		boolean valid = targets(c1, c2);
@@ -152,8 +164,8 @@ public class ChessGame {
 	/**
 	 * Checks if the King of color (passed in as a parameter) is in check
 	 * 
-	 * @param color
-	 * @return
+	 * @param color The color of the king to check
+	 * @return If the king of that color is in check
 	 */
 	public boolean check(boolean color) {
 		Coord c = null;
@@ -285,14 +297,26 @@ public class ChessGame {
 		return lose;
 	}
 
+	/**
+	 * 
+	 * @return An array list containing all the black pieces
+	 */ 
 	public ArrayList<Piece> getBlackPieces() {
 		return this.blackPieces;
 	}
 
+	/**
+	 * 
+	 * @return An array list containing all the dead black pieces
+	 */
 	public ArrayList<Piece> getBlackRemoved() {
 		return this.blackRemoved;
 	}
 
+	/**
+	 * 
+	 * @return The board the game is being played on
+	 */
 	public Board getBoard() {
 		return gameboard;
 	}
@@ -305,22 +329,45 @@ public class ChessGame {
 		return players;
 	}
 
+	/**
+	 * Gets the peice at a specific cord
+	 * @param c The coord
+	 * @return The peice at that coord
+	 */
 	public Piece getPiece(Coord c) {
 		return gameboard.pieceAt(c);
 	}
 
+	/**
+	 * 
+	 * @return A string of the players names
+	 */
 	public String getPlayers() {
 		return players.toString();
 	}
 
+	/**
+	 * 
+	 * @return An array list of all the white pieces
+	 */
 	public ArrayList<Piece> getWhitePieces() {
 		return this.whitePieces;
 	}
 
+	/**
+	 * 
+	 * @return An array list of all the dead white pieces
+	 */
 	public ArrayList<Piece> getWhiteRemoved() {
 		return this.whiteRemoved;
 	}
 
+	/**
+	 * Attemps to move a piece from one spot to another, and checks for obstruction
+	 * @param cStart The coord of the peice attempting to move
+	 * @param cFinal The spot where it is trying to move
+	 * @return if the piece could move
+	 */
 	public boolean movePiece(Coord cStart, Coord cFinal) {
 		if (!obstruct(cStart, cFinal)) {
 			return gameboard.movePiece(cStart, cFinal);
@@ -331,11 +378,11 @@ public class ChessGame {
 	}
 
 	/**
-	 * Precondition: Piece p1 exists at Coord c1
-	 * 
-	 * @param c1
-	 * @param c2
-	 * @return
+	 * Precondition: Piece p1 exists at Coord c1<b>
+	 * Checks to see if there is another piece between the piece at coord one and coord two
+	 * @param c1 The coord at which the piece is
+	 * @param c2 The coord to check to see if there is anything in between
+	 * @return If there is a piece in between the two coords
 	 */
 	public boolean obstruct(Coord c1, Coord c2) {
 		if (gameboard.pieceAt(c1) == null) {
@@ -372,6 +419,11 @@ public class ChessGame {
 		return false;
 	}
 
+	/**
+	 * Promotes the piece at a coord by giving the user a pop up box to choose the desired piece from
+	 * @param c The coord which to try and promote
+	 * @return If the promotion was succsessfull
+	 */
 	public boolean promote(Coord c) {
 		Piece p = gameboard.pieceAt(c);
 		if (p == null) {
@@ -400,6 +452,12 @@ public class ChessGame {
 		}
 	}
 
+	/**
+	 * Undoes a move
+	 * @param cStart The position of the piece before the move
+	 * @param cFinal The position of the piece after the move
+	 * @param p The piece that was in the final spot before
+ 	 */
 	public void revertMove(Coord cStart, Coord cFinal, Piece p) {
 		gameboard.setPiece(cStart, gameboard.pieceAt(cFinal));
 		gameboard.setPiece(cFinal, p);
@@ -411,9 +469,9 @@ public class ChessGame {
 	}
 
 	/**
-	 * 
-	 * @param c1
-	 * @param c2
+	 * This method runs an entire turn and checks all necessary options and conditions
+	 * @param c1 The coord of the selected piece
+	 * @param c2 The location where the piece is trying to go to
 	 * @param color
 	 *            piece whose turn it is
 	 */
@@ -514,6 +572,11 @@ public class ChessGame {
 
 	}
 
+	/**
+	 * Changes the names of the players
+	 * @param p1 The new player one name
+	 * @param p2 The new player two name
+	 */
 	public void setPlayers(String p1, String p2) {
 		players.changeWhitePlayerName(p1);
 		players.changeBlackPlayerName(p2);

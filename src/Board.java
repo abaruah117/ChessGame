@@ -3,7 +3,7 @@ import java.util.StringJoiner;
 
 /**
  * 
- * @author Kevin and Amitav
+ * @author Kevin and mostly Amitav
  *The board class represents the chess board, including the tiles and the game pieces
  */
 public class Board {
