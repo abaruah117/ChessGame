@@ -3,8 +3,8 @@
  * @author Amitav & Kevin 
  * Period 3
  */
-/*
- * A class representing time
+/**
+ * A class that handles game times
  */
 
 public class Time {
@@ -18,7 +18,7 @@ public class Time {
 	private static int lastFrames;
 	
 	/**
-	 * Gets the change in time
+	 * Gets the time that has passed since the last frame
 	 * @return deltaTime, long
 	 */
 	public static long getDeltaTime() {
@@ -26,14 +26,14 @@ public class Time {
 	}
 	
 	/**
-	 * Gets the lastFrame
+	 * Gets the amount of frames that has passed in the last second
 	 * @return int lastFrames
 	 */
 	public static int getLastFrames() {
 		return lastFrames;
 	}
 	/**
-	 * Gets the total time
+	 * Gets the time since the Time class was initializes
 	 * @return long totalTime
 	 */
 	public static long getTotalTime() {
@@ -41,15 +41,14 @@ public class Time {
 	}
 	
 	/**
-	 * Initializes start and last time
+	 * Initializes the time class
 	 */
 	public static void init() {
 		startTime = System.nanoTime();
 		lastTime = System.nanoTime();
 	}
 	/**
-	 * Updates various instance variables regarding time and 
-	 * frame rate
+	 * Updates all the times and frame rates, must be called once per frame
 	 */
 	public static void update() {
 		lastTime = startTime;

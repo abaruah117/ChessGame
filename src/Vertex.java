@@ -5,7 +5,7 @@
  * Period 3
  */
 /**
- * A class which simulates vertices (points of an object)
+ * A class which simulates vertices (points of an object) in 3D with vertex information needed to render a scene
  *
  */
 public class Vertex {
@@ -39,7 +39,8 @@ public class Vertex {
 		this(pos, null, null);
 	}
 	/**
-	 * Initializes the Vectors position, texture, and normal, and makes a copy to store in tempNormal
+	 * Initializes the Vectors position, texture, and normal, and makes a copy to store in tempNormal <b>
+	 * The temp normal is used to do any transformations which would change the normal, and leaves the original normal untouched
 	 * @param pos the position Vector
 	 * @param textureCord the texture Vector
 	 * @param normal the normal Vector
@@ -52,7 +53,7 @@ public class Vertex {
 	}
 	
 	/**
-	 * Adds a vector to the normal Vector
+	 * Adds a vector to the original normal vector
 	 * @param normal the Vector to be added
 	 */
 	public void addToNormal(Vector normal) {
@@ -60,7 +61,7 @@ public class Vertex {
 	}
 	
 	/**
-	 * Gets the normal vector
+	 * Gets the temporary normal vecto
 	 * @return the normal vector
 	 */
 	public Vector getNormal() {
@@ -76,7 +77,7 @@ public class Vertex {
 	}
 	/**
 	 * Gets the position Vector
-	 * @return pos- the position Vector
+	 * @return pos the position Vector
 	 */
 	public Vector getPos() {
 		return pos;
@@ -98,23 +99,22 @@ public class Vertex {
 		return new Vertex(pos.muliply(m), textureCord, tempNormal);
 	}
 	/**
-	 * Normalizes the normal vector
+	 * Normalizes the original normal vector
 	 */
 	public void normalizeNormal() {
 		originalNormal = originalNormal.normalize();
 	}
 	
 	/**
-	 * Divides the perspective
-	 * @return a new Vertex with a different position Vector based off the divided W. 
+	 * Perspective divides the vertex to convert it from homogeneous coordinates to normalized screen coords. <b> The W value should be one, and has no more meaingfull value
+	 * @return A new Vertex 3D Vertex that has perspective correctly accounted for
 	 */
 	public Vertex perspectiveDevide() {
 		Vector v = pos.devide(pos.getW());
-		v.setW(pos.getW());
 		return new Vertex(v, textureCord, tempNormal);
 	}
 	/**
-	 * Resets the tempNormal to a copy of original normal
+	 * Resets the tempNormal to a copy of original normal. Should be done before transforming it if pervious transformations should not affect this
 	 */
 	public void resetNormal() {
 		tempNormal = originalNormal.copyOf();
@@ -143,8 +143,8 @@ public class Vertex {
 		this.pos = pos;
 	}
 	
-	/*
-	 * Sets the textureCord vector
+	/**
+	 * Sets the textureCord vector, should be 2D and corresponds to a texture from another image
 	 * @param color the new Vector to set to.
 	 */
 	public Vertex setTextureCord(Vector color) {
@@ -161,7 +161,7 @@ public class Vertex {
 	}
 	
 	/**
-	 * Multiplies the tempNormal Vector by a Matrix
+	 * Multiplies the tempNormal Vector by a Matrix. The original normal will not be touched
 	 * @param m the Matrix to be multiplied by
 	 * @return a Vertex with the multiplied tempNormal
 	 */

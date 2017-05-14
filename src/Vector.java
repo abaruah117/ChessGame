@@ -5,13 +5,13 @@
  * Period 3
  */
 /**
- * A class to represent a Vector
+ * A class to represent a 3D Vector or a 4D homogeneous coord
  */
 public class Vector {
 
 	private float x, y, z, w;
 	/**
-	 * Initializes a 2D vector
+	 * Initializes the vector as a 2D coord
 	 * @param x the x value
 	 * @param y the y value
 	 */
@@ -19,7 +19,7 @@ public class Vector {
 		this(x, y, 0);
 	}
 	/**
-	 * Initializes a 3D Vector with w  = 1
+	 * Initializes the vector as a 3D vector
 	 * @param x the x value
 	 * @param y the y value
 	 * @param z the z value
@@ -28,7 +28,7 @@ public class Vector {
 		this(x, y, z, 1);
 	}
 	/**
-	 * Initializes a 3D Vector with a new w
+	 * Initializes the vector as a 4D homogeneous coord
 	 * @param x the x value
 	 * @param y the y value
 	 * @param z the z value
@@ -67,9 +67,9 @@ public class Vector {
 	}
 
 	/**
-	 * Cross multiples this vector by another vector
-	 * @param v the Vector to cross multiply this Vector by
-	 * @return a new Vector that is the product of the cross multiplication
+	 * Finds the cross product of this Vector with another vector in a right handed coord system
+	 * @param v the Vector to cross this Vector by
+	 * @return a new Vector that is the product product of the vector and another
 	 */
 	public Vector cross(Vector v) {
 		return new Vector(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y

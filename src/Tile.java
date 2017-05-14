@@ -25,7 +25,7 @@ public class Tile extends Model{
 	}
 	
 	/**
-	 * Gets the Clickable
+	 * Gets the Clickable bounding box for this tile
 	 * @return the Clickable collider
 	 */
 	public Clickable getCollider() {

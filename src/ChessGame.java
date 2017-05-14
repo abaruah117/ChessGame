@@ -505,6 +505,7 @@ public class ChessGame {
 								gameboard.getTextDisplay().add("Still in check!");
 								revertMove(c1, c2, p2);
 							} else {
+								gameboard.getTextDisplay().clear();
 								color.swap();
 								promote(c2);
 							}
@@ -517,6 +518,7 @@ public class ChessGame {
 								gameboard.getTextDisplay().add("Still in check!");
 								revertMove(c1, c2, null);
 							} else {
+								gameboard.getTextDisplay().clear();
 								promote(c2);
 								color.swap();
 							}
@@ -536,11 +538,11 @@ public class ChessGame {
 				} else {
 					if (p instanceof King) {
 						if (!p.legalMove(c2)) {
-
 						} else if (!castle(color.getBool(), c2)) {
 							gameboard.getTextDisplay().add("Invalid castle");
 						} else {
 							color.swap();
+							gameboard.getTextDisplay().clear();
 						}
 					} else if (getPiece(c2) != null) {
 						Piece rek = attack(c1, c2);
@@ -552,7 +554,7 @@ public class ChessGame {
 							} else {
 								promote(c2);
 								color.swap();
-
+								gameboard.getTextDisplay().clear();
 							}
 						}
 					} else {
@@ -565,6 +567,7 @@ public class ChessGame {
 							} else {
 								promote(c2);
 								color.swap();
+								gameboard.getTextDisplay().clear();
 							}
 
 						}

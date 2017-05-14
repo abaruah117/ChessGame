@@ -3,8 +3,8 @@
  * @author Amitav & Kevin 
  * Period 3
  */
-/*
- * A class that functions as a boolean object
+/**
+ * A class that functions as a boolean object with a method to invert it
  */
 
 public class SwapBool {

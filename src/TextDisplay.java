@@ -7,8 +7,8 @@ import java.util.ArrayList;
  * @author Amitav & Kevin 
  * Period 3
  */
-/*
- * A class to display text
+/**
+ * A class to display text to the screen which moves and dissapears as time passes
  */
 public class TextDisplay {
 	
@@ -35,7 +35,7 @@ public class TextDisplay {
 		add(s, 10);
 	}
 	/**
-	 * Adds a String for a certain time
+	 * Adds a String to be displayed for a certain amount of time
 	 * @param s the String to be added
 	 * @param life the float representing time
 	 */
@@ -44,7 +44,7 @@ public class TextDisplay {
 		this.life.add(0, life);
 	}
 	/**
-	 * Displays the text on the Java game
+	 * Draws the text onto the screen, and moves it down based on its life
 	 */
 	public void draw() {
 		Color c = g.getColor();
@@ -73,6 +73,14 @@ public class TextDisplay {
 			}
 		}
 	
+	}
+	
+	/**
+	 * Clears all texts and their timer
+	 */
+	public void clear() {
+		life.clear();
+		text.clear();
 	}
 
 }

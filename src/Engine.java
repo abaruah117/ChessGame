@@ -119,7 +119,7 @@ public class Engine {
 				selected.clear();
 			}
 
-			renderer.drawBoardPieces(board, camera, transVector, selected, inputManager.getRotations());
+			renderer.drawBoardPieces(board, camera, transVector, inputManager.getRotations());
 			renderer.drawBoardTiles(board, boardMatrix, camera, selected);
 
 			display.swapBuffers();
