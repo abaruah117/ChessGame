@@ -16,7 +16,7 @@ public class Move  {
 	Piece temp = null;
 	private Piece[][] pieces;
 
-	private final int MAX_DEPTH = 3;
+	private final int MAX_DEPTH = 2;
 	
 	/**
 	 * @param a
@@ -41,20 +41,86 @@ public class Move  {
 		ypos_new =  d ;
 		futureTurns = fT;
 		//System.out.println("Found a new move at " + xpos_current + ", " + ypos_current + " with a piece " + pieces[xpos_current][ypos_current]);
-		moveValue = capture() + danger();
-
-		if (futureTurns <= 3) {
-			moveValue += future();
-		}
+		moveValue = (int) calculateMoveValue(0);
 
 	}
 	
-	private int calculateMoveValue(int depth) {
+	private float calculateMoveValue(int depth) {
+		
+		
 		if(depth > MAX_DEPTH) {
 			return 0;
-		} else {
-			return capture() + danger() + calculateMoveValue(depth+1);
 		}
+		
+		float power = capture() + danger();
+		
+		if(depth > MAX_DEPTH) {
+			return power;
+		}
+		
+		ArrayList<Float> futureMoves = new ArrayList<Float>();
+
+		if (pieceAt(xpos_new, ypos_new) != null) {
+			temp = pieceAt(xpos_new, ypos_new);
+		}
+
+		//pieces[xpos_new][ypos_new] = pieces[xpos_current][ypos_current];
+		setPiece(xpos_new, ypos_new, pieceAt(xpos_current, ypos_current));
+		//pieces[xpos_current][ypos_current] = null;
+		setPiece(xpos_current, ypos_current, null);
+		for (int xpos_other = 0; xpos_other <= 7; xpos_other++) {
+			for (int ypos_other = 0; ypos_other <= 7; ypos_other++) {
+				if ((pieceAt(xpos_new, ypos_new) != null)
+						&& ((pieceAt(xpos_other, ypos_other) != null) && (pieceAt(xpos_new, ypos_new).getBooleanColor() != pieceAt(xpos_other, ypos_other).getBooleanColor()))
+						&& (pieceAt(xpos_new, ypos_new).legalMove((new Coord(xpos_other, ypos_other))))) {
+					//futureMoves.add(new Move(xpos_new, ypos_new, xpos_other, ypos_other, futureTurns + 1, pieces));
+					int temp_xpos_current = xpos_current;
+					int temp_ypos_current = ypos_current;
+					int temp_xpos_new = xpos_new;
+					int temp_ypos_new = ypos_new;
+					int temp_moveValue = moveValue;
+					int temp_futureTurns = futureTurns;
+					Piece temp_tempPiece = temp;
+					
+					xpos_current = xpos_new;
+					ypos_current = ypos_new;
+					xpos_new = xpos_other;
+					ypos_new = ypos_other;
+					
+					futureMoves.add(calculateMoveValue(depth+1));
+					
+					xpos_current = temp_xpos_current;
+					ypos_current = temp_ypos_current;
+					xpos_new = temp_xpos_new;
+					ypos_new = temp_ypos_new;
+					moveValue = temp_moveValue;
+					futureTurns = temp_futureTurns;
+					temp = temp_tempPiece;
+					
+				}
+			}
+		}
+
+		Collections.sort(futureMoves, new Comparator<Float>() {
+
+
+			@Override
+			public int compare(Float arg0, Float arg1) {
+				// TODO Auto-generated method stub
+				return (int) (arg0*1000-arg1*1000);
+			}
+		});
+
+		//pieces[xpos_current][ypos_current] = pieces[xpos_new][ypos_new];
+		setPiece(xpos_current, ypos_current, pieceAt(xpos_new, ypos_new));
+		//pieces[xpos_new][ypos_new] = temp;
+		setPiece(xpos_new, ypos_new, temp);
+		if (futureMoves.size() > 0) {
+			power +=  futureMoves.get(0);
+		}
+		
+		return depth == 0 ? power : power/2;
+		
 	}
 
 
@@ -75,54 +141,71 @@ public class Move  {
 
 	}
 
-	/**
-	 * A nested version of the AI() handler itself, that determines possible
-	 * future moves and adds half of their own values to that of the original
-	 * move.
-	 * 
-	 * @return half the value of the most valuable follow-up move
-	 */
-	private int future() {
-
-		ArrayList<Move> futureMoves = new ArrayList<Move>();
-
-		if (pieceAt(xpos_new, ypos_new) != null) {
-			temp = pieceAt(xpos_new, ypos_new);
-		}
-
-		//pieces[xpos_new][ypos_new] = pieces[xpos_current][ypos_current];
-		setPiece(xpos_new, ypos_new, pieceAt(xpos_current, ypos_current));
-		//pieces[xpos_current][ypos_current] = null;
-		setPiece(xpos_current, ypos_current, null);
-		for (int xpos_other = 0; xpos_other <= 7; xpos_other++) {
-			for (int ypos_other = 0; ypos_other <= 7; ypos_other++) {
-				if ((pieceAt(xpos_new, ypos_new) != null)
-						&& ((pieceAt(xpos_other, ypos_other) != null) && (pieceAt(xpos_new, ypos_new).getBooleanColor() != pieceAt(xpos_other, ypos_other).getBooleanColor()))
-						&& (pieceAt(xpos_new, ypos_new).legalMove((new Coord(xpos_other, ypos_other))))) {
-					futureMoves.add(new Move(xpos_new, ypos_new, xpos_other, ypos_other, futureTurns + 1, pieces));
-				}
-			}
-		}
-
-		Collections.sort(futureMoves, new Comparator<Move>() {
-			@Override
-			public int compare(Move move1, Move move2) {
-				return move2.moveValue - move1.moveValue;
-			}
-		});
-
-		//pieces[xpos_current][ypos_current] = pieces[xpos_new][ypos_new];
-		setPiece(xpos_current, ypos_current, pieceAt(xpos_new, ypos_new));
-		//pieces[xpos_new][ypos_new] = temp;
-		setPiece(xpos_new, ypos_new, temp);
-		if (futureMoves.size() > 0) {
-			return futureMoves.get(0).moveValue / 2;
-		} else {
-			return 0;
-		}
-
-	}
-	
+//	/**
+//	 * A nested version of the AI() handler itself, that determines possible
+//	 * future moves and adds half of their own values to that of the original
+//	 * move.
+//	 * 
+//	 * @return half the value of the most valuable follow-up move
+//	 */
+//	private int future() {
+//
+//		ArrayList<Integer> futureMoves = new ArrayList<Integer>();
+//
+//		if (pieceAt(xpos_new, ypos_new) != null) {
+//			temp = pieceAt(xpos_new, ypos_new);
+//		}
+//
+//		//pieces[xpos_new][ypos_new] = pieces[xpos_current][ypos_current];
+//		setPiece(xpos_new, ypos_new, pieceAt(xpos_current, ypos_current));
+//		//pieces[xpos_current][ypos_current] = null;
+//		setPiece(xpos_current, ypos_current, null);
+//		for (int xpos_other = 0; xpos_other <= 7; xpos_other++) {
+//			for (int ypos_other = 0; ypos_other <= 7; ypos_other++) {
+//				if ((pieceAt(xpos_new, ypos_new) != null)
+//						&& ((pieceAt(xpos_other, ypos_other) != null) && (pieceAt(xpos_new, ypos_new).getBooleanColor() != pieceAt(xpos_other, ypos_other).getBooleanColor()))
+//						&& (pieceAt(xpos_new, ypos_new).legalMove((new Coord(xpos_other, ypos_other))))) {
+//					//futureMoves.add(new Move(xpos_new, ypos_new, xpos_other, ypos_other, futureTurns + 1, pieces));
+//					int temp_xpos_current = xpos_current;
+//					int temp_ypos_current = ypos_current;
+//					int temp_xpos_new = xpos_new;
+//					int temp_ypos_new = ypos_new;
+//					int temp_moveValue = moveValue;
+//					int temp_futureTurns = futureTurns;
+//					Piece temp_tempPiece = temp;
+//					
+//					xpos_current = xpos_new;
+//					ypos_current = ypos_new;
+//					xpos_new = xpos_other;
+//					ypos_new = ypos_other;
+//					
+//					
+//				}
+//			}
+//		}
+//
+//		Collections.sort(futureMoves, new Comparator<Integer>() {
+//
+//
+//			@Override
+//			public int compare(Integer arg0, Integer arg1) {
+//				// TODO Auto-generated method stub
+//				return arg0-arg1;
+//			}
+//		});
+//
+//		//pieces[xpos_current][ypos_current] = pieces[xpos_new][ypos_new];
+//		setPiece(xpos_current, ypos_current, pieceAt(xpos_new, ypos_new));
+//		//pieces[xpos_new][ypos_new] = temp;
+//		setPiece(xpos_new, ypos_new, temp);
+//		if (futureMoves.size() > 0) {
+//			return futureMoves.get(0) / 2;
+//		} else {
+//			return 0;
+//		}
+//
+//	}
+//	
 	private Piece pieceAt(Coord c) {
 		return pieces[Board.getSize() - 1 - c.getY()][c.getX()];
 	}

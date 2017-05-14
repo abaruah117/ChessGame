@@ -76,7 +76,7 @@ public class ChessAi {
 						
 						Coord end = new Coord(xpos_end, ypos_end);
 						Piece endPiece = pieceAt(end);
-						if ((pieceAt(start).getBooleanColor() == turn.getBool()) &&chessGame.movePiece(start, end)){
+						if (startPiece.getBooleanColor() == turn.getBool() &&chessGame.movePiece(start, end)){
 								chessGame.revertMove(start, end, endPiece);
 							if (!blackCheck) {
 								//System.out.println(turn.getBool());
@@ -85,7 +85,7 @@ public class ChessAi {
 								//System.out.println("Adding a new possible move from " + start + " to " + end);
 								//System.out.println("this is a " + pieceAt(start) + " at the start, moving to a " + pieceAt(end) + " at the end");
 							} else {
-								if (pieces[xpos_start][ypos_start] instanceof King) {
+								if (startPiece instanceof King) {
 									moves.add(new Move(xpos_start, ypos_start, xpos_end, ypos_end, 1, pieces));
 								}
 							}
