@@ -1,11 +1,15 @@
 
-import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
 
+/**
+ * 
+ * A modified version of {@link https://github.com/austinmorgan/chess/blob/master/src/chess/Move.java} <b>
+ * The computer AI which checks all possible moves the computer could make and picks the best one, very slow
+ */
 public class ChessAi {
 
 

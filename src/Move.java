@@ -2,6 +2,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * 
+ * A modified version of {@link https://github.com/austinmorgan/chess/blob/master/src/chess/Move.java} <b>
+ * Represents a potential move by the computer, with methods to calculate its value
+ *
+ */
 public class Move  {
 
 	int xpos_current, ypos_current, xpos_new, ypos_new;
@@ -10,6 +16,8 @@ public class Move  {
 	Piece temp = null;
 	private Piece[][] pieces;
 
+	private final int MAX_DEPTH = 3;
+	
 	/**
 	 * @param a
 	 *            The piece's current x position.
@@ -39,6 +47,14 @@ public class Move  {
 			moveValue += future();
 		}
 
+	}
+	
+	private int calculateMoveValue(int depth) {
+		if(depth > MAX_DEPTH) {
+			return 0;
+		} else {
+			return capture() + danger() + calculateMoveValue(depth+1);
+		}
 	}
 
 
@@ -152,6 +168,7 @@ public class Move  {
 				if ((pieceAt(xpos_other, ypos_other) != null) && pieceAt(xpos_new, ypos_new) != null && ((pieceAt(xpos_other, ypos_other).getBooleanColor() != pieceAt(xpos_new, ypos_new).getBooleanColor()))
 						&& (pieceAt(xpos_other, ypos_other).legalMove(new Coord(xpos_new, ypos_new)))) {
 					danger = true;
+					break;
 				}
 			}
 		}
