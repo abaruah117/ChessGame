@@ -1,6 +1,8 @@
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 
 /**
@@ -11,13 +13,14 @@ import java.util.ArrayList;
 /*
  *This class deals with getting input from the mouse and changing the game in response
  */
-public class InputManager implements MouseListener, MouseMotionListener{
+public class InputManager implements MouseListener, MouseMotionListener, MouseWheelListener{
 
 	private ArrayList<Coord> selected;
 	private Board board;
 	private Vector lastPos = new Vector(-1, -1, -1);
 	private Vector rotations = new Vector(-65, 0, 0);
 	private final float rotXScale = .1f;
+	private float zoom = 1;
 	
 	/**
 	 * Creates a new inputManager
@@ -129,6 +132,15 @@ public class InputManager implements MouseListener, MouseMotionListener{
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		lastPos = new Vector(-1, -1, -1);
+	}
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		zoom = zoom - e.getWheelRotation()*2;
+
+		
+	}
+	public float getZoom() {
+		return zoom;
 	}
 
 

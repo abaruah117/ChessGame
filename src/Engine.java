@@ -9,31 +9,26 @@ import javax.swing.JOptionPane;
  * @author Amitav & Kevin 
  * Period 3
  */
-/*
+/**
  *The Engine class contains the main method and the main game loop to run the game
  */
 public class Engine {
-
+	
 	private static final int WIDTH = 512, HEIGHT = 512;
-	private static final String TITLE = "Cs Thingy yay";
+	private static final String TITLE = "3D Chess";
 	private static final String resPath = "res";
-	/**
-	 * 
-	 * Main method
-	 */
-	public static void main(String[] args) {
-		Engine e = new Engine(WIDTH, HEIGHT, TITLE);
-		e.run();
-	}
+	
 	private ArrayList<Coord> selected;
 	private ChessGame chessGame;
-
+	private ChessAi AI;
 	private InputManager inputManager;
 	private Board board;
 	private Display display;
-
+	
 	private Renderer renderer;
-	private Camera camera = new Camera(WIDTH, HEIGHT, 160, 320, -200, 200, new Matrix().rotationXMatrix(0));
+	private Camera camera = new Camera(WIDTH, HEIGHT, 160, 320, -200, 200, new Matrix().identityMatrix());
+	private SwapBool turn = new SwapBool(true);
+	
 	Vector ambientColor = new Vector(1, 1, 1);
 	Vector diffuseColor = new Vector(1, 1, 1);
 
@@ -42,6 +37,16 @@ public class Engine {
 	LightColor lightColor1 = new LightColor(ambientColor, diffuseColor, .5f, 100f);
 
 	Light light1 = new Light(lightPosition, lightColor1);
+	
+	
+	/**
+	 * 
+	 * Main method
+	 */
+	public static void main(String[] args) {
+		Engine e = new Engine(WIDTH, HEIGHT, TITLE);
+		e.run();
+	}
 
 	/**
 	 * Default constructor creates a new Engine which handles the game, and loads all the models required, as well as initializes everything required
@@ -58,12 +63,12 @@ public class Engine {
 		Matrix pawnMatrix = Matrix.multiply(new Matrix().rotationXMatrix(0),
 
 				new Matrix().scalingMatrix(.7f, .7f, .7f));
-		ModelLoader.loadModel("Bishop", pawnMatrix, true);
-		ModelLoader.loadModel("King", pawnMatrix, true);
-		ModelLoader.loadModel("Knight", pawnMatrix, true);
-		ModelLoader.loadModel("Pawn", pawnMatrix, true);
-		ModelLoader.loadModel("Queen", pawnMatrix, true);
-		ModelLoader.loadModel("Rook", pawnMatrix, true);
+		ModelLoader.loadModel("Bishop", pawnMatrix, false);
+		ModelLoader.loadModel("King", pawnMatrix, false);
+		ModelLoader.loadModel("Knight", pawnMatrix, false);
+		ModelLoader.loadModel("Pawn", pawnMatrix, false);
+		ModelLoader.loadModel("Queen", pawnMatrix, false);
+		ModelLoader.loadModel("Rook", pawnMatrix, false);
 
 		ModelLoader.loadTexture("blackSquareSelected");
 		ModelLoader.loadTexture("whiteSquareSelected");
@@ -79,29 +84,33 @@ public class Engine {
 		inputManager = new InputManager(board, selected);
 		display.getDisplay().addMouseListener(inputManager);
 		display.getDisplay().addMouseMotionListener(inputManager);
-
+		display.getDisplay().addMouseWheelListener(inputManager);
+		
 		String player1 = JOptionPane.showInputDialog("Enter the first player's name: ");
 		chessGame = new ChessGame(player1, "Computer", board);
 		renderer.getGraphics().setColor(Color.BLACK);
 		renderer.getGraphics().setFont(new Font("Arial", 0, 20));
-
+		AI = new ChessAi(chessGame, turn);
 		Time.init();
 
 		renderer.addLight(light1);
 	}
 
 	/**
-	 * Holds the main game loop. Updated the game every frame
+	 * Holds the main game loop. Updates the game every frame
 	 */
 	public void run() {
 
-		Matrix boardAlign = new Matrix().translationMatrix(Board.getTileSize() / 2, 0, Board.getTileSize() / 2f);
-		Vector transVector = new Vector(10, 0, -200);
-		Matrix trans = new Matrix().translationMatrix(transVector.getX(), transVector.getY() + 3, transVector.getZ());
-		SwapBool color = new SwapBool(true);
+
+
 		while (true) {
 			// float boardTilt = -5 * Time.getTotalTime()/1000000000f;// Dont
 			// use 45
+			
+			Matrix boardAlign = new Matrix().translationMatrix(Board.getTileSize() / 2, 0, Board.getTileSize() / 2f);
+			Vector transVector = new Vector(10, 0, -200 + inputManager.getZoom());
+			Matrix trans = new Matrix().translationMatrix(transVector.getX(), transVector.getY() + 3, transVector.getZ());
+			
 			Matrix rotX = new Matrix().rotationXMatrix(inputManager.getRotations().getX());
 			Matrix rotY = new Matrix().rotationYMatrix(inputManager.getRotations().getY());
 			Matrix rotZ = new Matrix().rotationZMatrix(inputManager.getRotations().getZ());
@@ -114,9 +123,12 @@ public class Engine {
 
 			renderer.getGraphics().drawString("FPS: " + Time.getLastFrames(), 10, 20);
 
-			if (selected.size() == 2) {
-				chessGame.run(selected.get(0), selected.get(1), color);
+			if (selected.size() == 2 && turn.getBool()) {
+				chessGame.run(selected.get(0), selected.get(1), turn);
 				selected.clear();
+			} else if(!turn.getBool()){
+				System.out.println("Running AI");
+				AI.AI();				
 			}
 
 			renderer.drawBoardPieces(board, camera, transVector, inputManager.getRotations());

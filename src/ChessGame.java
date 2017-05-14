@@ -466,10 +466,12 @@ public class ChessGame {
 	public void revertMove(Coord cStart, Coord cFinal, Piece p) {
 		gameboard.setPiece(cStart, gameboard.pieceAt(cFinal));
 		gameboard.setPiece(cFinal, p);
-		if (p.getBooleanColor()) {
-			whitePieces.add(p);
-		} else {
-			blackPieces.add(p);
+		if(p != null) { 
+			if (p.getBooleanColor()) {
+				whitePieces.add(p);
+			} else {
+				blackPieces.add(p);
+			}
 		}
 	}
 
@@ -497,7 +499,7 @@ public class ChessGame {
 				Piece p1 = getPiece(c1);
 				if (p1.getBooleanColor() != color.getBool()) {
 					gameboard.getTextDisplay().add("Move a piece of your color, please", 5);
-				} else {
+				} else { 
 					if (getPiece(c2) != null) {
 						Piece p2 = getPiece(c2);
 						if (attack(c1, c2) != null) {
@@ -505,9 +507,11 @@ public class ChessGame {
 								gameboard.getTextDisplay().add("Still in check!");
 								revertMove(c1, c2, p2);
 							} else {
-								gameboard.getTextDisplay().clear();
 								color.swap();
 								promote(c2);
+								gameboard.getTextDisplay().clear();
+								gameboard.getTextDisplay().add(color.getBool() ? "Your turn" : "Computer turn");
+								
 							}
 						}
 					} else {
@@ -518,9 +522,11 @@ public class ChessGame {
 								gameboard.getTextDisplay().add("Still in check!");
 								revertMove(c1, c2, null);
 							} else {
-								gameboard.getTextDisplay().clear();
 								promote(c2);
 								color.swap();
+								gameboard.getTextDisplay().clear();
+								gameboard.getTextDisplay().add(color.getBool() ? "Your turn" : "Computer turn");
+								
 							}
 						}
 					}
@@ -543,6 +549,7 @@ public class ChessGame {
 						} else {
 							color.swap();
 							gameboard.getTextDisplay().clear();
+							gameboard.getTextDisplay().add(color.getBool() ? "Your turn" : "Computer turn");
 						}
 					} else if (getPiece(c2) != null) {
 						Piece rek = attack(c1, c2);
@@ -555,6 +562,7 @@ public class ChessGame {
 								promote(c2);
 								color.swap();
 								gameboard.getTextDisplay().clear();
+								gameboard.getTextDisplay().add(color.getBool() ? "Your turn" : "Computer turn");
 							}
 						}
 					} else {
@@ -568,8 +576,9 @@ public class ChessGame {
 								promote(c2);
 								color.swap();
 								gameboard.getTextDisplay().clear();
+								gameboard.getTextDisplay().add(color.getBool() ? "Your turn" : "Computer turn");
 							}
-
+							//TODO swap turn here?
 						}
 					}
 
@@ -579,6 +588,8 @@ public class ChessGame {
 		}
 
 	}
+	
+
 
 	/**
 	 * Changes the names of the players

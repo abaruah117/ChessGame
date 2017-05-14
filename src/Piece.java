@@ -34,27 +34,27 @@ public abstract class Piece {
 		this.name = name.toUpperCase();
 		this.color = color;
 		pos = c;
-		switch (this.name) {
+		switch (this.name.toUpperCase()) {
 		case "KING":
-			pointVal = Integer.MAX_VALUE;
-			break;
-		case "QUEEN":
-			pointVal = 9;
-			break;
-		case "ROOK":
 			pointVal = 5;
 			break;
-		case "PAWN":
+		case "QUEEN":
+			pointVal = 4;
+			break;
+		case "ROOK":
 			pointVal = 1;
+			break;
+		case "PAWN":
+			pointVal = 0;
 			break;
 		case "BISHOP":
 			pointVal = 3;
 			break;
 		case "KNIGHT":
-			pointVal = 3;
+			pointVal = 2;
 			break;
 		default:
-			pointVal = 0;
+			pointVal = -1;
 			System.out.println("PIECE NAME INVALID");
 		}
 
