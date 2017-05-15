@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 /**
  * 
@@ -68,7 +69,7 @@ public class Renderer extends Canvas {
 		Matrix xRot = new Matrix().rotationXMatrix(rotationAngles.getX());
 		Matrix yRot = new Matrix().rotationYMatrix(rotationAngles.getY());
 		Matrix zRot = new Matrix().rotationZMatrix(rotationAngles.getZ()); //TODO get matrices from engine, not needs but helps fps
-		
+		try {
 		for (Piece p : b.getWhitePieces()) {
 			Coord pos = p.getCoord();
 			Vector posV = new Vector(
@@ -108,6 +109,9 @@ public class Renderer extends Canvas {
 
 			drawMesh(m, c);
 
+		}
+		} catch (ConcurrentModificationException e) {
+			drawBoardPieces(b, c, boardTrans, rotationAngles);
 		}
 
 	}

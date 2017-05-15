@@ -15,6 +15,8 @@ import java.util.Random;
  * {@link https://github.com/austinmorgan/chess/blob/master/src/chess/Move.java}
  * <b> The computer AI which checks all possible moves the computer could make
  * and picks the best one, very slow
+ * <b> 
+ * We added multi threading so the gui would'nt freeze while it is performing its calculations
  */
 public class ChessAi extends Thread{
 
@@ -42,6 +44,11 @@ public class ChessAi extends Thread{
 	// true = white, player turn ; false = black, computer turn
 	SwapBool turn;
 
+	/**
+	 * Creates a new chessAI to start from a initial chess game
+	 * @param chessGame The chess game that is the current game
+	 * @param turn A swap bool holding which turn it is
+	 */
 	public ChessAi(ChessGame chessGame, SwapBool turn) {
 		this.turn = turn;
 		this.pieces = chessGame.getBoard().getBoard();
@@ -52,8 +59,13 @@ public class ChessAi extends Thread{
 		checking = false;
 	}
 
+	/**
+	 * Gets the piece from the board at a specific coord
+	 * @param c The coord
+	 * @return The piece at that coord
+ 	 */
 	private Piece pieceAt(Coord c) {
-		return pieces[Board.getSize() - 1 - c.getY()][c.getX()];
+		return chessGame.getPiece(c);
 	}
 
 	/**
@@ -95,16 +107,20 @@ public class ChessAi extends Thread{
 
 							Coord end = new Coord(xpos_end, ypos_end);
 							Piece endPiece = pieceAt(end);
+							
+
 							if (startPiece.getBooleanColor() == turn.getBool() && chessGame.movePiece(start, end)) {
-								if (!chessGame.check(false)) {
-									moves.add(new Move(xpos_start, ypos_start, xpos_end, ypos_end, 1, pieces));
-								} 
+
 								chessGame.revertMove(start, end, endPiece);
+					
+								if (!chessGame.check(false)) {
+									moves.add(new Move(start.getX(), start.getY(), end.getX(), end.getY(), 1, chessGame, pieces));
+								} 
+
 							}
 						}
 					}
 				}
-				Thread.yield();
 			}
 		} else {
 			for (int xpos_start = 0; xpos_start <= 7; xpos_start++) {
@@ -120,15 +136,16 @@ public class ChessAi extends Thread{
 							Coord end = new Coord(xpos_end, ypos_end);
 							Piece endPiece = pieceAt(end);
 							if (startPiece.getBooleanColor() == turn.getBool() && chessGame.movePiece(start, end)) {
-								if (chessGame.check(false)) {
-									blackCheck = true;
-								} else {
-									blackCheck = false;
-								}
-								if (!blackCheck) {
-									moves.add(new Move(xpos_start, ypos_start, xpos_end, ypos_end, 1, pieces));
-								}
+//								if (chessGame.check(false)) {
+//									blackCheck = true;
+//								} else {
+//									blackCheck = false;
+//								}
 								chessGame.revertMove(start, end, endPiece);
+								if (!blackCheck) {
+									moves.add(new Move(start.getX(), start.getY(), end.getX(), end.getY(), 1, chessGame, pieces));
+								}
+
 							}
 						}
 					}
@@ -142,12 +159,16 @@ public class ChessAi extends Thread{
 				return move2.moveValue - move1.moveValue;
 			}
 		});
-		System.out.println(moves.toString());
+		//System.out.println(moves.toString());
 
 		PickMove(moves);
 
 	}
 
+	/**
+	 * Randomly picks a move from an array list of moves and executes it
+	 * @param moves An array list of moves
+	 */
 	private void PickMove(ArrayList<Move> moves) {
 		
 		Random random = new Random();
@@ -168,9 +189,15 @@ public class ChessAi extends Thread{
 
 	}
 
+	/**
+	 * Used to run the AI on a new thread
+	 */
 	@Override
 	public void run() {
 		AI();
+
 	}
+	
+
 
 }

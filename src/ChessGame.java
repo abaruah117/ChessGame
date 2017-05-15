@@ -1,4 +1,5 @@
 import java.util.*;
+
 import javax.swing.JOptionPane;
 
 /**
@@ -77,6 +78,7 @@ public class ChessGame {
 	 * @return The piece that was killed, or null if nothing was killed
 	 */
 	public Piece attack(Coord c1, Coord c2) {
+		System.out.println("The attack method is being called");
 		boolean valid = targets(c1, c2);
 		if (valid) {
 			Piece p1 = gameboard.pieceAt(c1);
@@ -187,6 +189,7 @@ public class ChessGame {
 	 * @return True if the king of that color is in check, false otherwise
 	 */
 	public boolean check(boolean color) {
+		
 		Coord c = null;
 		if (color) {
 			for (Piece p : whitePieces) {
@@ -208,10 +211,14 @@ public class ChessGame {
 			if (p != null) {
 				((King) p).checked();
 			}
+	
 			return true;
+			
 		} else {
+
 			return false;
 		}
+
 	}
 
 	/**
@@ -446,6 +453,9 @@ public class ChessGame {
 			if (y < 0) {
 				break;
 			}
+			if(!gameboard.checkValid(new Coord(x,y))) {
+				break;
+			}
 			if (gameboard.pieceAt(new Coord(x, y)) != null) {
 				return true;
 			}
@@ -523,6 +533,7 @@ public class ChessGame {
 	 *            whose turn it is
 	 */
 	public void run(Coord c1, Coord c2, SwapBool color) {
+		//System.out.println("THe run method has been entered");
 		if (check(color.getBool())) {
 			if (checkMate(color.getBool())) {
 				String b = (!color.getBool()) ? (this.getChessPlayers().getWhitePlayerName() + " wins")
@@ -630,6 +641,7 @@ public class ChessGame {
 
 			}
 		}
+		//System.out.println("Leaving the run method");
 
 	}
 
@@ -754,6 +766,18 @@ public class ChessGame {
 		}
 		boolean targets = ((!obstruction) && legal);
 		return targets;
+	}
+	
+	public void setPiece(Coord c, Piece p) {
+		gameboard.setPiece(c, p);
+		if (p != null) {
+			if (p.getBooleanColor()) {
+				whitePieces.add(p);
+			} else {
+				blackPieces.add(p);
+			}
+		}
+	
 	}
 
 }

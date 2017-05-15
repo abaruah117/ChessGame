@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Set;
 
 import javax.swing.JOptionPane;
 
@@ -115,6 +116,7 @@ public class Engine {
 		while (true) {
 			// float boardTilt = -5 * Time.getTotalTime()/1000000000f;// Dont
 			// use 45
+			//float startTime = System.nanoTime();
 
 			Matrix boardAlign = new Matrix().translationMatrix(
 					Board.getTileSize() / 2, 0, Board.getTileSize() / 2f);
@@ -137,15 +139,28 @@ public class Engine {
 			board.getTextDisplay().update();
 			board.getTextDisplay().draw();
 
+			//System.out.println("Time to get matricies and update stuff " + (System.nanoTime() - startTime));
+			//startTime = System.nanoTime();
+			
 			renderer.getGraphics().drawString("FPS: " + Time.getLastFrames(),
 					10, 20);
-			//System.out.println(AIisRunning);
+		//	System.out.println("Memory usage: " + ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())));
+			
+//			Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+//			
+//			for(Thread t:threadSet) {
+//				System.out.println(t.getName());
+//			}
+//			System.out.println();
+			
 			if (selected.size() == 2 && turn.getBool()) {
 				chessGame.run(selected.get(0), selected.get(1), turn);
 				selected.clear();
 				AI = new ChessAi(chessGame, turn);
 			} else if (AIisRunning && turn.getBool()) {
 				AIisRunning = false;
+				AI.stop();
+				System.gc();
 			} else if (!turn.getBool() && !AIisRunning) {
 
 				System.out.println("Running AI");
@@ -156,13 +171,22 @@ public class Engine {
 				AI.start();
 
 			}
+			if(!turn.getBool()) {
+				selected.clear();
+			}
+			
+
 
 			renderer.drawBoardPieces(board, camera, transVector,
 					inputManager.getRotations());
+			//System.out.println("Time to draw to screen " + (System.nanoTime() - startTime));
 			renderer.drawBoardTiles(board, boardMatrix, camera, selected);
-
+			System.out.println(board.getWhitePieces().size());
 			display.swapBuffers();
 			display.clear(Color.lightGray);
+			
+			
+			//startTime = System.nanoTime();
 
 		}
 
