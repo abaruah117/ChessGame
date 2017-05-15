@@ -85,24 +85,30 @@ public class ChessGame {
 				if (squareIsTargeted(!p1.getBooleanColor(), c2)) {
 					return null;
 				} else {
+					System.out.println("REMOVING: "+p2.toString());
 					if (p2.getBooleanColor()) {
 						whiteRemoved.add(p2);
-						whitePieces.remove(p2);
+						System.out.println("before: "+whitePieces.size());
+						whitePieces = gameboard.removeWhite(p2);
+						System.out.println(whitePieces.size()+"XD");
 					} else {
 						blackRemoved.add(p2);
-						blackPieces.remove(p2);
+						blackPieces = gameboard.removeBlack(p2);
 					}
 					gameboard.movePiece(c1, c2);
 					return p2;
 
 				}
 			} else {
+				System.out.println("REMOVING: "+p2.toString());
 				if (p2.getBooleanColor()) {
 					whiteRemoved.add(p2);
-					whitePieces.remove(p2);
+					whitePieces = gameboard.removeWhite(p2);
+					whitePieces.remove(whitePieces.size()-1);
+					System.out.println(whitePieces.size()+"XD");
 				} else {
 					blackRemoved.add(p2);
-					blackPieces.remove(p2);
+					blackPieces = gameboard.removeBlack(p2);
 				}
 				gameboard.movePiece(c1, c2);
 				return p2;
@@ -478,11 +484,11 @@ public class ChessGame {
 					JOptionPane.WARNING_MESSAGE, 0, null, choices, null);
 			Piece pNew = choices[rc];
 			if (color) {
-				whitePieces.remove(p);
-				whitePieces.add(pNew);
+				whitePieces = gameboard.removeWhite(p);
+				whitePieces = gameboard.addWhite(pNew);
 			} else {
-				blackPieces.remove(p);
-				blackPieces.add(pNew);
+				blackPieces = gameboard.removeBlack(p);
+				blackPieces = gameboard.addBlack(pNew);
 			}
 			gameboard.setPiece(c, pNew);
 			return true;
@@ -504,9 +510,13 @@ public class ChessGame {
 		gameboard.setPiece(cFinal, p);
 		if (p != null) {
 			if (p.getBooleanColor()) {
-				whitePieces.add(p);
+				if(!whitePieces.contains(p)){
+					whitePieces.add(p);
+				}
 			} else {
-				blackPieces.add(p);
+				if(!blackPieces.contains(p)){
+					blackPieces.add(p);
+				}
 			}
 		}
 	}
@@ -614,7 +624,6 @@ public class ChessGame {
 								gameboard.getTextDisplay().clear();
 								gameboard.getTextDisplay().add(color.getBool() ? "Your turn" : "Computer turn");
 							}
-							// TODO swap turn here?
 						}
 					}
 
@@ -651,10 +660,6 @@ public class ChessGame {
 	public boolean squareIsTargeted(boolean color, Coord c2) {
 		if (c2 == null) {
 			return false;
-		}
-		Piece p2 = null;
-		if (gameboard.pieceAt(c2) != null) {
-			p2 = gameboard.pieceAt(c2);
 		}
 		if (color) {
 			for (Piece p : whitePieces) {
@@ -725,14 +730,6 @@ public class ChessGame {
 		Piece p1 = gameboard.pieceAt(c1);
 		Piece p2 = gameboard.pieceAt(c2);
 		if (p1 == null ) {
-			String nullPiece = "";
-			if (p1 == null) {
-				if (p2 == null) {
-					nullPiece += "p1,p2";
-				} else {
-					nullPiece += "p1";
-				}
-			}
 			return false;
 		} else if (p2!=null && p1.getBooleanColor() == p2.getBooleanColor()) {
 			return false;

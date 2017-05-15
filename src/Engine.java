@@ -132,7 +132,8 @@ public class Engine {
 				AI = new ChessAi(chessGame, turn);
 				AI.AI();				
 			}
-
+			System.out.println("white : "+chessGame.getWhitePieces().size());
+			System.out.println(chessGame.getWhitePieces().toString());
 			renderer.drawBoardPieces(board, camera, transVector, inputManager.getRotations());
 			renderer.drawBoardTiles(board, boardMatrix, camera, selected);
 

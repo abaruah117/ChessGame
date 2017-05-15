@@ -131,7 +131,7 @@ public class Board {
 		board[row][7] = new Rook(color, new Coord(7, SIZE - row - 1));
 
 	}
-
+	
 	/**
 	 * Adds the pieces from the board to the correct array, white or black
 	 */
@@ -148,6 +148,24 @@ public class Board {
 				}
 			}
 		}
+	}
+	/**
+	 * Adds a black piece
+	 * @param p2 the piece to be added
+	 * @return the updated black Piece arraylist
+	 */
+	public ArrayList<Piece> addBlack(Piece p2){
+		blackPieces.add(p2);
+		return blackPieces;
+	}
+	/**
+	 * Adds a white piece
+	 * @param p2 the piece to be added
+	 * @return the updated white Piece arraylist
+	 */
+	public ArrayList<Piece> addWhite(Piece p2){
+		whitePieces.add(p2);
+		return whitePieces;
 	}
 	/**
 	 * A getter method for the black pieces
@@ -245,6 +263,7 @@ public class Board {
 		return null;
 
 	}
+	
 	/**
 	 * A method to get the Piece at a specific Coord in the Board
 	 * @param c the Coord to access the piece at
@@ -256,6 +275,24 @@ public class Board {
 		} else {
 			return board[SIZE - 1 - c.getY()][c.getX()];
 		}
+	}
+	/**
+	 * Removes a black piece
+	 * @param p2 the piece to be removed
+	 * @return the updated black Piece arraylist
+	 */
+	public ArrayList<Piece> removeBlack(Piece p2){
+		blackPieces.remove(p2);
+		return blackPieces;
+	}
+	/**
+	 * Removes a white piece
+	 * @param p2 the piece to be removed
+	 * @return the updated white Piece arraylist
+	 */
+	public ArrayList<Piece> removeWhite(Piece p2){
+		whitePieces.remove(p2);
+		return whitePieces;
 	}
 	/**
 	 * A method to set a Piece a specific point in the Board 
