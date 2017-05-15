@@ -89,7 +89,7 @@ public class Board {
 	 *            The Coord to check
 	 * @return If the Coord is in the board
 	 */
-	private boolean checkValid(Coord c) {
+	public boolean checkValid(Coord c) {
 		if (c.getX() < 0 || c.getX() >= SIZE || c.getY() < 0 || c.getY() >= SIZE) {
 			return false;
 		}
@@ -271,6 +271,7 @@ public class Board {
 	 */
 	public Piece pieceAt(Coord c) {
 		if (!checkValid(c)) {
+			System.out.println("Returning null D:");
 			return null;
 		} else {
 			return board[SIZE - 1 - c.getY()][c.getX()];
@@ -303,7 +304,9 @@ public class Board {
 		if (!checkValid(c)) {
 			return;
 		}
+		//System.out.println("Set the piece succsessfully yay");
 		board[SIZE - 1 - c.getY()][c.getX()] = p;
+		
 		if (p != null) {
 			p.setCoord(c);
 		}

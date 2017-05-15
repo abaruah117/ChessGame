@@ -33,15 +33,15 @@ public class Camera {
 		
 		pos = new Vector(0, 0, 0);
 		cameraMatrix = transform.inverse();
-		invCameraMatrix = transform;
+		//invCameraMatrix = transform; Unused
 		
 		screenMatrix = new Matrix().screenMatrix(screenWidth, screenHeight);
-		invScreenMatrix = screenMatrix.inverse();
+		//invScreenMatrix = screenMatrix.inverse(); Unused
 		
 		perspectiveMatrix = new Matrix().projectionMatrix(right, top, nearClipping, farClipping);
-		invPerspectiveMatrix = perspectiveMatrix.inverse();
+		//invPerspectiveMatrix = perspectiveMatrix.inverse(); Unused
 		
-		this.projectionTransform = Matrix.multiply(screenMatrix, perspectiveMatrix, cameraMatrix);
+		this.projectionTransform = Matrix.multiply(screenMatrix, perspectiveMatrix); //removed camera matrix bc cameras always at origin
 	}
 	
 	/**

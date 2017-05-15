@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 
 /**
  * 
@@ -31,21 +32,32 @@ public class Display {
 	 * @param title The title of the Window
 	 */
 	public Display(Canvas target, String title) {
-		buffer = target;
-		screen = new BufferedImage(buffer.getWidth(), buffer.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
-		screenG = screen.createGraphics();
-		bufferG = buffer.getImage().createGraphics();
-		window = new JFrame(title);
-		window.setLocationRelativeTo(null);
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setSize(buffer.getWidth(), buffer.getHeight());
-		//frame.setResizable(false);
-		display = new JLabel(new ImageIcon(screen));
-		window.add(display);
-		window.pack();
-		//window.setResizable(false);
-		window.setVisible(true);
+		SwingUtilities.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				buffer = target;
+				screen = new BufferedImage(buffer.getWidth(), buffer.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
+				screenG = screen.createGraphics();
+				bufferG = buffer.getImage().createGraphics();
+				window = new JFrame(title);
+				window.setLocationRelativeTo(null);
+				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				window.setSize(buffer.getWidth(), buffer.getHeight());
+				//frame.setResizable(false);
+				display = new JLabel(new ImageIcon(screen));
+				window.add(display);
+				window.pack();
+				//window.setResizable(false);
+				window.setVisible(true);
+				
+			}
+		
+		});
+
 	}
+	
+	
 	
 	/**
 	 * Clears the window and any depth buffers, must be called once per frame
