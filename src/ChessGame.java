@@ -3,17 +3,14 @@ import javax.swing.JOptionPane;
 
 /**
  * 
- * @author Amitav & Kevin 
- * Period 3
+ * @author Amitav & Kevin Period 3
  */
 /*
- * The chess game class contains all the methods to play chess 
- * Each method deals with a specific event in chess
+ * The chess game class contains all the methods to play chess Each method deals
+ * with a specific event in chess
  */
 public class ChessGame {
-	public static void main(String[] args) {
-		System.out.println("XD");
-	}
+
 	private ChessGamePlayers players;
 	private Board gameboard;
 	private ArrayList<Piece> blackRemoved = new ArrayList<Piece>();
@@ -25,7 +22,9 @@ public class ChessGame {
 	private ArrayList<Piece> blackPieces = new ArrayList<Piece>();
 
 	/**
-	 * A constructor to initialize a ChessGame based off existing objects pertaining to the ChessGame
+	 * A constructor to initialize a ChessGame based off existing objects
+	 * pertaining to the ChessGame
+	 * 
 	 * @param a
 	 *            ChessGamePlayers
 	 * @param b
@@ -52,9 +51,13 @@ public class ChessGame {
 
 	/**
 	 * Creates a new chess game
-	 * @param p1 The name of player one
-	 * @param p2 The name of player two
-	 * @param b The board that this game is being played on
+	 * 
+	 * @param p1
+	 *            The name of player one
+	 * @param p2
+	 *            The name of player two
+	 * @param b
+	 *            The board that this game is being played on
 	 */
 	public ChessGame(String p1, String p2, Board b) {
 		players = new ChessGamePlayers(p1, p2);
@@ -64,11 +67,13 @@ public class ChessGame {
 	}
 
 	/**
-	 * Attempts to have the piece at coord1 attack the piece at coord2 
-	 * Moves the pieces if successful
+	 * Attempts to have the piece at coord1 attack the piece at coord2 Moves the
+	 * pieces if successful
 	 * 
-	 * @param p1 The coord of the attacker
-	 * @param p2 The coord of where the attacker is attacking
+	 * @param p1
+	 *            The coord of the attacker
+	 * @param p2
+	 *            The coord of where the attacker is attacking
 	 * @return The piece that was killed, or null if nothing was killed
 	 */
 	public Piece attack(Coord c1, Coord c2) {
@@ -102,7 +107,9 @@ public class ChessGame {
 				gameboard.movePiece(c1, c2);
 				return p2;
 			}
+
 		}
+
 		return null;
 	}
 
@@ -130,10 +137,8 @@ public class ChessGame {
 			y = 7;
 		}
 		if (!(gameboard.pieceAt(new Coord(outerbound, y)) instanceof Rook)) {
-			System.out.println("NO ROOK THO");
 			return false;
 		} else if (((Rook) (gameboard.pieceAt(new Coord(outerbound, y)))).hasMoved()) {
-			System.out.println("ROOK HAS MOVED THO");
 			return false;
 		}
 		if (!(gameboard.pieceAt(new Coord(4, y)) instanceof King)
@@ -163,8 +168,13 @@ public class ChessGame {
 		gameboard.setPiece(new Coord(4, y), null);
 		gameboard.setPiece(new Coord(outerbound, y), null);
 		gameboard.setPiece(c, king);
-		int newX = 4 - (c.getX() - outerbound - 1) / 2;
-		System.out.println(newX + " x " + outerbound + " outer " + c.getX());
+		int newX = 0;
+		if(c.getX()==2){
+			newX = 3;
+		}
+		else{
+			newX = 5;
+		}
 		gameboard.setPiece(new Coord(newX, y), rook);
 		return true;
 	}
@@ -172,7 +182,8 @@ public class ChessGame {
 	/**
 	 * Checks if the King of color (passed in as a parameter) is in check
 	 * 
-	 * @param color The color of the king to check
+	 * @param color
+	 *            The color of the king to check
 	 * @return True if the king of that color is in check, false otherwise
 	 */
 	public boolean check(boolean color) {
@@ -298,6 +309,7 @@ public class ChessGame {
 		}
 		if (stale) {
 			gameboard.getTextDisplay().add("GAME IS OVER, DRAW");
+			System.exit(0);
 			return true;
 		}
 		return lose;
@@ -305,14 +317,16 @@ public class ChessGame {
 
 	/**
 	 * Gets the black pieces
+	 * 
 	 * @return An array list containing all the black pieces
-	 */ 
+	 */
 	public ArrayList<Piece> getBlackPieces() {
 		return this.blackPieces;
 	}
 
 	/**
 	 * Gets the dead/removed black pieces
+	 * 
 	 * @return An array list containing all the dead black pieces
 	 */
 	public ArrayList<Piece> getBlackRemoved() {
@@ -321,6 +335,7 @@ public class ChessGame {
 
 	/**
 	 * Gets the ChessGame's board
+	 * 
 	 * @return The board the game is being played on
 	 */
 	public Board getBoard() {
@@ -329,6 +344,7 @@ public class ChessGame {
 
 	/**
 	 * Gets the ChessGamePlayers
+	 * 
 	 * @return ChessGamePlayers object
 	 */
 	public ChessGamePlayers getChessPlayers() {
@@ -337,7 +353,9 @@ public class ChessGame {
 
 	/**
 	 * Gets the piece at a specific Coord
-	 * @param c The Coord
+	 * 
+	 * @param c
+	 *            The Coord
 	 * @return The piece at that Coord
 	 */
 	public Piece getPiece(Coord c) {
@@ -346,6 +364,7 @@ public class ChessGame {
 
 	/**
 	 * Get the player's names
+	 * 
 	 * @return A string of the players names
 	 */
 	public String getPlayers() {
@@ -354,6 +373,7 @@ public class ChessGame {
 
 	/**
 	 * Get the white pieces
+	 * 
 	 * @return An array list of all the white pieces
 	 */
 	public ArrayList<Piece> getWhitePieces() {
@@ -362,6 +382,7 @@ public class ChessGame {
 
 	/**
 	 * Get the dead white pieces
+	 * 
 	 * @return An array list of all the dead white pieces
 	 */
 	public ArrayList<Piece> getWhiteRemoved() {
@@ -369,9 +390,13 @@ public class ChessGame {
 	}
 
 	/**
-	 * Attempts to move a piece from one spot to another, and checks for obstruction
-	 * @param cStart The Coord of the Piece attempting to move
-	 * @param cFinal The Coord of the spot which it is trying to move to
+	 * Attempts to move a piece from one spot to another, and checks for
+	 * obstruction
+	 * 
+	 * @param cStart
+	 *            The Coord of the Piece attempting to move
+	 * @param cFinal
+	 *            The Coord of the spot which it is trying to move to
 	 * @return true if the piece could and did move, false otherwise
 	 */
 	public boolean movePiece(Coord cStart, Coord cFinal) {
@@ -384,9 +409,13 @@ public class ChessGame {
 	}
 
 	/**
-	 * Checks to see if there is another piece between the piece at Coord one and a parameter, Coord two
-	 * @param c1 The Coord at which the piece is
-	 * @param c2 The Coord to check to see if there is anything in between
+	 * Checks to see if there is another piece between the piece at Coord one
+	 * and a parameter, Coord two
+	 * 
+	 * @param c1
+	 *            The Coord at which the piece is
+	 * @param c2
+	 *            The Coord to check to see if there is anything in between
 	 * @return If there is a piece in between the two coords
 	 */
 	public boolean obstruct(Coord c1, Coord c2) {
@@ -425,8 +454,11 @@ public class ChessGame {
 	}
 
 	/**
-	 * Promotes the piece at a coord by giving the user a pop up box to choose the desired piece from
-	 * @param c The coord which to try and promote
+	 * Promotes the piece at a coord by giving the user a pop up box to choose
+	 * the desired piece from
+	 * 
+	 * @param c
+	 *            The coord which to try and promote
 	 * @return If the promotion was successful
 	 */
 	public boolean promote(Coord c) {
@@ -459,14 +491,18 @@ public class ChessGame {
 
 	/**
 	 * Undoes a move
-	 * @param cStart The position of the piece before the move
-	 * @param cFinal The position of the piece after the move
-	 * @param p The piece that was in the final spot before
- 	 */
+	 * 
+	 * @param cStart
+	 *            The position of the piece before the move
+	 * @param cFinal
+	 *            The position of the piece after the move
+	 * @param p
+	 *            The piece that was in the final spot before
+	 */
 	public void revertMove(Coord cStart, Coord cFinal, Piece p) {
 		gameboard.setPiece(cStart, gameboard.pieceAt(cFinal));
 		gameboard.setPiece(cFinal, p);
-		if(p != null) { 
+		if (p != null) {
 			if (p.getBooleanColor()) {
 				whitePieces.add(p);
 			} else {
@@ -476,9 +512,13 @@ public class ChessGame {
 	}
 
 	/**
-	 * This method runs an entire turn and checks all necessary options and conditions to simulate a Chess game
-	 * @param c1 The coord of the selected piece
-	 * @param c2 The location where the piece is trying to go to
+	 * This method runs an entire turn and checks all necessary options and
+	 * conditions to simulate a Chess game
+	 * 
+	 * @param c1
+	 *            The coord of the selected piece
+	 * @param c2
+	 *            The location where the piece is trying to go to
 	 * @param color
 	 *            whose turn it is
 	 */
@@ -499,7 +539,7 @@ public class ChessGame {
 				Piece p1 = getPiece(c1);
 				if (p1.getBooleanColor() != color.getBool()) {
 					gameboard.getTextDisplay().add("Move a piece of your color, please", 5);
-				} else { 
+				} else {
 					if (getPiece(c2) != null) {
 						Piece p2 = getPiece(c2);
 						if (attack(c1, c2) != null) {
@@ -511,7 +551,7 @@ public class ChessGame {
 								promote(c2);
 								gameboard.getTextDisplay().clear();
 								gameboard.getTextDisplay().add(color.getBool() ? "Your turn" : "Computer turn");
-								
+
 							}
 						}
 					} else {
@@ -526,7 +566,7 @@ public class ChessGame {
 								color.swap();
 								gameboard.getTextDisplay().clear();
 								gameboard.getTextDisplay().add(color.getBool() ? "Your turn" : "Computer turn");
-								
+
 							}
 						}
 					}
@@ -543,15 +583,11 @@ public class ChessGame {
 					gameboard.getTextDisplay().add("Move a piece of your color, please");
 				} else {
 					if (p instanceof King) {
-						if (!p.legalMove(c2)) {
+						if (p.legalMove(c2)) {
 						} else if (!castle(color.getBool(), c2)) {
 							gameboard.getTextDisplay().add("Invalid castle");
-						} else {
-							color.swap();
-							gameboard.getTextDisplay().clear();
-							gameboard.getTextDisplay().add(color.getBool() ? "Your turn" : "Computer turn");
-						}
-					} else if (getPiece(c2) != null) {
+						} 
+					} if (getPiece(c2) != null) {
 						Piece rek = attack(c1, c2);
 						if (rek == null) {
 						} else {
@@ -578,7 +614,7 @@ public class ChessGame {
 								gameboard.getTextDisplay().clear();
 								gameboard.getTextDisplay().add(color.getBool() ? "Your turn" : "Computer turn");
 							}
-							//TODO swap turn here?
+							// TODO swap turn here?
 						}
 					}
 
@@ -588,13 +624,14 @@ public class ChessGame {
 		}
 
 	}
-	
-
 
 	/**
 	 * Changes the names of the players
-	 * @param p1 The new player one name
-	 * @param p2 The new player two name
+	 * 
+	 * @param p1
+	 *            The new player one name
+	 * @param p2
+	 *            The new player two name
 	 */
 	public void setPlayers(String p1, String p2) {
 		players.changeWhitePlayerName(p1);
@@ -603,17 +640,16 @@ public class ChessGame {
 
 	/**
 	 * Checks if a square/position is targeted by a color (white/black)
+	 * 
 	 * @param color
-	 *            the boolean referring to a color that is being checked whether it targets the given
-	 *            square
+	 *            the boolean referring to a color that is being checked whether
+	 *            it targets the given square
 	 * @param c2
 	 *            the Coord referring to the square
 	 * @return
 	 */
 	public boolean squareIsTargeted(boolean color, Coord c2) {
-		boolean targeted = false;
 		if (c2 == null) {
-			System.out.println("Error, null coord");
 			return false;
 		}
 		Piece p2 = null;
@@ -622,42 +658,25 @@ public class ChessGame {
 		}
 		if (color) {
 			for (Piece p : whitePieces) {
-				if ((p.getClass().getName().equalsIgnoreCase("Pawn") && ((Pawn) p).pawnAttack(c2))) {
-					targeted = true;
-					break;
-				}
-				if (p.legalMove(c2) && (p2 == null || (p2 != null && !p.equals(p2)))) {
-					boolean obstruction = obstruct(p.getCoord(), c2);
-					if (obstruction) {
-						targeted = false;
-					} else {
-						targeted = true;
-						break;
-					}
+				Coord c = p.getCoord();
+				if (targets(c, c2)) {
+					return true;
 				}
 			}
 		} else {
 			for (Piece p : blackPieces) {
-				if ((p.getClass().getName().equalsIgnoreCase("Pawn") && ((Pawn) p).pawnAttack(c2))) {
-					targeted = true;
-					break;
-				}
-				if (p.legalMove(c2) && (p2 == null || (p2 != null && !p.equals(p2)))) {
-					boolean obstruction = obstruct(p.getCoord(), c2);
-					if (obstruction) {
-						targeted = false;
-					} else {
-						targeted = true;
-						break;
-					}
+				Coord c = p.getCoord();
+				if (targets(c, c2)) {
+					return true;
 				}
 			}
 		}
-		return targeted;
+		return false;
 	}
 
 	/**
 	 * Checks for a stalemate
+	 * 
 	 * @param color
 	 *            the boolean color to check if in stalemate
 	 * @return true if it is a stalemate
@@ -691,16 +710,21 @@ public class ChessGame {
 		}
 		return !check(color) && noMoves;
 	}
+
 	/**
 	 * Checks if the piece at c1 targets the piece at c2
-	 * @param c1 the Coord of the first Piece
-	 * @param c2 the Coord of the second Piece
-	 * @return boolean, if the piece at c1 targets the piece at c2 true, else false
+	 * 
+	 * @param c1
+	 *            the Coord of the first Piece
+	 * @param c2
+	 *            the Coord of the second Piece
+	 * @return boolean, if the piece at c1 targets the piece at c2 true, else
+	 *         false
 	 */
 	public boolean targets(Coord c1, Coord c2) {
 		Piece p1 = gameboard.pieceAt(c1);
 		Piece p2 = gameboard.pieceAt(c2);
-		if (p1 == null || p2 == null) {
+		if (p1 == null ) {
 			String nullPiece = "";
 			if (p1 == null) {
 				if (p2 == null) {
@@ -708,13 +732,9 @@ public class ChessGame {
 				} else {
 					nullPiece += "p1";
 				}
-			} else if (p2 == null) {
-				nullPiece += "p2";
 			}
-			System.out.println("Piece not valid: " + nullPiece);
 			return false;
-		} else if (p1.getBooleanColor() == p2.getBooleanColor()) {
-			System.out.println("Same color pieces, invalid");
+		} else if (p2!=null && p1.getBooleanColor() == p2.getBooleanColor()) {
 			return false;
 		}
 		boolean legal = p1.legalMove(c2);

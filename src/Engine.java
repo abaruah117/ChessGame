@@ -123,11 +123,13 @@ public class Engine {
 
 			renderer.getGraphics().drawString("FPS: " + Time.getLastFrames(), 10, 20);
 
-			if (selected.size() == 2 && turn.getBool()) {
+			if (selected.size() == 2 &&turn.getBool()) {
 				chessGame.run(selected.get(0), selected.get(1), turn);
 				selected.clear();
-			} else if(!turn.getBool()){
+				AI = new ChessAi(chessGame, turn);
+			}else if(!turn.getBool()){
 				System.out.println("Running AI");
+				AI = new ChessAi(chessGame, turn);
 				AI.AI();				
 			}
 

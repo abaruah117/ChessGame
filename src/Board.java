@@ -219,6 +219,7 @@ public class Board {
 		if (p2 != null && p2.getBooleanColor() == p.getBooleanColor()) {
 			return false;
 		}
+	
 		setPiece(cFinal, p);
 		board[SIZE - 1 - cStart.getY()][cStart.getX()] = null;
 		if (p.getClass().getName().equalsIgnoreCase("King")) {
