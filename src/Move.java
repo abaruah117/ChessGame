@@ -48,7 +48,7 @@ public class Move  {
 		ypos_new =  d ;
 		futureTurns = fT;
 		if(pieceAt(new Coord(xpos_current, ypos_current)) == null) {
-			System.err.println("NULL STARTING MOVE???");
+			return;
 		}
 		//System.out.println("Found a new move at " + xpos_current + ", " + ypos_current + " with a piece " + pieces[xpos_current][ypos_current]);
 		moveValue = (int) calculateMoveValue(0);

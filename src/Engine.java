@@ -72,12 +72,12 @@ public class Engine {
 		Matrix pawnMatrix = Matrix.multiply(new Matrix().rotationXMatrix(0),
 
 		new Matrix().scalingMatrix(.7f, .7f, .7f));
-		ModelLoader.loadModel("Bishop", pawnMatrix, false);
-		ModelLoader.loadModel("King", pawnMatrix, false);
-		ModelLoader.loadModel("Knight", pawnMatrix, false);
-		ModelLoader.loadModel("Pawn", pawnMatrix, false);
-		ModelLoader.loadModel("Queen", pawnMatrix, false);
-		ModelLoader.loadModel("Rook", pawnMatrix, false);
+		ModelLoader.loadModel("Bishop", pawnMatrix, true);
+		ModelLoader.loadModel("King", pawnMatrix, true);
+		ModelLoader.loadModel("Knight", pawnMatrix, true);
+		ModelLoader.loadModel("Pawn", pawnMatrix, true);
+		ModelLoader.loadModel("Queen", pawnMatrix, true);
+		ModelLoader.loadModel("Rook", pawnMatrix, true);
 
 		ModelLoader.loadTexture("blackSquareSelected");
 		ModelLoader.loadTexture("whiteSquareSelected");
@@ -104,7 +104,7 @@ public class Engine {
 		renderer.getGraphics().setFont(new Font("Arial", 0, 20));
 		AI = new ChessAi(chessGame, turn);
 		Time.init();
-
+		board.getTextDisplay().add("GAME: "+chessGame.getChessPlayers().getWhitePlayerName()+" vs Computer",2);
 		renderer.addLight(light1);
 	}
 
@@ -114,10 +114,6 @@ public class Engine {
 	public void run() {
 
 		while (true) {
-			// float boardTilt = -5 * Time.getTotalTime()/1000000000f;// Dont
-			// use 45
-			//float startTime = System.nanoTime();
-
 			Matrix boardAlign = new Matrix().translationMatrix(
 					Board.getTileSize() / 2, 0, Board.getTileSize() / 2f);
 			Vector transVector = new Vector(10, 0, -200
@@ -138,21 +134,8 @@ public class Engine {
 			Time.update();
 			board.getTextDisplay().update();
 			board.getTextDisplay().draw();
-
-			//System.out.println("Time to get matricies and update stuff " + (System.nanoTime() - startTime));
-			//startTime = System.nanoTime();
-			
 			renderer.getGraphics().drawString("FPS: " + Time.getLastFrames(),
 					10, 20);
-		//	System.out.println("Memory usage: " + ((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())));
-			
-//			Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
-//			
-//			for(Thread t:threadSet) {
-//				System.out.println(t.getName());
-//			}
-//			System.out.println();
-			
 			if (selected.size() == 2 && turn.getBool()) {
 				chessGame.run(selected.get(0), selected.get(1), turn);
 				selected.clear();
@@ -162,8 +145,6 @@ public class Engine {
 				AI.stop();
 				System.gc();
 			} else if (!turn.getBool() && !AIisRunning) {
-
-				System.out.println("Running AI");
 				board.getTextDisplay().add("Computer turn");
 				AI = new ChessAi(chessGame, turn);
 
@@ -181,7 +162,6 @@ public class Engine {
 					inputManager.getRotations());
 			//System.out.println("Time to draw to screen " + (System.nanoTime() - startTime));
 			renderer.drawBoardTiles(board, boardMatrix, camera, selected);
-			System.out.println(board.getWhitePieces().size());
 			display.swapBuffers();
 			display.clear(Color.lightGray);
 			

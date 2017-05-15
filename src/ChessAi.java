@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 /**
  * 
  * @author Amitav & Kevin Period 3
@@ -78,21 +80,6 @@ public class ChessAi extends Thread{
 	public void AI() {
 		
 		ArrayList<Move> moves = new ArrayList<Move>();
-//		Piece[][] a = chessGame.getBoard().getBoard();
-//		for(int i = 0; i < a.length; i++){
-//			for(int j =0 ; j< a.length; j++){
-//				Piece p = a[i][j];
-//				if(p==null){
-//					System.out.print("    ||    ");
-//				}
-//				else{
-//					System.out.print(p.getColor()+","+p.getName());
-//				}
-//			}
-//			System.out.println();
-//		}System.out.println("\n");
-//		System.out.println(chessGame.getBoard().pieceAt(new Coord(5,6)));
-//		System.out.println(chessGame.squareIsTargeted(true, new Coord(4,7)));
 		
 		if (chessGame.check(turn.getBool())) {
 			for (int xpos_start = 0; xpos_start <= 7; xpos_start++) {
@@ -104,18 +91,13 @@ public class ChessAi extends Thread{
 					}
 					for (int xpos_end = 0; xpos_end <= 7; xpos_end++) {
 						for (int ypos_end = 0; ypos_end <= 7; ypos_end++) {
-
 							Coord end = new Coord(xpos_end, ypos_end);
 							Piece endPiece = pieceAt(end);
-							
-
 							if (startPiece.getBooleanColor() == turn.getBool() && chessGame.movePiece(start, end)) {
-
-								chessGame.revertMove(start, end, endPiece);
-					
 								if (!chessGame.check(false)) {
 									moves.add(new Move(start.getX(), start.getY(), end.getX(), end.getY(), 1, chessGame, pieces));
 								} 
+								chessGame.revertMove(start, end, endPiece);
 
 							}
 						}
@@ -136,11 +118,11 @@ public class ChessAi extends Thread{
 							Coord end = new Coord(xpos_end, ypos_end);
 							Piece endPiece = pieceAt(end);
 							if (startPiece.getBooleanColor() == turn.getBool() && chessGame.movePiece(start, end)) {
-//								if (chessGame.check(false)) {
-//									blackCheck = true;
-//								} else {
-//									blackCheck = false;
-//								}
+								if(chessGame.check(false)){
+									blackCheck = true;
+								}else{
+									blackCheck = false;
+								}
 								chessGame.revertMove(start, end, endPiece);
 								if (!blackCheck) {
 									moves.add(new Move(start.getX(), start.getY(), end.getX(), end.getY(), 1, chessGame, pieces));
@@ -176,15 +158,23 @@ public class ChessAi extends Thread{
 		if (moves.size() >= 2) {
 			Move m = moves.get(random.nextInt(2));
 			chessGame.run(new Coord(m.xpos_current, m.ypos_current), new Coord(m.xpos_new, m.ypos_new), turn);
-			System.out.println("Attempting to move " + new Coord(m.xpos_current, m.ypos_current) + " to "
-					+ new Coord(m.xpos_new, m.ypos_new));
 		} else if (moves.size() == 1) {
 			Move m = moves.get(0);
 			chessGame.run(new Coord(m.xpos_current, m.ypos_current), new Coord(m.xpos_new, m.ypos_new), turn);
-			System.out.println("Attempting to move " + new Coord(m.xpos_current, m.ypos_current) + " to "
-					+ new Coord(m.xpos_new, m.ypos_new));
 		} else {
-			System.out.println("No moves possible, skipping turn");
+			if(chessGame.check(false)){
+				String b = (chessGame.getChessPlayers().getWhitePlayerName() + " wins");
+				String[] choices = { "GG WP " + b };
+				JOptionPane.showOptionDialog(null, "GAME OVER", "GameManager", JOptionPane.WARNING_MESSAGE, 0, null,
+						choices, null);
+				System.exit(0);
+			}
+			else{
+				String[] choices = { "GG WP, GAME ENDS IN A DRAW" };
+				JOptionPane.showOptionDialog(null, "GAME OVER", "GameManager", JOptionPane.WARNING_MESSAGE, 0, null,
+						choices, null);
+				System.exit(0);
+			}
 		}
 
 	}

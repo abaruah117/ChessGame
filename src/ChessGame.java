@@ -78,7 +78,6 @@ public class ChessGame {
 	 * @return The piece that was killed, or null if nothing was killed
 	 */
 	public Piece attack(Coord c1, Coord c2) {
-		System.out.println("The attack method is being called");
 		boolean valid = targets(c1, c2);
 		if (valid) {
 			Piece p1 = gameboard.pieceAt(c1);
@@ -171,10 +170,9 @@ public class ChessGame {
 		gameboard.setPiece(new Coord(outerbound, y), null);
 		gameboard.setPiece(c, king);
 		int newX = 0;
-		if(c.getX()==2){
+		if (c.getX() == 2) {
 			newX = 3;
-		}
-		else{
+		} else {
 			newX = 5;
 		}
 		gameboard.setPiece(new Coord(newX, y), rook);
@@ -189,7 +187,7 @@ public class ChessGame {
 	 * @return True if the king of that color is in check, false otherwise
 	 */
 	public boolean check(boolean color) {
-		
+
 		Coord c = null;
 		if (color) {
 			for (Piece p : whitePieces) {
@@ -211,9 +209,9 @@ public class ChessGame {
 			if (p != null) {
 				((King) p).checked();
 			}
-	
+
 			return true;
-			
+
 		} else {
 
 			return false;
@@ -453,7 +451,7 @@ public class ChessGame {
 			if (y < 0) {
 				break;
 			}
-			if(!gameboard.checkValid(new Coord(x,y))) {
+			if (!gameboard.checkValid(new Coord(x, y))) {
 				break;
 			}
 			if (gameboard.pieceAt(new Coord(x, y)) != null) {
@@ -514,9 +512,13 @@ public class ChessGame {
 		gameboard.setPiece(cFinal, p);
 		if (p != null) {
 			if (p.getBooleanColor()) {
-				whitePieces.add(p);
+				if (!whitePieces.contains(p)) {
+					whitePieces.add(p);
+				}
 			} else {
-				blackPieces.add(p);
+				if (!blackPieces.contains(p)) {
+					blackPieces.add(p);
+				}
 			}
 		}
 	}
@@ -533,7 +535,7 @@ public class ChessGame {
 	 *            whose turn it is
 	 */
 	public void run(Coord c1, Coord c2, SwapBool color) {
-		//System.out.println("THe run method has been entered");
+		// System.out.println("THe run method has been entered");
 		if (check(color.getBool())) {
 			if (checkMate(color.getBool())) {
 				String b = (!color.getBool()) ? (this.getChessPlayers().getWhitePlayerName() + " wins")
@@ -561,10 +563,9 @@ public class ChessGame {
 								color.swap();
 								promote(c2);
 								gameboard.getTextDisplay().clear();
-								if(color.getBool()) {
-									gameboard.getTextDisplay().add("Your turn" );
+								if (color.getBool()) {
+									gameboard.getTextDisplay().add("Your turn");
 								}
-								
 
 							}
 						}
@@ -579,8 +580,8 @@ public class ChessGame {
 								promote(c2);
 								color.swap();
 								gameboard.getTextDisplay().clear();
-								if(color.getBool()) {
-									gameboard.getTextDisplay().add("Your turn" );
+								if (color.getBool()) {
+									gameboard.getTextDisplay().add("Your turn");
 								}
 							}
 						}
@@ -601,8 +602,9 @@ public class ChessGame {
 						if (p.legalMove(c2)) {
 						} else if (!castle(color.getBool(), c2)) {
 							gameboard.getTextDisplay().add("Invalid castle");
-						} 
-					} if (getPiece(c2) != null) {
+						}
+					}
+					if (getPiece(c2) != null) {
 						Piece rek = attack(c1, c2);
 						if (rek == null) {
 						} else {
@@ -613,8 +615,8 @@ public class ChessGame {
 								promote(c2);
 								color.swap();
 								gameboard.getTextDisplay().clear();
-								if(color.getBool()) {
-									gameboard.getTextDisplay().add("Your turn" );
+								if (color.getBool()) {
+									gameboard.getTextDisplay().add("Your turn");
 								}
 							}
 						}
@@ -629,8 +631,8 @@ public class ChessGame {
 								promote(c2);
 								color.swap();
 								gameboard.getTextDisplay().clear();
-								if(color.getBool()) {
-									gameboard.getTextDisplay().add("Your turn" );
+								if (color.getBool()) {
+									gameboard.getTextDisplay().add("Your turn");
 								}
 							}
 							// TODO swap turn here?
@@ -641,7 +643,7 @@ public class ChessGame {
 
 			}
 		}
-		//System.out.println("Leaving the run method");
+		// System.out.println("Leaving the run method");
 
 	}
 
@@ -744,7 +746,7 @@ public class ChessGame {
 	public boolean targets(Coord c1, Coord c2) {
 		Piece p1 = gameboard.pieceAt(c1);
 		Piece p2 = gameboard.pieceAt(c2);
-		if (p1 == null ) {
+		if (p1 == null) {
 			String nullPiece = "";
 			if (p1 == null) {
 				if (p2 == null) {
@@ -754,7 +756,7 @@ public class ChessGame {
 				}
 			}
 			return false;
-		} else if (p2!=null && p1.getBooleanColor() == p2.getBooleanColor()) {
+		} else if (p2 != null && p1.getBooleanColor() == p2.getBooleanColor()) {
 			return false;
 		}
 		boolean legal = p1.legalMove(c2);
@@ -767,17 +769,21 @@ public class ChessGame {
 		boolean targets = ((!obstruction) && legal);
 		return targets;
 	}
-	
+
 	public void setPiece(Coord c, Piece p) {
 		gameboard.setPiece(c, p);
 		if (p != null) {
 			if (p.getBooleanColor()) {
-				whitePieces.add(p);
+				if (!whitePieces.contains(p)) {
+					whitePieces.add(p);
+				}
 			} else {
-				blackPieces.add(p);
+				if (!blackPieces.contains(p)) {
+					blackPieces.add(p);
+				}
 			}
 		}
-	
+
 	}
 
 }
