@@ -38,6 +38,7 @@ public class Move  {
 		if(a == c && b == d) {
 			return; //I added this, supposed to not move a piece to the same spot cuz it crashes
 		}
+		System.out.println("Stuff is being done");
 		this.pieces = pieces;
 		xpos_current = a;
 		ypos_current = b;

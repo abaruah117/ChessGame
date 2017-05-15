@@ -550,7 +550,10 @@ public class ChessGame {
 								color.swap();
 								promote(c2);
 								gameboard.getTextDisplay().clear();
-								gameboard.getTextDisplay().add(color.getBool() ? "Your turn" : "Computer turn");
+								if(color.getBool()) {
+									gameboard.getTextDisplay().add("Your turn" );
+								}
+								
 
 							}
 						}
@@ -565,8 +568,9 @@ public class ChessGame {
 								promote(c2);
 								color.swap();
 								gameboard.getTextDisplay().clear();
-								gameboard.getTextDisplay().add(color.getBool() ? "Your turn" : "Computer turn");
-
+								if(color.getBool()) {
+									gameboard.getTextDisplay().add("Your turn" );
+								}
 							}
 						}
 					}
@@ -598,7 +602,9 @@ public class ChessGame {
 								promote(c2);
 								color.swap();
 								gameboard.getTextDisplay().clear();
-								gameboard.getTextDisplay().add(color.getBool() ? "Your turn" : "Computer turn");
+								if(color.getBool()) {
+									gameboard.getTextDisplay().add("Your turn" );
+								}
 							}
 						}
 					} else {
@@ -612,7 +618,9 @@ public class ChessGame {
 								promote(c2);
 								color.swap();
 								gameboard.getTextDisplay().clear();
-								gameboard.getTextDisplay().add(color.getBool() ? "Your turn" : "Computer turn");
+								if(color.getBool()) {
+									gameboard.getTextDisplay().add("Your turn" );
+								}
 							}
 							// TODO swap turn here?
 						}

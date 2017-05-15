@@ -16,7 +16,7 @@ import java.util.Random;
  * <b> The computer AI which checks all possible moves the computer could make
  * and picks the best one, very slow
  */
-public class ChessAi {
+public class ChessAi extends Thread{
 
 	Piece[][] pieces;
 	private ChessGame chessGame;
@@ -64,6 +64,7 @@ public class ChessAi {
 	 * Move.performMove(), and ultimately through the movePiece() function.
 	 */
 	public void AI() {
+		
 		ArrayList<Move> moves = new ArrayList<Move>();
 //		Piece[][] a = chessGame.getBoard().getBoard();
 //		for(int i = 0; i < a.length; i++){
@@ -103,6 +104,7 @@ public class ChessAi {
 						}
 					}
 				}
+				Thread.yield();
 			}
 		} else {
 			for (int xpos_start = 0; xpos_start <= 7; xpos_start++) {
@@ -164,6 +166,11 @@ public class ChessAi {
 			System.out.println("No moves possible, skipping turn");
 		}
 
+	}
+
+	@Override
+	public void run() {
+		AI();
 	}
 
 }
